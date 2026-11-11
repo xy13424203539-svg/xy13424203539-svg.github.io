@@ -15,20 +15,20 @@ type: page
 
 ### 已建立个人页的成员
 
-以下成员有竞赛、专利或软著材料可录，已建立个人页。
+以下成员有竞赛、专利或软著材料可录，已建立个人页，点名字进入。
 
-| 姓名 | 年级 | 专业 | 角色 | 页面 |
-| --- | --- | --- | --- | --- |
-| 余梓勤 | 待补充 | 待补充 | 待补充 | [查看](/team/yu-ziqin/) |
-| 李伟锐 | 待补充 | 待补充 | 待补充 | [查看](/team/li-weirui/) |
-| 白云天 | 待补充 | 待补充 | 待补充 | [查看](/team/bai-yuntian/) |
-| 翁曼惠 | 待补充 | 待补充 | 待补充 | [查看](/team/weng-manhui/) |
-| 肖扬 | 2025 级（2025 机械电子工程 1 班） | 机械电子工程 | 水下机器人大组 · 跨介质机器人组（大组下设小组）组长 | [查看](/team/xiao-yang/) |
-| 肖旭明 | 待补充 | 待补充 | 待补充 | [查看](/team/xiao-xuming/) |
-| 董泽文 | 待补充 | 待补充 | 待补充 | [查看](/team/dong-zewen/) |
-| 蔡霖武 | 待补充 | 待补充 | 待补充 | [查看](/team/cai-linwu/) |
-| 黄洛怡 | 待补充 | 待补充 | 待补充 | [查看](/team/huang-luoyi/) |
-| 黄钧蔚 | 待补充 | 待补充 | 待补充 | [查看](/team/huang-junwei/) |
+<div class="mem-grid">
+<a class="mem-card" href="/team/xiao-yang/"><b>肖扬</b><span>水下机器人大组 · 跨介质机器人组（大组下设小组）组长</span></a>
+<a class="mem-card" href="/team/li-weirui/"><b>李伟锐</b><span>待补充</span></a>
+<a class="mem-card" href="/team/dong-zewen/"><b>董泽文</b><span>待补充</span></a>
+<a class="mem-card" href="/team/weng-manhui/"><b>翁曼惠</b><span>待补充</span></a>
+<a class="mem-card" href="/team/xiao-xuming/"><b>肖旭明</b><span>待补充</span></a>
+<a class="mem-card" href="/team/yu-ziqin/"><b>余梓勤</b><span>待补充</span></a>
+<a class="mem-card" href="/team/cai-linwu/"><b>蔡霖武</b><span>待补充</span></a>
+<a class="mem-card" href="/team/bai-yuntian/"><b>白云天</b><span>待补充</span></a>
+<a class="mem-card" href="/team/huang-junwei/"><b>黄钧蔚</b><span>待补充</span></a>
+<a class="mem-card" href="/team/huang-luoyi/"><b>黄洛怡</b><span>待补充</span></a>
+</div>
 
 ### 成员名单
 

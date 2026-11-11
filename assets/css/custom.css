@@ -16,6 +16,52 @@ a[data-hbx="poweredby_cta"] {
   display: none !important;
 }
 
+/* ===== 团队成员：个人页入口卡片 ===== */
+.mem-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(190px, 1fr));
+  gap: 10px;
+  margin: 14px 0 30px;
+}
+
+.mem-card {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  padding: 12px 14px;
+  border: 1px solid #e4e7ec;
+  border-radius: 9px;
+  background: #fff;
+  text-decoration: none !important;
+  transition: border-color 0.16s ease, box-shadow 0.16s ease;
+}
+
+.mem-card:hover {
+  border-color: #c7d2e0;
+  box-shadow: 0 4px 12px rgba(16, 32, 64, 0.08);
+}
+
+.mem-card b {
+  font-size: 15px;
+  color: #16324f;
+  font-weight: 700;
+}
+
+.mem-card span {
+  font-size: 12.5px;
+  line-height: 1.5;
+  color: #8a929e;
+}
+
+html.dark .mem-card {
+  background: #1a2029;
+  border-color: #2a3240;
+}
+
+html.dark .mem-card b {
+  color: #9ec5f0;
+}
+
 /* ===== 成果荣誉：证书卡片 ===== */
 .aw-grid {
   display: grid;

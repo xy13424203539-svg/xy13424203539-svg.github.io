@@ -5,17 +5,13 @@ date: 2026-11-11
 type: page
 ---
 
-实验室成员每人一个独立页面，写明年级、专业、所在技术组、具体负责的事情和个人成果。需要改自己的信息时，只改自己那一页，不影响别人。
-
 ### 技术组
 
 - **水下机器人大组** —— 水下机器人整机与相关课题
   - **跨介质机器人组**（大组下设小组）—— 跨介质运动机构与海陆空平台
 - **微纳制造与智能传感方向** —— 微纳 3D 打印、静电纺丝、传感器相关课题
 
-### 已建立个人页的成员
-
-以下成员有竞赛、专利或软著材料可录，已建立个人页，点名字进入。
+### 成员
 
 <div class="mem-grid">
 <a class="mem-card" href="/team/xiao-yang/"><b>肖扬</b><span>水下机器人大组 · 跨介质机器人组（大组下设小组）组长</span></a>
@@ -28,23 +24,19 @@ type: page
 <a class="mem-card" href="/team/bai-yuntian/"><b>白云天</b><span>待补充</span></a>
 <a class="mem-card" href="/team/huang-junwei/"><b>黄钧蔚</b><span>待补充</span></a>
 <a class="mem-card" href="/team/huang-luoyi/"><b>黄洛怡</b><span>待补充</span></a>
+<div class="mem-card mem-static"><b>曾洁</b><span>待补充</span></div>
+<div class="mem-card mem-static"><b>王堉炯</b><span>待补充</span></div>
+<div class="mem-card mem-static"><b>揭昕霏</b><span>待补充</span></div>
+<div class="mem-card mem-static"><b>梁嘉仪</b><span>待补充</span></div>
+<div class="mem-card mem-static"><b>肖童</b><span>待补充</span></div>
+<div class="mem-card mem-static"><b>汤希瑜</b><span>待补充</span></div>
+<div class="mem-card mem-static"><b>陈萍</b><span>待补充</span></div>
+<div class="mem-card mem-static"><b>吴洌惠</b><span>待补充</span></div>
+<div class="mem-card mem-static"><b>付书雷</b><span>待补充</span></div>
+<div class="mem-card mem-static"><b>沈立城</b><span>待补充</span></div>
+<div class="mem-card mem-static"><b>叶子堃</b><span>待补充</span></div>
+<div class="mem-card mem-static"><b>陈辉煜</b><span>待补充</span></div>
+<div class="mem-card mem-static"><b>邓浩天</b><span>待补充</span></div>
 </div>
 
-### 成员名单
-
-以下成员已列入团队，年级、专业、技术组与具体分工待实验室逐人确认后补充。
-
-| 姓名 | 姓名 | 姓名 |
-| --- | --- | --- |
-| 曾洁 | 付书雷 | 蔡霖武 |
-| 王堉炯 | 黄钧蔚 | 陈萍 |
-| 翁曼惠 | 余梓勤 | 汤希瑜 |
-| 揭昕霏 | 邓浩天 | 黄洛怡 |
-| 梁嘉仪 | 沈立城 | 肖童 |
-| 李伟锐 | 叶子堃 | 陈辉煜 |
-| 白云天 | 肖旭明 | 董泽文 |
-| 吴洌惠 | | |
-
-### 补资料的方式
-
-成员本人补充内容时，需要提供：姓名、年级、专业、所属技术组、具体负责的事情（一句话）、个人成果（奖项 / 专利 / 软著，写名称 + 等级 + 年份）、证书或成果图片。资料齐了由有仓库权限的人建立个人页，不需要本人登录。
+<p class="page-updated">最后更新 2026 年 11 月 11 日</p>

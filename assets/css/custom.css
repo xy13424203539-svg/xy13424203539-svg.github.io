@@ -228,13 +228,107 @@ html.dark .aw-title {
   color: #e8ecf2;
 }
 
+/* ===== 隐藏标题下的日期与阅读时长 ===== */
+h1 + div[class~="mb-16"] {
+  display: none !important;
+}
+
+/* ===== 页尾“最后更新” ===== */
+.page-updated {
+  margin: 40px 0 0;
+  padding-top: 14px;
+  border-top: 1px solid #e8ebef;
+  font-size: 12.5px;
+  line-height: 1.6;
+  color: #9aa1ac;
+}
+
+html.dark .page-updated {
+  border-top-color: #2a3240;
+  color: #7f8a98;
+}
+
+/* ===== 卡片内的静态成员格（无个人页） ===== */
+.mem-static {
+  background: #f7f8fa;
+  border-color: #eceef2;
+  cursor: default;
+}
+
+.mem-static:hover {
+  border-color: #eceef2;
+  box-shadow: none;
+}
+
+html.dark .mem-static {
+  background: #151b23;
+  border-color: #242b36;
+}
+
+/* ===== 证书页放宽，桌面两列更舒展 ===== */
+.prose:has(.aw-grid) {
+  max-width: 1060px !important;
+}
+
+/* ===== 正文行距 ===== */
+.prose p {
+  line-height: 1.85;
+}
+
+@media (max-width: 900px) {
+  .mem-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
 @media (max-width: 640px) {
   .aw-grid {
     grid-template-columns: 1fr;
-    gap: 12px;
+    gap: 14px;
   }
 
+  /* 手机上证书按原比例撑满卡片，不再压成扁条 */
   .aw-thumb {
-    height: 200px;
+    height: auto;
+    padding: 0;
+    background: #fff;
+  }
+
+  .aw-thumb a {
+    display: block;
+  }
+
+  .aw-thumb img {
+    width: 100%;
+    height: auto;
+    max-height: none;
+    border-radius: 0;
+    box-shadow: none;
+  }
+
+  .aw-card {
+    overflow: hidden;
+  }
+
+  .aw-body {
+    padding: 11px 13px 13px;
+    gap: 6px;
+  }
+
+  .aw-title {
+    font-size: 14px;
+  }
+
+  .mem-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 8px;
+  }
+
+  .mem-card {
+    padding: 10px 11px;
+  }
+
+  .mem-card b {
+    font-size: 14px;
   }
 }

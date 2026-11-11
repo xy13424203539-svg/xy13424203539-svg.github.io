@@ -25,10 +25,10 @@ type: page
   <div class="aw-body">
     <div class="aw-chips"><span class="aw-level">国家级</span><span class="aw-award">一等奖</span><span class="aw-year">2026</span></div>
     <div class="aw-title">2026 年中国大学生机械工程创新创意大赛 · 增材制造创新创意赛（本科生组）</div>
-    <div class="aw-proj">空心桁架声力一体化梯度吸能结构</div>
+    <div class="aw-proj">空心桁架声力一体化梯度吸能结构（指定命题）</div>
     <div class="aw-row"><span class="aw-k">完成人</span><span class="aw-v"><b>肖扬</b>、<b>翁曼惠</b>、<b>肖旭明</b>、<b>董泽文</b>、<b>李伟锐</b></span></div>
-    <div class="aw-row"><span class="aw-k">指导教师</span><span class="aw-v">陈小军、黄德云</span></div>
-    <div class="aw-no">证书编号 MECICDAM2026-08-00005</div>
+    <div class="aw-row"><span class="aw-k">指导教师</span><span class="aw-v">陈小军、莫德云</span></div>
+    <div class="aw-no">证书编号 MEICC01AM2026-JB-00005</div>
   </div>
 </div>
 <div class="aw-card">

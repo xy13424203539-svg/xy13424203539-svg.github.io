@@ -1,14 +1,13 @@
 ---
-title: 'Projects'
-date: 2024-05-19
-type: landing
+title: '在研课题'
+date: 2026-11-11
 
 # Page sections
 sections:
   - block: collection
     content:
-      title: Selected Projects
-      text: I enjoy making things. Here are a selection of projects that I have worked on over the years.
+      title: 课题列表
+      text: 每项课题由一名组长负责，按节点向下拆成子任务，进度与阻塞项在周例会上登记。
       filters:
         folders:
           - projects

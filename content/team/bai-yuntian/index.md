@@ -1,6 +1,6 @@
 ---
 title: 白云天
-summary: 实验室成员。
+summary: 微纳制造与智能传感实验室成员。
 date: 2026-11-11
 type: page
 ---
@@ -17,15 +17,21 @@ type: page
 
 ### 参与成果
 
-| 年份 | 赛事 | 级别 | 等级 | 项目 / 方向 |
-| --- | --- | --- | --- | --- |
-| 2026 | 全国三维数字化创新设计大赛 · 粤港澳赛区（低空无人机设计仿真与竞技） | 赛区级 | 三等奖 | 指到擒来 |
+共 1 项，均为团队成果，本人为完成人之一。证书原件见[成果荣誉](/awards/)页。
 
-以上条目为团队赛，获奖名单中本人为完成人之一，证书原件见[成果荣誉](/awards/)页。
-
-### 专利
-
-无。
+<div class="aw-grid">
+<div class="aw-card">
+  <div class="aw-thumb"><a href="/uploads/awards/a11.jpg" target="_blank" rel="noopener"><img src="/uploads/awards/a11.jpg" alt="全国三维数字化创新设计大赛 · 粤港澳赛区（低空 三等奖" loading="lazy"></a></div>
+  <div class="aw-body">
+    <div class="aw-chips"><span class="aw-level">赛区级</span><span class="aw-award">三等奖</span><span class="aw-year">2026</span></div>
+    <div class="aw-title">全国三维数字化创新设计大赛 · 粤港澳赛区（低空无人机设计仿真与竞技）</div>
+    <div class="aw-proj">指到擒来</div>
+    <div class="aw-row"><span class="aw-k">完成人</span><span class="aw-v"><b>蔡霖武</b>、<b>白云天</b></span></div>
+    <div class="aw-row"><span class="aw-k">指导教师</span><span class="aw-v">陈小军、连海山</span></div>
+    <div class="aw-no">证书编号 20260503310201</div>
+  </div>
+</div>
+</div>
 
 ### 在实验室负责什么
 

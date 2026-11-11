@@ -1,0 +1,12 @@
+/* 隐藏页面底部的社交分享按钮（X / Facebook / 邮件 / LinkedIn / WhatsApp） */
+a[id^="share-link-"] {
+  display: none !important;
+}
+div:has(> a[id^="share-link-x"]) {
+  display: none !important;
+}
+
+/* 隐藏页脚 Creative Commons 图标 */
+a[aria-label="Creative Commons"] {
+  display: none !important;
+}

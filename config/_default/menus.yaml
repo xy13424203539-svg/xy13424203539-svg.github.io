@@ -1,0 +1,19 @@
+main:
+  - name: 首页
+    url: /
+    weight: 10
+  - name: 团队
+    url: team/
+    weight: 20
+  - name: 课题
+    url: projects/
+    weight: 30
+  - name: 成果
+    url: awards/
+    weight: 40
+  - name: 制度
+    url: rules/
+    weight: 50
+  - name: 奖励
+    url: reward/
+    weight: 60

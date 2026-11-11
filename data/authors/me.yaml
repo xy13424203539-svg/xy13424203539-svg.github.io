@@ -1,0 +1,41 @@
+schema: hugoblox/author/v1
+slug: me
+is_owner: true
+name:
+  display: 肖扬
+  given: 肖扬
+  family: ''
+  alternate: ''
+status:
+  icon: ''
+role: 副队长 · 机械电子工程
+bio: |
+  岭南师范学院机械电子工程专业，校重点团队“大鱼治水”突击队副队长，
+  负责海陆空机器人项目组招新与课题统筹。研究兴趣集中在
+  水下机器人平台、跨介质运动机构、点阵超材料与增材制造结构。
+
+affiliations:
+  - name: 岭南师范学院
+
+links:
+  - icon: at-symbol
+    url: mailto:13424203539@163.com
+    label: 邮件联系
+
+interests:
+  - 水下机器人平台
+  - 跨介质运动机构
+  - 点阵超材料吸能
+  - 增材制造结构
+
+awards:
+  - title: 中国机械工程创新创业大赛 · 增材制造专项赛 国家级一等奖
+    awarder: 中国机械工程学会
+    date: "2026-11-01"
+    summary: 以点阵晶胞为主承力单元的参赛结构件。
+    icon: hero/trophy
+  - title: 日本 CADA 设计赛 铜奖
+    awarder: CADA
+    date: "2026-08-01"
+    summary: 结构设计与仿真说明完整提交。
+    icon: hero/trophy

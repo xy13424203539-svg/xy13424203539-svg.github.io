@@ -17,7 +17,7 @@ type: page
 
 ### 参与成果
 
-共 12 项，本人均为完成人之一。其中由陈小军老师指导的成果已列入[成果荣誉](/awards/)页，其余为本人参与的其他竞赛与成果，一并列在下方。点击图片可查看证书原件。
+共 6 项，本人均为完成人之一。其中由陈小军老师指导的成果已列入[成果荣誉](/awards/)页，其余为本人参与的其他竞赛与成果，一并列在下方。点击图片可查看证书原件。
 
 <div class="aw-grid">
 <div class="aw-card">
@@ -62,66 +62,6 @@ type: page
     <div class="aw-row"><span class="aw-k">完成人</span><span class="aw-v"><b>肖扬</b>、<b>翁曼惠</b>、<b>董泽文</b>、<b>余梓勤</b>、<b>李伟锐</b></span></div>
     <div class="aw-row"><span class="aw-k">指导教师</span><span class="aw-v">陈璐、陈小军</span></div>
     <div class="aw-no">证书编号 26141558011707</div>
-  </div>
-</div>
-<div class="aw-card">
-  <div class="aw-thumb"><a href="/uploads/awards/c01.jpg" target="_blank" rel="noopener"><img src="/uploads/awards/c01.jpg" alt="2025 年全国大学生“人工智能+”创新创业大赛 一等奖" loading="lazy"></a></div>
-  <div class="aw-body">
-    <div class="aw-chips"><span class="aw-level">国家级</span><span class="aw-award">一等奖</span><span class="aw-year">2025</span></div>
-    <div class="aw-title">2025 年全国大学生“人工智能+”创新创业大赛</div>
-    <div class="aw-proj">初赛成绩优异</div>
-    <div class="aw-row"><span class="aw-k">完成人</span><span class="aw-v"><b>肖扬</b></span></div>
-    <div class="aw-no">证书编号 RGAJ20252057619461</div>
-  </div>
-</div>
-<div class="aw-card">
-  <div class="aw-thumb"><a href="/uploads/awards/c02.jpg" target="_blank" rel="noopener"><img src="/uploads/awards/c02.jpg" alt="2025 年全国大学生创新创业能力大赛 · 创新 一等奖" loading="lazy"></a></div>
-  <div class="aw-body">
-    <div class="aw-chips"><span class="aw-level">国家级</span><span class="aw-award">一等奖</span><span class="aw-year">2025</span></div>
-    <div class="aw-title">2025 年全国大学生创新创业能力大赛 · 创新思维赛</div>
-    <div class="aw-proj">初赛创新思维赛</div>
-    <div class="aw-row"><span class="aw-k">完成人</span><span class="aw-v"><b>肖扬</b></span></div>
-    <div class="aw-no">证书编号 CXCY176054195310</div>
-  </div>
-</div>
-<div class="aw-card">
-  <div class="aw-thumb"><a href="/uploads/awards/c03.jpg" target="_blank" rel="noopener"><img src="/uploads/awards/c03.jpg" alt="2026 年“戎光传承”国防教育宣传活动 · 国 一等奖" loading="lazy"></a></div>
-  <div class="aw-body">
-    <div class="aw-chips"><span class="aw-level">国家级</span><span class="aw-award">一等奖</span><span class="aw-year">2026</span></div>
-    <div class="aw-title">2026 年“戎光传承”国防教育宣传活动 · 国防科普知识活动</div>
-    <div class="aw-proj">国防科普知识</div>
-    <div class="aw-row"><span class="aw-k">完成人</span><span class="aw-v"><b>肖扬</b></span></div>
-    <div class="aw-no">证书编号 RGCC20260922W09HA</div>
-  </div>
-</div>
-<div class="aw-card">
-  <div class="aw-thumb"><a href="/uploads/awards/c04.jpg" target="_blank" rel="noopener"><img src="/uploads/awards/c04.jpg" alt="2026 年“明法知行”全国高校法律法规知识竞赛 一等奖" loading="lazy"></a></div>
-  <div class="aw-body">
-    <div class="aw-chips"><span class="aw-level">国家级</span><span class="aw-award">一等奖</span><span class="aw-year">2026</span></div>
-    <div class="aw-title">2026 年“明法知行”全国高校法律法规知识竞赛</div>
-    <div class="aw-proj">法律法规知识</div>
-    <div class="aw-row"><span class="aw-k">完成人</span><span class="aw-v"><b>肖扬</b></span></div>
-    <div class="aw-no">证书编号 FLAGJ896057260</div>
-  </div>
-</div>
-<div class="aw-card">
-  <div class="aw-thumb"><a href="/uploads/awards/c05.jpg" target="_blank" rel="noopener"><img src="/uploads/awards/c05.jpg" alt="第五届全国学生科学素质知识科普活动 · 大学生组 一等奖" loading="lazy"></a></div>
-  <div class="aw-body">
-    <div class="aw-chips"><span class="aw-level">国家级</span><span class="aw-award">一等奖</span><span class="aw-year">2026</span></div>
-    <div class="aw-title">第五届全国学生科学素质知识科普活动 · 大学生组</div>
-    <div class="aw-proj">科学素质知识</div>
-    <div class="aw-row"><span class="aw-k">完成人</span><span class="aw-v"><b>肖扬</b></span></div>
-    <div class="aw-no">证书编号 KXSZ20260242638</div>
-  </div>
-</div>
-<div class="aw-card">
-  <div class="aw-thumb"><a href="/uploads/awards/c06.jpg" target="_blank" rel="noopener"><img src="/uploads/awards/c06.jpg" alt="“红色长征路 · 云端忆初心”纪念长征胜利 90 知识竞答优秀" loading="lazy"></a></div>
-  <div class="aw-body">
-    <div class="aw-chips"><span class="aw-level">活动级</span><span class="aw-award">知识竞答优秀</span><span class="aw-year">2026</span></div>
-    <div class="aw-title">“红色长征路 · 云端忆初心”纪念长征胜利 90 周年主题活动</div>
-    <div class="aw-proj">红色长征路知识线上竞答</div>
-    <div class="aw-row"><span class="aw-k">完成人</span><span class="aw-v"><b>肖扬</b></span></div>
-    <div class="aw-no">证书编号 CZ20260922Nvdq</div>
   </div>
 </div>
 <div class="aw-card">

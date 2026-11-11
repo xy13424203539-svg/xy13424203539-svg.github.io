@@ -4,11 +4,9 @@ date: 2026-11-11
 type: page
 ---
 
-本页只录入有证书原件的成果。姓名、等级、年份按证书所载内容填写，指导教师在证书上注明者照录；**加粗**表示本站登记的实验室成员，未加粗者为同队其他队员。点击证书可查看原件大图。
+本页只收录由陈小军老师指导的实验室成果，按国家级、省级、赛区级、市级降序排列。姓名、等级、年份按证书所载内容填写；**加粗**为本站登记的实验室成员，未加粗者为同队其他队员。点击证书可查看原件大图。成员个人参加的其他竞赛，见各自的[团队成员](/team/)页面。
 
-### 一、实验室重点课题获奖
-
-实验室自主课题与团队作品的获奖，均由陈小军老师指导。
+### 一、实验室课题获奖
 
 <div class="aw-grid">
 <div class="aw-card">
@@ -23,14 +21,25 @@ type: page
   </div>
 </div>
 <div class="aw-card">
-  <div class="aw-thumb"><a href="/uploads/awards/a02.jpg" target="_blank" rel="noopener"><img src="/uploads/awards/a02.jpg" alt="“建行杯”中国国际大学生创新大赛（2025）广东 金奖" loading="lazy"></a></div>
+  <div class="aw-thumb"><a href="/uploads/awards/a07.jpg" target="_blank" rel="noopener"><img src="/uploads/awards/a07.jpg" alt="2026 年中国大学生机械工程创新创意大赛 ·  一等奖" loading="lazy"></a></div>
   <div class="aw-body">
-    <div class="aw-chips"><span class="aw-level">省级</span><span class="aw-award">金奖</span><span class="aw-year">2025</span></div>
-    <div class="aw-title">“建行杯”中国国际大学生创新大赛（2025）广东省分赛</div>
-    <div class="aw-proj">渔云智控 —— 深远海超大型海洋牧场鱼类行为监测与控制优化系统</div>
-    <div class="aw-row"><span class="aw-k">完成人</span><span class="aw-v"><b>林嘉鑫</b>、晏林俊、叶俊廷、<b>漆思怡</b>、程战、麦倚桐、曾冰清、杨贝贝、欧佳琳</span></div>
-    <div class="aw-row"><span class="aw-k">指导教师</span><span class="aw-v">陈小军、连海山、陈璐、吴应林</span></div>
-    <div class="aw-no">证书编号 2025G038G</div>
+    <div class="aw-chips"><span class="aw-level">国家级</span><span class="aw-award">一等奖</span><span class="aw-year">2026</span></div>
+    <div class="aw-title">2026 年中国大学生机械工程创新创意大赛 · 增材制造创新创意赛（本科生组）</div>
+    <div class="aw-proj">空心桁架声力一体化梯度吸能结构</div>
+    <div class="aw-row"><span class="aw-k">完成人</span><span class="aw-v"><b>肖扬</b>、<b>翁曼惠</b>、<b>肖旭明</b>、<b>董泽文</b>、<b>李伟锐</b></span></div>
+    <div class="aw-row"><span class="aw-k">指导教师</span><span class="aw-v">陈小军、黄德云</span></div>
+    <div class="aw-no">证书编号 MECICDAM2026-08-00005</div>
+  </div>
+</div>
+<div class="aw-card">
+  <div class="aw-thumb"><a href="/uploads/awards/a09.jpg" target="_blank" rel="noopener"><img src="/uploads/awards/a09.jpg" alt="全国三维数字化创新设计大赛 · 年度竞赛 一等奖" loading="lazy"></a></div>
+  <div class="aw-body">
+    <div class="aw-chips"><span class="aw-level">国家级</span><span class="aw-award">一等奖</span><span class="aw-year">2026</span></div>
+    <div class="aw-title">全国三维数字化创新设计大赛 · 年度竞赛</div>
+    <div class="aw-proj">深蓝智护</div>
+    <div class="aw-row"><span class="aw-k">完成人</span><span class="aw-v"><b>肖扬</b>、<b>翁曼惠</b>、<b>董泽文</b>、<b>余梓勤</b>、<b>李伟锐</b></span></div>
+    <div class="aw-row"><span class="aw-k">指导教师</span><span class="aw-v">陈璐、陈小军</span></div>
+    <div class="aw-no">证书编号 202620084102</div>
   </div>
 </div>
 <div class="aw-card">
@@ -56,56 +65,14 @@ type: page
   </div>
 </div>
 <div class="aw-card">
-  <div class="aw-thumb"><a href="/uploads/awards/a05.jpg" target="_blank" rel="noopener"><img src="/uploads/awards/a05.jpg" alt="“经略海洋 共创蓝海”2024 年海洋产业创新创 优胜奖" loading="lazy"></a></div>
+  <div class="aw-thumb"><a href="/uploads/awards/a02.jpg" target="_blank" rel="noopener"><img src="/uploads/awards/a02.jpg" alt="“建行杯”中国国际大学生创新大赛（2025）广东 金奖" loading="lazy"></a></div>
   <div class="aw-body">
-    <div class="aw-chips"><span class="aw-level">市级</span><span class="aw-award">优胜奖</span><span class="aw-year">2024</span></div>
-    <div class="aw-title">“经略海洋 共创蓝海”2024 年海洋产业创新创业大赛</div>
-    <div class="aw-proj">海耕先锋 —— 智能机器鱼引领蓝色粮仓建设</div>
-    <div class="aw-row"><span class="aw-k">完成人</span><span class="aw-v">李颙昊、晏林俊、<b>林嘉鑫</b>、张家园、黄蜂林、陈钰婷、杨之门、郑若仙、<b>徐嘉杰</b>、陈寿娟</span></div>
-    <div class="aw-row"><span class="aw-k">指导教师</span><span class="aw-v">陈小军</span></div>
-  </div>
-</div>
-<div class="aw-card">
-  <div class="aw-thumb"><a href="/uploads/awards/a06.jpg" target="_blank" rel="noopener"><img src="/uploads/awards/a06.jpg" alt="粤港澳大学生“双百杯”乡村振兴创新创业竞赛 优秀奖" loading="lazy"></a></div>
-  <div class="aw-body">
-    <div class="aw-chips"><span class="aw-level">省级</span><span class="aw-award">优秀奖</span><span class="aw-year">2024</span></div>
-    <div class="aw-title">粤港澳大学生“双百杯”乡村振兴创新创业竞赛</div>
-    <div class="aw-proj">基于云端 AI 的智慧水产养殖监控与管理系统</div>
-    <div class="aw-row"><span class="aw-k">完成人</span><span class="aw-v">李颙昊、<b>林嘉鑫</b>、晏林俊、张家园、黄蜂林、杨丰堂、陈钰婷、郑若仙</span></div>
-    <div class="aw-row"><span class="aw-k">指导教师</span><span class="aw-v">陈小军</span></div>
-  </div>
-</div>
-<div class="aw-card">
-  <div class="aw-thumb"><a href="/uploads/awards/a07.jpg" target="_blank" rel="noopener"><img src="/uploads/awards/a07.jpg" alt="2026 年中国大学生机械工程创新创意大赛 ·  一等奖" loading="lazy"></a></div>
-  <div class="aw-body">
-    <div class="aw-chips"><span class="aw-level">国家级</span><span class="aw-award">一等奖</span><span class="aw-year">2026</span></div>
-    <div class="aw-title">2026 年中国大学生机械工程创新创意大赛 · 增材制造创新创意赛（本科生组）</div>
-    <div class="aw-proj">空心桁架声力一体化梯度吸能结构</div>
-    <div class="aw-row"><span class="aw-k">完成人</span><span class="aw-v"><b>肖扬</b>、<b>翁曼惠</b>、<b>肖旭明</b>、<b>董泽文</b>、<b>李伟锐</b></span></div>
-    <div class="aw-row"><span class="aw-k">指导教师</span><span class="aw-v">陈小军、黄德云</span></div>
-    <div class="aw-no">证书编号 MECICDAM2026-08-00005</div>
-  </div>
-</div>
-<div class="aw-card">
-  <div class="aw-thumb"><a href="/uploads/awards/a08.jpg" target="_blank" rel="noopener"><img src="/uploads/awards/a08.jpg" alt="中国大学生机械工程创新创意大赛 · 增材制造创新 二等奖" loading="lazy"></a></div>
-  <div class="aw-body">
-    <div class="aw-chips"><span class="aw-level">赛区级</span><span class="aw-award">二等奖</span><span class="aw-year">2026</span></div>
-    <div class="aw-title">中国大学生机械工程创新创意大赛 · 增材制造创新创意赛 南部赛区</div>
-    <div class="aw-proj">空心桁架声力一体化梯度吸能结构</div>
-    <div class="aw-row"><span class="aw-k">完成人</span><span class="aw-v"><b>肖扬</b>、<b>翁曼惠</b>、<b>肖旭明</b>、<b>董泽文</b>、<b>李伟锐</b></span></div>
-    <div class="aw-row"><span class="aw-k">指导教师</span><span class="aw-v">陈小军、莫德云</span></div>
-    <div class="aw-no">证书编号 AM-2026-CSN-802-020</div>
-  </div>
-</div>
-<div class="aw-card">
-  <div class="aw-thumb"><a href="/uploads/awards/a09.jpg" target="_blank" rel="noopener"><img src="/uploads/awards/a09.jpg" alt="全国三维数字化创新设计大赛 · 年度竞赛 一等奖" loading="lazy"></a></div>
-  <div class="aw-body">
-    <div class="aw-chips"><span class="aw-level">国家级</span><span class="aw-award">一等奖</span><span class="aw-year">2026</span></div>
-    <div class="aw-title">全国三维数字化创新设计大赛 · 年度竞赛</div>
-    <div class="aw-proj">深蓝智护</div>
-    <div class="aw-row"><span class="aw-k">完成人</span><span class="aw-v"><b>肖扬</b>、<b>翁曼惠</b>、<b>董泽文</b>、<b>余梓勤</b>、<b>李伟锐</b></span></div>
-    <div class="aw-row"><span class="aw-k">指导教师</span><span class="aw-v">陈璐、陈小军</span></div>
-    <div class="aw-no">证书编号 202620084102</div>
+    <div class="aw-chips"><span class="aw-level">省级</span><span class="aw-award">金奖</span><span class="aw-year">2025</span></div>
+    <div class="aw-title">“建行杯”中国国际大学生创新大赛（2025）广东省分赛</div>
+    <div class="aw-proj">渔云智控 —— 深远海超大型海洋牧场鱼类行为监测与控制优化系统</div>
+    <div class="aw-row"><span class="aw-k">完成人</span><span class="aw-v"><b>林嘉鑫</b>、晏林俊、叶俊廷、<b>漆思怡</b>、程战、麦倚桐、曾冰清、杨贝贝、欧佳琳</span></div>
+    <div class="aw-row"><span class="aw-k">指导教师</span><span class="aw-v">陈小军、连海山、陈璐、吴应林</span></div>
+    <div class="aw-no">证书编号 2025G038G</div>
   </div>
 </div>
 <div class="aw-card">
@@ -120,6 +87,27 @@ type: page
   </div>
 </div>
 <div class="aw-card">
+  <div class="aw-thumb"><a href="/uploads/awards/a06.jpg" target="_blank" rel="noopener"><img src="/uploads/awards/a06.jpg" alt="粤港澳大学生“双百杯”乡村振兴创新创业竞赛 优秀奖" loading="lazy"></a></div>
+  <div class="aw-body">
+    <div class="aw-chips"><span class="aw-level">省级</span><span class="aw-award">优秀奖</span><span class="aw-year">2024</span></div>
+    <div class="aw-title">粤港澳大学生“双百杯”乡村振兴创新创业竞赛</div>
+    <div class="aw-proj">基于云端 AI 的智慧水产养殖监控与管理系统</div>
+    <div class="aw-row"><span class="aw-k">完成人</span><span class="aw-v">李颙昊、<b>林嘉鑫</b>、晏林俊、张家园、黄蜂林、杨丰堂、陈钰婷、郑若仙</span></div>
+    <div class="aw-row"><span class="aw-k">指导教师</span><span class="aw-v">陈小军</span></div>
+  </div>
+</div>
+<div class="aw-card">
+  <div class="aw-thumb"><a href="/uploads/awards/a08.jpg" target="_blank" rel="noopener"><img src="/uploads/awards/a08.jpg" alt="中国大学生机械工程创新创意大赛 · 增材制造创新 二等奖" loading="lazy"></a></div>
+  <div class="aw-body">
+    <div class="aw-chips"><span class="aw-level">赛区级</span><span class="aw-award">二等奖</span><span class="aw-year">2026</span></div>
+    <div class="aw-title">中国大学生机械工程创新创意大赛 · 增材制造创新创意赛 南部赛区</div>
+    <div class="aw-proj">空心桁架声力一体化梯度吸能结构</div>
+    <div class="aw-row"><span class="aw-k">完成人</span><span class="aw-v"><b>肖扬</b>、<b>翁曼惠</b>、<b>肖旭明</b>、<b>董泽文</b>、<b>李伟锐</b></span></div>
+    <div class="aw-row"><span class="aw-k">指导教师</span><span class="aw-v">陈小军、莫德云</span></div>
+    <div class="aw-no">证书编号 AM-2026-CSN-802-020</div>
+  </div>
+</div>
+<div class="aw-card">
   <div class="aw-thumb"><a href="/uploads/awards/a11.jpg" target="_blank" rel="noopener"><img src="/uploads/awards/a11.jpg" alt="全国三维数字化创新设计大赛 · 粤港澳赛区（低空 三等奖" loading="lazy"></a></div>
   <div class="aw-body">
     <div class="aw-chips"><span class="aw-level">赛区级</span><span class="aw-award">三等奖</span><span class="aw-year">2026</span></div>
@@ -130,206 +118,21 @@ type: page
     <div class="aw-no">证书编号 20260503310201</div>
   </div>
 </div>
-</div>
-
-### 二、学科竞赛获奖（团队成员参与）
-
-以“高教杯”先进成图技术与产品信息建模创新大赛为主的学科竞赛，获奖名单中含本站成员。
-
-<div class="aw-grid">
 <div class="aw-card">
-  <div class="aw-thumb"><a href="/uploads/awards/b01.jpg" target="_blank" rel="noopener"><img src="/uploads/awards/b01.jpg" alt="第十九届“高教杯”全国大学生先进成图技术与产品信 一等奖" loading="lazy"></a></div>
+  <div class="aw-thumb"><a href="/uploads/awards/a05.jpg" target="_blank" rel="noopener"><img src="/uploads/awards/a05.jpg" alt="“经略海洋 共创蓝海”2024 年海洋产业创新创 优胜奖" loading="lazy"></a></div>
   <div class="aw-body">
-    <div class="aw-chips"><span class="aw-level">国家级</span><span class="aw-award">一等奖</span><span class="aw-year">2026</span></div>
-    <div class="aw-title">第十九届“高教杯”全国大学生先进成图技术与产品信息建模创新大赛（国际赛道）· 高精度 3D 视觉数字化测量与建模分赛道</div>
-    <div class="aw-proj">高精度 3D 视觉数字化测量与建模</div>
-    <div class="aw-row"><span class="aw-k">完成人</span><span class="aw-v"><b>李伟锐</b>、罗江伟</span></div>
-    <div class="aw-row"><span class="aw-k">指导教师</span><span class="aw-v">江树镇</span></div>
-    <div class="aw-no">证书编号 26000320006</div>
-  </div>
-</div>
-<div class="aw-card">
-  <div class="aw-thumb"><a href="/uploads/awards/b02.jpg" target="_blank" rel="noopener"><img src="/uploads/awards/b02.jpg" alt="第十八届“高教杯”全国大学生先进成图技术与产品信 一等奖" loading="lazy"></a></div>
-  <div class="aw-body">
-    <div class="aw-chips"><span class="aw-level">国家级</span><span class="aw-award">一等奖</span><span class="aw-year">2025</span></div>
-    <div class="aw-title">第十八届“高教杯”全国大学生先进成图技术与产品信息建模创新大赛 · 机械类 先进成图技术赛道</div>
-    <div class="aw-proj">先进成图技术</div>
-    <div class="aw-row"><span class="aw-k">完成人</span><span class="aw-v"><b>李伟锐</b></span></div>
-    <div class="aw-row"><span class="aw-k">指导教师</span><span class="aw-v">姜微</span></div>
-    <div class="aw-no">证书编号 25001230568</div>
-  </div>
-</div>
-<div class="aw-card">
-  <div class="aw-thumb"><a href="/uploads/awards/b03.jpg" target="_blank" rel="noopener"><img src="/uploads/awards/b03.jpg" alt="第十九届“高教杯”全国大学生先进成图技术与产品信 团体一等奖" loading="lazy"></a></div>
-  <div class="aw-body">
-    <div class="aw-chips"><span class="aw-level">国家级</span><span class="aw-award">团体一等奖</span><span class="aw-year">2026</span></div>
-    <div class="aw-title">第十九届“高教杯”全国大学生先进成图技术与产品信息建模创新大赛（国际赛道）· 团体</div>
-    <div class="aw-proj">先进成图技术 · 国际赛道团体</div>
-    <div class="aw-row"><span class="aw-k">完成人</span><span class="aw-v">练伟壕、戴宗胜、<b>李伟锐</b>、罗江伟、许国豪、叶鹏辉</span></div>
-    <div class="aw-row"><span class="aw-k">指导教师</span><span class="aw-v">李杞超、江树镇、张洪军、李卫、王小卉</span></div>
-    <div class="aw-no">证书编号 26000300014</div>
-  </div>
-</div>
-<div class="aw-card">
-  <div class="aw-thumb"><a href="/uploads/awards/b04.jpg" target="_blank" rel="noopener"><img src="/uploads/awards/b04.jpg" alt="第十九届“高教杯”全国大学生先进成图技术与产品信 团体一等奖" loading="lazy"></a></div>
-  <div class="aw-body">
-    <div class="aw-chips"><span class="aw-level">国家级</span><span class="aw-award">团体一等奖</span><span class="aw-year">2026</span></div>
-    <div class="aw-title">第十九届“高教杯”全国大学生先进成图技术与产品信息建模创新大赛 · 机械类 团体</div>
-    <div class="aw-proj">先进成图技术 · 机械类团体</div>
-    <div class="aw-row"><span class="aw-k">完成人</span><span class="aw-v">叶鹏辉、练伟壕、刘吴洋、罗江伟、吴洪毅、<b>李伟锐</b>、许国蓁、周睿、黎宣泽</span></div>
-    <div class="aw-row"><span class="aw-k">指导教师</span><span class="aw-v">李杞超、江树镇、张洪军、李卫</span></div>
-    <div class="aw-no">证书编号 26001000040</div>
-  </div>
-</div>
-<div class="aw-card">
-  <div class="aw-thumb"><a href="/uploads/awards/b05.jpg" target="_blank" rel="noopener"><img src="/uploads/awards/b05.jpg" alt="第十九届“高教杯”全国大学生先进成图技术与产品信 二等奖" loading="lazy"></a></div>
-  <div class="aw-body">
-    <div class="aw-chips"><span class="aw-level">国家级</span><span class="aw-award">二等奖</span><span class="aw-year">2026</span></div>
-    <div class="aw-title">第十九届“高教杯”全国大学生先进成图技术与产品信息建模创新大赛（国际赛道）· 逆向工程与创新设计分赛道</div>
-    <div class="aw-proj">逆向工程与创新设计</div>
-    <div class="aw-row"><span class="aw-k">完成人</span><span class="aw-v">练伟壕、戴宗胜</span></div>
-    <div class="aw-row"><span class="aw-k">指导教师</span><span class="aw-v">李杞超、李卫</span></div>
-    <div class="aw-no">证书编号 26000310035</div>
-  </div>
-</div>
-<div class="aw-card">
-  <div class="aw-thumb"><a href="/uploads/awards/b06.jpg" target="_blank" rel="noopener"><img src="/uploads/awards/b06.jpg" alt="第十八届“高教杯”全国大学生先进成图技术与产品信 团体二等奖" loading="lazy"></a></div>
-  <div class="aw-body">
-    <div class="aw-chips"><span class="aw-level">国家级</span><span class="aw-award">团体二等奖</span><span class="aw-year">2025</span></div>
-    <div class="aw-title">第十八届“高教杯”全国大学生先进成图技术与产品信息建模创新大赛 · 机械类 团体</div>
-    <div class="aw-proj">先进成图技术 · 机械类团体</div>
-    <div class="aw-row"><span class="aw-k">完成人</span><span class="aw-v"><b>李伟锐</b>、叶值福、戴宗胜、许国蓁、谭远峰、余佳洁、凌思涵、符鸿壮、周睿、周君启、凌海全</span></div>
-    <div class="aw-row"><span class="aw-k">指导教师</span><span class="aw-v">张洪军、李杞超、江树镇、苏财茂、李卫</span></div>
-    <div class="aw-no">证书编号 25001003199</div>
-  </div>
-</div>
-<div class="aw-card">
-  <div class="aw-thumb"><a href="/uploads/awards/b07.jpg" target="_blank" rel="noopener"><img src="/uploads/awards/b07.jpg" alt="第十九届“高教杯”全国大学生先进成图技术与产品信 团体一等奖" loading="lazy"></a></div>
-  <div class="aw-body">
-    <div class="aw-chips"><span class="aw-level">省级</span><span class="aw-award">团体一等奖</span><span class="aw-year">2026</span></div>
-    <div class="aw-title">第十九届“高教杯”全国大学生先进成图技术与产品信息建模创新大赛 · 广东省选拔赛 团体</div>
-    <div class="aw-proj">先进成图技术 · 团体</div>
-    <div class="aw-row"><span class="aw-k">完成人</span><span class="aw-v">叶鹏辉、吴洪毅、练伟壕、刘吴洋、邱育</span></div>
-    <div class="aw-row"><span class="aw-k">指导教师</span><span class="aw-v">李杞超、江树镇、张洪军、李卫、明向兰</span></div>
-    <div class="aw-no">证书编号 JXTT2026013</div>
-  </div>
-</div>
-<div class="aw-card">
-  <div class="aw-thumb"><a href="/uploads/awards/b08.jpg" target="_blank" rel="noopener"><img src="/uploads/awards/b08.jpg" alt="第十九届“高教杯”全国大学生先进成图技术与产品信 一等奖" loading="lazy"></a></div>
-  <div class="aw-body">
-    <div class="aw-chips"><span class="aw-level">省级</span><span class="aw-award">一等奖</span><span class="aw-year">2026</span></div>
-    <div class="aw-title">第十九届“高教杯”全国大学生先进成图技术与产品信息建模创新大赛 · 广东省选拔赛</div>
-    <div class="aw-proj">先进成图技术赛道</div>
-    <div class="aw-row"><span class="aw-k">完成人</span><span class="aw-v">练伟壕</span></div>
-    <div class="aw-row"><span class="aw-k">指导教师</span><span class="aw-v">江树镇</span></div>
-    <div class="aw-no">证书编号 JXGR2026122</div>
-  </div>
-</div>
-<div class="aw-card">
-  <div class="aw-thumb"><a href="/uploads/awards/b09.jpg" target="_blank" rel="noopener"><img src="/uploads/awards/b09.jpg" alt="第十九届“高教杯”全国大学生先进成图技术与产品信 二等奖" loading="lazy"></a></div>
-  <div class="aw-body">
-    <div class="aw-chips"><span class="aw-level">省级</span><span class="aw-award">二等奖</span><span class="aw-year">2026</span></div>
-    <div class="aw-title">第十九届“高教杯”全国大学生先进成图技术与产品信息建模创新大赛 · 广东省选拔赛</div>
-    <div class="aw-proj">先进成图技术赛道</div>
-    <div class="aw-row"><span class="aw-k">完成人</span><span class="aw-v">黄佳佳</span></div>
-    <div class="aw-row"><span class="aw-k">指导教师</span><span class="aw-v">明向兰</span></div>
-    <div class="aw-no">证书编号 JXGR2026127</div>
-  </div>
-</div>
-<div class="aw-card">
-  <div class="aw-thumb"><a href="/uploads/awards/b10.jpg" target="_blank" rel="noopener"><img src="/uploads/awards/b10.jpg" alt="第十八届“高教杯”全国大学生先进成图技术与产品信 二等奖" loading="lazy"></a></div>
-  <div class="aw-body">
-    <div class="aw-chips"><span class="aw-level">省级</span><span class="aw-award">二等奖</span><span class="aw-year">2025</span></div>
-    <div class="aw-title">第十八届“高教杯”全国大学生先进成图技术与产品信息建模创新大赛 · 广东省选拔赛</div>
-    <div class="aw-proj">先进成图技术赛道</div>
-    <div class="aw-row"><span class="aw-k">完成人</span><span class="aw-v"><b>李伟锐</b></span></div>
-    <div class="aw-row"><span class="aw-k">指导教师</span><span class="aw-v">江树镇、苏财茂</span></div>
-    <div class="aw-no">证书编号 JXGR2025199</div>
-  </div>
-</div>
-<div class="aw-card">
-  <div class="aw-thumb"><a href="/uploads/awards/b11.jpg" target="_blank" rel="noopener"><img src="/uploads/awards/b11.jpg" alt="第十八届“高教杯”全国大学生先进成图技术与产品信 团体二等奖" loading="lazy"></a></div>
-  <div class="aw-body">
-    <div class="aw-chips"><span class="aw-level">省级</span><span class="aw-award">团体二等奖</span><span class="aw-year">2025</span></div>
-    <div class="aw-title">第十八届“高教杯”全国大学生先进成图技术与产品信息建模创新大赛 · 广东省选拔赛 团体</div>
-    <div class="aw-proj">先进成图技术 · 团体</div>
-    <div class="aw-row"><span class="aw-k">完成人</span><span class="aw-v">叶鹏辉、叶值福、<b>李伟锐</b>、许国蓁、戴宗胜</span></div>
-    <div class="aw-row"><span class="aw-k">指导教师</span><span class="aw-v">张洪军、李杞超、江树镇、苏财茂、李凤娇</span></div>
-    <div class="aw-no">证书编号 JXTT2025027</div>
+    <div class="aw-chips"><span class="aw-level">市级</span><span class="aw-award">优胜奖</span><span class="aw-year">2024</span></div>
+    <div class="aw-title">“经略海洋 共创蓝海”2024 年海洋产业创新创业大赛</div>
+    <div class="aw-proj">海耕先锋 —— 智能机器鱼引领蓝色粮仓建设</div>
+    <div class="aw-row"><span class="aw-k">完成人</span><span class="aw-v">李颙昊、晏林俊、<b>林嘉鑫</b>、张家园、黄蜂林、陈钰婷、杨之门、郑若仙、<b>徐嘉杰</b>、陈寿娟</span></div>
+    <div class="aw-row"><span class="aw-k">指导教师</span><span class="aw-v">陈小军</span></div>
   </div>
 </div>
 </div>
 
-### 三、成员个人获奖
+### 二、发明专利
 
-成员以个人身份参加的竞赛，与实验室课题方向无关，单独列出。
-
-<div class="aw-grid">
-<div class="aw-card">
-  <div class="aw-thumb"><a href="/uploads/awards/c01.jpg" target="_blank" rel="noopener"><img src="/uploads/awards/c01.jpg" alt="2025 年全国大学生“人工智能+”创新创业大赛 一等奖" loading="lazy"></a></div>
-  <div class="aw-body">
-    <div class="aw-chips"><span class="aw-level">国家级</span><span class="aw-award">一等奖</span><span class="aw-year">2025</span></div>
-    <div class="aw-title">2025 年全国大学生“人工智能+”创新创业大赛</div>
-    <div class="aw-proj">初赛成绩优异</div>
-    <div class="aw-row"><span class="aw-k">完成人</span><span class="aw-v"><b>肖扬</b></span></div>
-    <div class="aw-no">证书编号 RGAJ20252057619461</div>
-  </div>
-</div>
-<div class="aw-card">
-  <div class="aw-thumb"><a href="/uploads/awards/c02.jpg" target="_blank" rel="noopener"><img src="/uploads/awards/c02.jpg" alt="2025 年全国大学生创新创业能力大赛 · 创新 一等奖" loading="lazy"></a></div>
-  <div class="aw-body">
-    <div class="aw-chips"><span class="aw-level">国家级</span><span class="aw-award">一等奖</span><span class="aw-year">2025</span></div>
-    <div class="aw-title">2025 年全国大学生创新创业能力大赛 · 创新思维赛</div>
-    <div class="aw-proj">初赛创新思维赛</div>
-    <div class="aw-row"><span class="aw-k">完成人</span><span class="aw-v"><b>肖扬</b></span></div>
-    <div class="aw-no">证书编号 CXCY176054195310</div>
-  </div>
-</div>
-<div class="aw-card">
-  <div class="aw-thumb"><a href="/uploads/awards/c03.jpg" target="_blank" rel="noopener"><img src="/uploads/awards/c03.jpg" alt="2026 年“戎光传承”国防教育宣传活动 · 国 一等奖" loading="lazy"></a></div>
-  <div class="aw-body">
-    <div class="aw-chips"><span class="aw-level">国家级</span><span class="aw-award">一等奖</span><span class="aw-year">2026</span></div>
-    <div class="aw-title">2026 年“戎光传承”国防教育宣传活动 · 国防科普知识活动</div>
-    <div class="aw-proj">国防科普知识</div>
-    <div class="aw-row"><span class="aw-k">完成人</span><span class="aw-v"><b>肖扬</b></span></div>
-    <div class="aw-no">证书编号 RGCC20260922W09HA</div>
-  </div>
-</div>
-<div class="aw-card">
-  <div class="aw-thumb"><a href="/uploads/awards/c04.jpg" target="_blank" rel="noopener"><img src="/uploads/awards/c04.jpg" alt="2026 年“明法知行”全国高校法律法规知识竞赛 一等奖" loading="lazy"></a></div>
-  <div class="aw-body">
-    <div class="aw-chips"><span class="aw-level">国家级</span><span class="aw-award">一等奖</span><span class="aw-year">2026</span></div>
-    <div class="aw-title">2026 年“明法知行”全国高校法律法规知识竞赛</div>
-    <div class="aw-proj">法律法规知识</div>
-    <div class="aw-row"><span class="aw-k">完成人</span><span class="aw-v"><b>肖扬</b></span></div>
-    <div class="aw-no">证书编号 FLAGJ896057260</div>
-  </div>
-</div>
-<div class="aw-card">
-  <div class="aw-thumb"><a href="/uploads/awards/c05.jpg" target="_blank" rel="noopener"><img src="/uploads/awards/c05.jpg" alt="第五届全国学生科学素质知识科普活动 · 大学生组 一等奖" loading="lazy"></a></div>
-  <div class="aw-body">
-    <div class="aw-chips"><span class="aw-level">国家级</span><span class="aw-award">一等奖</span><span class="aw-year">2026</span></div>
-    <div class="aw-title">第五届全国学生科学素质知识科普活动 · 大学生组</div>
-    <div class="aw-proj">科学素质知识</div>
-    <div class="aw-row"><span class="aw-k">完成人</span><span class="aw-v"><b>肖扬</b></span></div>
-    <div class="aw-no">证书编号 KXSZ20260242638</div>
-  </div>
-</div>
-<div class="aw-card">
-  <div class="aw-thumb"><a href="/uploads/awards/c06.jpg" target="_blank" rel="noopener"><img src="/uploads/awards/c06.jpg" alt="“红色长征路 · 云端忆初心”纪念长征胜利 90 知识竞答优秀" loading="lazy"></a></div>
-  <div class="aw-body">
-    <div class="aw-chips"><span class="aw-level">活动级</span><span class="aw-award">知识竞答优秀</span><span class="aw-year">2026</span></div>
-    <div class="aw-title">“红色长征路 · 云端忆初心”纪念长征胜利 90 周年主题活动</div>
-    <div class="aw-proj">红色长征路知识线上竞答</div>
-    <div class="aw-row"><span class="aw-k">完成人</span><span class="aw-v"><b>肖扬</b></span></div>
-    <div class="aw-no">证书编号 CZ20260922Nvdq</div>
-  </div>
-</div>
-</div>
-
-### 四、发明专利
-
-实验室水下机器人方向的两项发明专利申请，申请人与发明人均为岭南师范学院实验室团队。
+实验室水下机器人方向的两项发明专利申请，申请人为岭南师范学院，陈小军为第一发明人。
 
 <div class="aw-grid">
 <div class="aw-card">
@@ -352,7 +155,7 @@ type: page
 </div>
 </div>
 
-### 五、软件著作权
+### 三、软件著作权
 
 实验室水下机器人与移动平台相关的四项软件著作权，著作权人均为岭南师范学院。
 

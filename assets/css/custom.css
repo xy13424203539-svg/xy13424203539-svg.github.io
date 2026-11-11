@@ -10,3 +10,8 @@ div:has(> a[id^="share-link-x"]) {
 a[aria-label="Creative Commons"] {
   display: none !important;
 }
+
+/* 隐藏页脚右下角的建站推广按钮 */
+a[data-hbx="poweredby_cta"] {
+  display: none !important;
+}

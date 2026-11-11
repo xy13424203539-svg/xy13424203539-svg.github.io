@@ -229,7 +229,7 @@ html.dark .aw-title {
 }
 
 /* ===== 成员页不再自动列出子页卡片（用自建卡片代替） ===== */
-article + div > div[class*="65ch"] {
+div.container[class*="65ch"] {
   display: none !important;
 }
 

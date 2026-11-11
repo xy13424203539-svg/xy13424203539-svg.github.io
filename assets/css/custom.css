@@ -238,6 +238,11 @@ h1 + div[class~="mb-16"] {
   display: none !important;
 }
 
+/* 日期块隐藏后，标题与正文之间补回间距 */
+article h1 {
+  margin-bottom: 1.5rem !important;
+}
+
 /* ===== 页尾“最后更新” ===== */
 .page-updated {
   margin: 40px 0 0;

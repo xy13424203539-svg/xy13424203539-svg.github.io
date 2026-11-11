@@ -1,19 +1,22 @@
 main:
-  - name: 首页
-    url: /
+  - name: 实验室介绍
+    url: lab/
     weight: 10
-  - name: 团队
-    url: team/
+  - name: 指导教师
+    url: teacher/
     weight: 20
-  - name: 课题
-    url: projects/
+  - name: 团队成员
+    url: team/
     weight: 30
-  - name: 成果
-    url: awards/
+  - name: 科研项目
+    url: projects/
     weight: 40
-  - name: 制度
-    url: rules/
+  - name: 成果荣誉
+    url: awards/
     weight: 50
-  - name: 奖励
-    url: reward/
+  - name: 实验室制度
+    url: rules/
     weight: 60
+  - name: 奖惩机制
+    url: reward/
+    weight: 70

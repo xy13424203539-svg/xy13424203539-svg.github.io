@@ -13,15 +13,15 @@ hugoblox:
   # ────────────────────────────────────────────────────────────────────────────
   identity:
     # Site name - shown in navbar, footer, copyright, and browser title by default
-    name: "大鱼治水机器人实验室"
+    name: "微纳制造与智能传感实验室"
     # Legal entity for copyright notices (defaults to name if not set)
-    organization: "岭南师范学院"
+    organization: "岭南师范学院机电工程学院"
     # Schema.org type for structured data
     type: organization # person | organization | local_business
     # Short tagline displayed on your site
-    tagline: "水下机器人 · 跨介质平台 · 增材结构"
+    tagline: "CHEN LAB · 微纳制造 · 静电纺丝 · 水下机器人"
     # Site meta description for search engines and social sharing
-    description: "岭南师范学院校重点团队，聚焦水下机器人平台、跨介质运动机构、点阵超材料与增材制造结构。"
+    description: "岭南师范学院机电工程学院微纳制造与智能传感实验室（CHEN LAB），研究方向为微纳制造与 3D 打印、静电纺丝与 EHD 喷印、智能传感、水下与跨介质机器人。"
     # Social accounts (used for meta tags like Twitter Cards)
     social:
       twitter: "GoOwnable" # Twitter/X handle for Twitter Cards (without @)

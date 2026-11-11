@@ -1,7 +1,7 @@
 # Configuration of Hugo
 # Guide: https://docs.hugoblox.com/tutorial/
 
-title: '大鱼治水机器人实验室'
+title: '微纳制造与智能传感实验室'
 baseURL: 'https://xy13424203539-svg.github.io/'
 
 defaultContentLanguage: zh-Hans

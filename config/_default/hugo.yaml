@@ -4,7 +4,7 @@
 title: '大鱼治水机器人实验室'
 baseURL: 'https://xy13424203539-svg.github.io/'
 
-defaultContentLanguage: en
+defaultContentLanguage: zh-Hans
 hasCJKLanguage: true
 defaultContentLanguageInSubdir: false
 removePathAccents: true

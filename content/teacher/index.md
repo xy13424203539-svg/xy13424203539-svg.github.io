@@ -5,6 +5,8 @@ date: 2026-11-11
 type: page
 ---
 
+<img src="/uploads/teacher-chen.jpg" alt="陈小军" width="240" style="display:block;margin:0 0 1.5rem 0;border-radius:4px;">
+
 ### 陈小军
 
 工学博士，副教授，1986 年 12 月生，江西瑞金人，中共党员。现任岭南师范学院机电工程学院副教授，微纳制造与智能传感实验室（CHEN LAB）负责人。

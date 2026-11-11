@@ -35,7 +35,7 @@ sections:
     content:
       title: '栏目'
       text: |-
-        [实验室介绍](/lab/) ｜ [指导教师](/teacher/) ｜ [团队成员](/team/) ｜ [科研项目](/projects/) ｜ [成果荣誉](/awards/) ｜ [实验室制度](/rules/) ｜ [奖惩机制](/reward/)
+        [实验室介绍](/lab/) ｜ [指导教师](/teacher/) ｜ [团队成员](/team/) ｜ [科研项目](/projects/) ｜ [成果荣誉](/awards/) ｜ [实验室制度](/rules/) ｜ [奖励机制](/reward/)
     design:
       columns: '1'
 ---

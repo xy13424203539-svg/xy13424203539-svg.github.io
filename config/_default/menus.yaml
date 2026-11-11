@@ -17,6 +17,6 @@ main:
   - name: 实验室制度
     url: rules/
     weight: 60
-  - name: 奖惩机制
+  - name: 奖励机制
     url: reward/
     weight: 70

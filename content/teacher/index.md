@@ -5,7 +5,7 @@ date: 2026-11-11
 type: page
 ---
 
-<img src="/uploads/teacher-chen.jpg" alt="陈小军" width="240" style="display:block;margin:0 0 1.5rem 0;border-radius:4px;">
+<img src="/uploads/teacher-chen.jpg?v=2" alt="陈小军" width="240" style="display:block;margin:0 0 1.5rem 0;border-radius:4px;">
 
 ### 陈小军
 

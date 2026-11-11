@@ -228,6 +228,11 @@ html.dark .aw-title {
   color: #e8ecf2;
 }
 
+/* ===== 成员页不再自动列出子页卡片（用自建卡片代替） ===== */
+article + div > div[class*="65ch"] {
+  display: none !important;
+}
+
 /* ===== 隐藏标题下的日期与阅读时长 ===== */
 h1 + div[class~="mb-16"] {
   display: none !important;

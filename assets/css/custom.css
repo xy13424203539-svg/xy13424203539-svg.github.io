@@ -358,6 +358,12 @@ html.dark .prose table a {
   }
 }
 
+/* ===== 表格第一列（表头短词）不折行 ===== */
+.prose table th:first-child,
+.prose table td:first-child {
+  white-space: nowrap;
+}
+
 /* ===== 手机端正文左右留白，表格不贴屏幕边 ===== */
 @media (max-width: 768px) {
   .page-body {

@@ -48,9 +48,9 @@
   }
 
   function table(heads, rows) {
-    return '<div class="adm-scroll"><table class="adm-table"><thead><tr>' +
+    return '<table class="adm-table"><thead><tr>' +
       heads.map(function (h) { return "<th>" + h + "</th>"; }).join("") +
-      '</tr></thead><tbody>' + rows + '</tbody></table></div>';
+      '</tr></thead><tbody>' + rows + '</tbody></table>';
   }
 
   /* 顶部四个数字 */

@@ -1143,12 +1143,11 @@ html.dark .eq-mat {
 }
 
 .adm-scroll {
-  overflow-x: auto;
-  -webkit-overflow-scrolling: touch;
+  display: block;
 }
 
-.adm-scroll .adm-table {
-  min-width: 520px;
+.adm-table {
+  table-layout: auto;
 }
 
 .adm-ok {

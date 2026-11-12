@@ -57,7 +57,7 @@
         '<h3>实验室成员登录</h3>' +
         '<p class="mp-login-sub">输入姓名和学号，可以填写或修改自己的个人资料；不登录也能查看全部内容。</p>' +
         '<div class="mp-row"><label>姓名<input id="mp-in-name" type="text" maxlength="10" placeholder="例如 张三"></label></div>' +
-        '<div class="mp-row"><label>学号<input id="mp-in-sid" type="text" maxlength="20" placeholder="12 位学号，例如 202312345678"></label></div>' +
+        '<div class="mp-row"><label>学号 / 教师登录码<input id="mp-in-sid" type="text" maxlength="20" placeholder="学生填 12 位学号；教师填实验室给的登录码"></label></div>' +
         '<div id="mp-login-msg" class="mp-msg"></div>' +
         '<div class="mp-btns">' +
           '<button type="button" class="mp-btn mp-btn-main" id="mp-do-login">登录</button>' +

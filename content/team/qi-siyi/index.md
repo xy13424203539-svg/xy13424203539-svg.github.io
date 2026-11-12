@@ -59,7 +59,7 @@ type: page
     <div class="aw-chips"><span class="aw-level">发明专利</span><span class="aw-award">申请受理</span><span class="aw-year">2026</span></div>
     <div class="aw-title">一种具有磁耦合胸鳍的水质监测仿生鱼装置</div>
     <div class="aw-proj">申请号 202610594249.2 · 申请日 2026-04-30</div>
-    <div class="aw-row"><span class="aw-k">完成人</span><span class="aw-v">陈小军、<a class="aw-p" href="/team/lin-jiaxin/">林嘉鑫</a>、<a class="aw-p" href="/team/li-weirui/">李伟锐</a>、练伟壕、<a class="aw-p" href="/team/deng-ziqiang/">邓自强</a>、余金洲、<a class="aw-p" href="/team/dong-zewen/">董泽文</a>、<a class="aw-p" href="/team/qi-siyi/">漆思怡</a>、<a class="aw-p" href="/team/xiao-yang/">肖扬</a>、<a class="aw-p" href="/team/xiao-xuming/">肖旭明</a></span></div>
+    <div class="aw-row"><span class="aw-k">完成人</span><span class="aw-v">陈小军、<a class="aw-p" href="/team/lin-jiaxin/">林嘉鑫</a>、<a class="aw-p" href="/team/li-weirui/">李伟锐</a>、练伟壕、<a class="aw-p" href="/team/deng-ziqiang/">邓自强</a>、余金洲、<a class="aw-p" href="/team/dong-zewen/">董泽文</a>、<a class="aw-p" href="/team/qi-siyi/">漆思怡</a>、<a class="aw-p" href="/team/xiao-yang/">肖扬</a>、肖旭明</span></div>
   </div>
 </div>
 </div>

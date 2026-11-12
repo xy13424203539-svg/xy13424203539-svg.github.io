@@ -1,6 +1,6 @@
 ---
 title: 团队成员
-summary: 实验室成员、技术组与个人页入口。
+summary: 实验室成员、技术组与个人简介入口。
 date: 2026-11-11
 type: page
 ---
@@ -27,9 +27,9 @@ type: page
 | [庞宇晰](/team/pang-yuxi/) | [沈立城](/team/shen-licheng/) |
 | [汤希瑜](/team/tang-xiyu/) | [王堉炯](/team/wang-yujiong/) |
 | [翁曼惠](/team/weng-manhui/) | [吴洌惠](/team/wu-liehui/) |
-| [肖童](/team/xiao-tong/) | [肖旭明](/team/xiao-xuming/) |
-| [肖扬](/team/xiao-yang/) | [叶子堃](/team/ye-zikun/) |
-| [余梓勤](/team/yu-ziqin/) | [曾洁](/team/zeng-jie/) |
+| [肖童](/team/xiao-tong/) | [肖扬](/team/xiao-yang/) |
+| [叶子堃](/team/ye-zikun/) | [余梓勤](/team/yu-ziqin/) |
+| [曾洁](/team/zeng-jie/) |  |
 
 ### 个人简介
 
@@ -53,7 +53,6 @@ type: page
 <a class="mem-card" href="/team/weng-manhui/"><b>翁曼惠</b><span>实验室成员</span></a>
 <a class="mem-card" href="/team/wu-liehui/"><b>吴洌惠</b><span>实验室成员</span></a>
 <a class="mem-card" href="/team/xiao-tong/"><b>肖童</b><span>实验室成员</span></a>
-<a class="mem-card" href="/team/xiao-xuming/"><b>肖旭明</b><span>实验室成员</span></a>
 <a class="mem-card" href="/team/xiao-yang/"><b>肖扬</b><span>海陆空跨介质机器人组负责人</span></a>
 <a class="mem-card" href="/team/ye-zikun/"><b>叶子堃</b><span>实验室成员</span></a>
 <a class="mem-card" href="/team/yu-ziqin/"><b>余梓勤</b><span>实验室成员</span></a>

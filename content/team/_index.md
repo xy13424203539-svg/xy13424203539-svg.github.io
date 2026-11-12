@@ -31,4 +31,19 @@ type: page
 | [肖扬](/team/xiao-yang/) | 叶子堃 |
 | [余梓勤](/team/yu-ziqin/) | 曾洁 |
 
+### 个人页
+
+<div class="mem-grid">
+<a class="mem-card" href="/team/xiao-yang/"><b>肖扬</b><span>海陆空跨介质机器人组组长</span></a>
+<a class="mem-card" href="/team/li-weirui/"><b>李伟锐</b><span>水下机器人大组组长</span></a>
+<a class="mem-card" href="/team/dong-zewen/"><b>董泽文</b><span>仿生鱼组（二）组长</span></a>
+<a class="mem-card" href="/team/weng-manhui/"><b>翁曼惠</b><span>实验室成员</span></a>
+<a class="mem-card" href="/team/xiao-xuming/"><b>肖旭明</b><span>实验室成员</span></a>
+<a class="mem-card" href="/team/yu-ziqin/"><b>余梓勤</b><span>实验室成员</span></a>
+<a class="mem-card" href="/team/cai-linwu/"><b>蔡霖武</b><span>实验室成员</span></a>
+<a class="mem-card" href="/team/bai-yuntian/"><b>白云天</b><span>实验室成员</span></a>
+<a class="mem-card" href="/team/huang-junwei/"><b>黄钧蔚</b><span>实验室成员</span></a>
+<a class="mem-card" href="/team/huang-luoyi/"><b>黄洛怡</b><span>实验室成员</span></a>
+</div>
+
 <p class="page-updated">最后更新 2026 年 11 月 11 日</p>

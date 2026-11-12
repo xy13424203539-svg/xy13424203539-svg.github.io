@@ -7,9 +7,12 @@ type: page
 
 ### 技术组
 
-- **水下机器人大组** —— 水下机器人整机与相关课题
+- **水下机器人大组**（组长 肖扬）—— 水下机器人整机与相关课题
+  - **仿生鱼组（一）**（组长 李伟锐）
+  - **仿生鱼组（二）**（组长 董泽文）
   - **跨介质机器人组**（大组下设小组）—— 跨介质运动机构与海陆空平台
 - **微纳制造与智能传感方向** —— 微纳 3D 打印、静电纺丝、传感器相关课题
+  - **传感器组**（负责人 庞宇晰）
 
 ### 成员名单
 
@@ -27,9 +30,9 @@ type: page
 ### 个人页
 
 <div class="mem-grid">
-<a class="mem-card" href="/team/xiao-yang/"><b>肖扬</b><span>水下机器人大组 · 跨介质机器人组（大组下设小组）组长</span></a>
-<a class="mem-card" href="/team/li-weirui/"><b>李伟锐</b><span>实验室成员</span></a>
-<a class="mem-card" href="/team/dong-zewen/"><b>董泽文</b><span>实验室成员</span></a>
+<a class="mem-card" href="/team/xiao-yang/"><b>肖扬</b><span>水下机器人大组组长</span></a>
+<a class="mem-card" href="/team/li-weirui/"><b>李伟锐</b><span>仿生鱼组（一）组长</span></a>
+<a class="mem-card" href="/team/dong-zewen/"><b>董泽文</b><span>仿生鱼组（二）组长</span></a>
 <a class="mem-card" href="/team/weng-manhui/"><b>翁曼惠</b><span>实验室成员</span></a>
 <a class="mem-card" href="/team/xiao-xuming/"><b>肖旭明</b><span>实验室成员</span></a>
 <a class="mem-card" href="/team/yu-ziqin/"><b>余梓勤</b><span>实验室成员</span></a>

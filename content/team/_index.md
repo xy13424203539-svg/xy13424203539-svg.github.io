@@ -39,12 +39,12 @@ type: page
 <a class="mem-card" href="/team/chen-huiyu/"><b>陈辉煜</b><span>实验室成员</span></a>
 <a class="mem-card" href="/team/chen-ping/"><b>陈萍</b><span>实验室成员</span></a>
 <a class="mem-card" href="/team/deng-haotian/"><b>邓浩天</b><span>实验室成员</span></a>
-<a class="mem-card" href="/team/dong-zewen/"><b>董泽文</b><span>仿生鱼组组长</span></a>
+<a class="mem-card" href="/team/dong-zewen/"><b>董泽文</b><span>仿生鱼组负责人</span></a>
 <a class="mem-card" href="/team/fu-shulei/"><b>付书雷</b><span>实验室成员</span></a>
 <a class="mem-card" href="/team/huang-junwei/"><b>黄钧蔚</b><span>实验室成员</span></a>
 <a class="mem-card" href="/team/huang-luoyi/"><b>黄洛怡</b><span>实验室成员</span></a>
 <a class="mem-card" href="/team/jie-xinfei/"><b>揭昕霏</b><span>实验室成员</span></a>
-<a class="mem-card" href="/team/li-weirui/"><b>李伟锐</b><span>水下机器人大组组长</span></a>
+<a class="mem-card" href="/team/li-weirui/"><b>李伟锐</b><span>水下机器人大组负责人</span></a>
 <a class="mem-card" href="/team/liang-jiayi/"><b>梁嘉仪</b><span>实验室成员</span></a>
 <a class="mem-card" href="/team/pang-yuxi/"><b>庞宇晰</b><span>传感器组负责人</span></a>
 <a class="mem-card" href="/team/shen-licheng/"><b>沈立城</b><span>实验室成员</span></a>
@@ -54,7 +54,7 @@ type: page
 <a class="mem-card" href="/team/wu-liehui/"><b>吴洌惠</b><span>实验室成员</span></a>
 <a class="mem-card" href="/team/xiao-tong/"><b>肖童</b><span>实验室成员</span></a>
 <a class="mem-card" href="/team/xiao-xuming/"><b>肖旭明</b><span>实验室成员</span></a>
-<a class="mem-card" href="/team/xiao-yang/"><b>肖扬</b><span>海陆空跨介质机器人组组长</span></a>
+<a class="mem-card" href="/team/xiao-yang/"><b>肖扬</b><span>海陆空跨介质机器人组负责人</span></a>
 <a class="mem-card" href="/team/ye-zikun/"><b>叶子堃</b><span>实验室成员</span></a>
 <a class="mem-card" href="/team/yu-ziqin/"><b>余梓勤</b><span>实验室成员</span></a>
 <a class="mem-card" href="/team/zeng-jie/"><b>曾洁</b><span>实验室成员</span></a>

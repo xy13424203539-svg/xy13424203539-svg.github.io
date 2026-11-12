@@ -117,17 +117,24 @@
       });
   }
 
-  var tries = 0;
-  function wait() {
+  var rendered = false;
+  var asked = false;
+  var lastNotice = "";
+
+  function check() {
     var s = state();
-    if (s && s.role === "admin") { render(s); return; }
-    if (s && s.role !== "admin") {
-      askLogin("当前登录的是 " + esc(s.name) + "，只有管理员能看这个页面。");
+    if (!s) {
+      if (!asked) { asked = true; askLogin(); }
       return;
     }
-    tries += 1;
-    if (tries < 25) { setTimeout(wait, 500); return; }
-    askLogin();
+    if (s.role !== "admin") {
+      var msg = "当前登录的是 " + esc(s.name) + "，只有管理员能看这个页面。";
+      if (lastNotice !== msg) { lastNotice = msg; askLogin(msg); }
+      return;
+    }
+    if (!rendered) { rendered = true; render(s); }
   }
-  wait();
+
+  check();
+  setInterval(check, 900);
 })();

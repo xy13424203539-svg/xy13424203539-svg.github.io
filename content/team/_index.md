@@ -16,8 +16,6 @@ type: page
 
 ### 成员名单
 
-点名字可进入个人页。
-
 | 姓名 | 姓名 |
 | --- | --- |
 | [白云天](/team/bai-yuntian/) | [蔡霖武](/team/cai-linwu/) |

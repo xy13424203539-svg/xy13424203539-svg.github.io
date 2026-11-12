@@ -310,6 +310,26 @@ html.dark .prose table thead th {
   background: #181f29;
 }
 
+/* ===== 手机端导航第一行放得下 ===== */
+@media (max-width: 900px) {
+  .navbar > div.order-0 {
+    flex: 1 1 auto;
+    min-width: 0;
+  }
+
+  .navbar-brand {
+    font-size: 15px !important;
+    white-space: nowrap;
+    display: block;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .navbar-nav {
+    order: 9;
+  }
+}
+
 @media (max-width: 640px) {
   .aw-grid {
     grid-template-columns: 1fr;

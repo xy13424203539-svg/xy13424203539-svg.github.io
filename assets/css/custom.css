@@ -382,3 +382,21 @@ html.dark .prose table a {
     padding-right: 8px;
   }
 }
+
+/* ===== 成果荣誉里可点的成员姓名 ===== */
+.aw-p {
+  color: #16324f;
+  font-weight: 700;
+  text-decoration: none;
+  border-bottom: 1px solid rgba(37, 99, 235, 0.4);
+}
+
+.aw-p:hover {
+  color: #2563eb;
+  border-bottom-color: #2563eb;
+}
+
+html.dark .aw-p {
+  color: #9ec5f0;
+  border-bottom-color: rgba(122, 176, 255, 0.45);
+}

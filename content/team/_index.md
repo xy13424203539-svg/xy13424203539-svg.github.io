@@ -31,7 +31,7 @@ type: page
 | [肖扬](/team/xiao-yang/) | [叶子堃](/team/ye-zikun/) |
 | [余梓勤](/team/yu-ziqin/) | [曾洁](/team/zeng-jie/) |
 
-### 个人页
+### 个人简介
 
 <div class="mem-grid">
 <a class="mem-card" href="/team/bai-yuntian/"><b>白云天</b><span>实验室成员</span></a>

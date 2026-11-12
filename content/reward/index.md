@@ -39,3 +39,5 @@ type: page
 本表为实验室内部执行标准，金额以实验室经费实际列支为准。标准如需调整，由指导教师提出、经实验室确认后在站内更新，不追溯已发放月份。
 
 <p class="page-updated">最后更新 2026 年 11 月 11 日</p>
+
+<script src="/js/member-auth.js"></script>

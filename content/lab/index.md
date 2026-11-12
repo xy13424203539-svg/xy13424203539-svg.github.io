@@ -40,3 +40,5 @@ type: page
 对外合作、来访与技术交流请联系实验室负责人陈小军（岭南师范学院机电工程学院）。
 
 <p class="page-updated">最后更新 2026 年 11 月 11 日</p>
+
+<script src="/js/member-auth.js"></script>

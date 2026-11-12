@@ -127,6 +127,22 @@
     return state && (state.role === "admin" || state.name === currentName);
   }
 
+  function syncStatic(p) {
+    if (!p) return;
+    var map = { "年级": "grade", "专业": "major" };
+    var rows = document.querySelectorAll("article main table tr");
+    Array.prototype.forEach.call(rows, function (tr) {
+      if (!tr.cells || tr.cells.length < 2) return;
+      var key = (tr.cells[0].textContent || "").trim();
+      var field = map[key];
+      if (field && (p[field] || "").trim()) {
+        if ((tr.cells[1].textContent || "").trim() === "待补充" || (tr.cells[1].textContent || "").trim() === "—") {
+          tr.cells[1].textContent = (p[field] || "").trim();
+        }
+      }
+    });
+  }
+
   function renderProfile() {
     if (!currentName) return;
     var host = document.getElementById("mp-profile");
@@ -143,6 +159,7 @@
 
     profileRows(currentName).then(function (rows) {
       var p = rows && rows.length ? rows[0] : null;
+      syncStatic(p);
       var html = '<div class="mp-head"><b>' + esc(currentName) + ' · 个人资料</b>';
       if (canEdit()) html += '<button type="button" class="mp-btn mp-btn-edit" id="mp-open-edit">' +
         (p ? "修改我的资料" : "填写我的资料") + '</button>';

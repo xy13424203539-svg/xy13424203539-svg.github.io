@@ -7,12 +7,12 @@ type: page
 
 ### 技术组
 
-- **水下机器人大组** —— 水下机器人整机与相关课题
-  - **仿生鱼组（一）**
-  - **仿生鱼组（二）**
-  - **跨介质机器人组**（大组下设小组）
-- **微纳制造与智能传感方向** —— 微纳 3D 打印、静电纺丝、传感器相关课题
-  - **传感器组**
+- **水下机器人大组** —— 整机与相关课题
+  - **仿生鱼组（一）** —— 整机结构与水下运动
+  - **仿生鱼组（二）** —— 电控系统与水下传感
+  - **跨介质机器人组** —— 跨介质机构与海陆空平台
+- **微纳制造与智能传感方向** —— 微纳 3D 打印与传感器课题
+  - **传感器组** —— 传感器设计与微纳工艺
 
 ### 成员名单
 
@@ -39,7 +39,7 @@ type: page
 <a class="mem-card" href="/team/chen-huiyu/"><b>陈辉煜</b><span>实验室成员</span></a>
 <a class="mem-card" href="/team/chen-ping/"><b>陈萍</b><span>实验室成员</span></a>
 <a class="mem-card" href="/team/deng-haotian/"><b>邓浩天</b><span>实验室成员</span></a>
-<a class="mem-card" href="/team/dong-zewen/"><b>董泽文</b><span>仿生鱼组（二）组长</span></a>
+<a class="mem-card" href="/team/dong-zewen/"><b>董泽文</b><span>仿生鱼组组长</span></a>
 <a class="mem-card" href="/team/fu-shulei/"><b>付书雷</b><span>实验室成员</span></a>
 <a class="mem-card" href="/team/huang-junwei/"><b>黄钧蔚</b><span>实验室成员</span></a>
 <a class="mem-card" href="/team/huang-luoyi/"><b>黄洛怡</b><span>实验室成员</span></a>

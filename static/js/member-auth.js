@@ -86,7 +86,11 @@
           persist();
           msg.className = "mp-msg mp-msg-ok";
           msg.textContent = "已登录：" + state.name + (state.role === "admin" ? "（管理员）" : "");
-          setTimeout(function () { wrap.remove(); renderProfile(); }, 700);
+          setTimeout(function () {
+            wrap.remove();
+            renderProfile();
+            if (window.__chenlabEnsureChip) window.__chenlabEnsureChip();
+          }, 700);
         })
         .catch(function (e) {
           msg.className = "mp-msg mp-msg-err";
@@ -130,9 +134,11 @@
       host = document.createElement("div");
       host.id = "mp-profile";
       host.className = "mp-profile";
-      var art = document.querySelector("article");
-      if (!art) return;
-      art.insertBefore(host, art.firstChild);
+      var main = document.querySelector("article main") || document.querySelector("main");
+      if (!main) return;
+      var h1 = main.querySelector("h1");
+      if (h1 && h1.parentNode === main) main.insertBefore(host, h1.nextSibling);
+      else main.insertBefore(host, main.firstChild);
     }
 
     profileRows(currentName).then(function (rows) {
@@ -225,9 +231,8 @@
   currentName = detectName();
   if (currentName) renderProfile();
 
-  if (!state) {
-    setTimeout(function () { buildLogin(); }, 400);
-  } else {
+  function ensureChip() {
+    if (!state || document.querySelector(".mp-chip")) return;
     var chip = document.createElement("div");
     chip.className = "mp-chip";
     chip.innerHTML = '<span>' + esc(state.name) + (state.role === "admin" ? " · 管理员" : "") + '</span>' +
@@ -237,4 +242,12 @@
       state = null; persist(); chip.remove(); location.reload();
     });
   }
+
+  if (!state) {
+    setTimeout(function () { buildLogin(); }, 400);
+  } else {
+    ensureChip();
+  }
+
+  window.__chenlabEnsureChip = ensureChip;
 })();

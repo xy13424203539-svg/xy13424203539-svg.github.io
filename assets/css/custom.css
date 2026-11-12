@@ -291,7 +291,6 @@ html.dark .mem-static {
   overflow: hidden;
 }
 
-/* ===== 手机端顶部导航保持一行 ===== */
 /* ===== 顶部导航固定，展开菜单时不跟着页面走 ===== */
 .navbar {
   position: sticky;
@@ -309,28 +308,6 @@ html.dark .mem-static {
 
 html.dark .prose table thead th {
   background: #181f29;
-}
-
-@media (max-width: 900px) {
-  .navbar {
-    flex-wrap: nowrap !important;
-    align-items: center;
-    gap: 6px;
-  }
-
-  .navbar > div:first-child {
-    min-width: 0;
-    overflow: hidden;
-  }
-
-  .navbar-brand {
-    font-size: 14.5px !important;
-    white-space: nowrap;
-    display: inline-block;
-    max-width: 100%;
-    overflow: hidden;
-    text-overflow: ellipsis;
-  }
 }
 
 @media (max-width: 640px) {

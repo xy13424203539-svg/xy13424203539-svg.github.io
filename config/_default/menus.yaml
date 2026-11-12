@@ -20,3 +20,6 @@ main:
   - name: 奖励机制
     url: reward/
     weight: 70
+  - name: 设备登记
+    url: equipment/
+    weight: 80

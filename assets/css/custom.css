@@ -852,6 +852,27 @@ html.dark .eq-purpose {
   cursor: pointer;
 }
 
+.mp-pill {
+  position: fixed;
+  right: 14px;
+  bottom: 14px;
+  z-index: 3990;
+  padding: 8px 15px;
+  border: 1px solid #b9c6d6;
+  border-radius: 999px;
+  background: #fff;
+  color: #16324f;
+  font-size: 12.5px;
+  cursor: pointer;
+  box-shadow: 0 6px 18px rgba(15, 23, 34, 0.12);
+}
+
+html.dark .mp-pill {
+  background: #1a2029;
+  border-color: #2a3240;
+  color: #9ec5f0;
+}
+
 html.dark .mp-login,
 html.dark .mp-edit,
 html.dark .mp-chip {

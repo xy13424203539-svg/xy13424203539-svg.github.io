@@ -8,8 +8,13 @@
   if (!cfg.url || !cfg.key) return;
 
   var STORE = "chenlab_member";
+  var GUEST = "chenlab_guest";
   var state = null;
   var currentName = "";
+
+  function markGuest() { try { localStorage.setItem(GUEST, "1"); } catch (e) {} }
+  function clearGuest() { try { localStorage.removeItem(GUEST); } catch (e) {} }
+  function isGuest() { try { return localStorage.getItem(GUEST) === "1"; } catch (e) { return false; } }
 
   function esc(s) {
     return String(s == null ? "" : s).replace(/[&<>"']/g, function (c) {
@@ -68,7 +73,9 @@
 
     var msg = wrap.querySelector("#mp-login-msg");
     wrap.querySelector("#mp-close-login").addEventListener("click", function () {
+      markGuest();
       wrap.remove();
+      ensureLoginPill();
     });
     wrap.querySelector("#mp-do-login").addEventListener("click", function () {
       var n = (wrap.querySelector("#mp-in-name").value || "").trim();
@@ -84,6 +91,9 @@
           }
           state = { name: rows[0].name, sid: s, role: rows[0].role };
           persist();
+          clearGuest();
+          var pill = document.querySelector(".mp-pill");
+          if (pill) pill.remove();
           msg.className = "mp-msg mp-msg-ok";
           msg.textContent = "已登录：" + state.name + (state.role === "admin" ? "（管理员）" : "");
           setTimeout(function () {
@@ -256,15 +266,30 @@
       '<button type="button" class="mp-chip-out">退出</button>';
     document.body.appendChild(chip);
     chip.querySelector(".mp-chip-out").addEventListener("click", function () {
-      state = null; persist(); chip.remove(); location.reload();
+      state = null; persist(); markGuest(); chip.remove(); location.reload();
     });
   }
 
+  function ensureLoginPill() {
+    if (state || document.querySelector(".mp-pill")) return;
+    var pill = document.createElement("button");
+    pill.type = "button";
+    pill.className = "mp-pill";
+    pill.textContent = "成员登录";
+    pill.addEventListener("click", function () {
+      pill.remove();
+      buildLogin();
+    });
+    document.body.appendChild(pill);
+  }
+
   if (!state) {
-    setTimeout(function () { buildLogin(); }, 400);
+    if (isGuest()) setTimeout(ensureLoginPill, 200);
+    else setTimeout(function () { buildLogin(); }, 400);
   } else {
     ensureChip();
   }
 
   window.__chenlabEnsureChip = ensureChip;
+  window.__chenlabEnsureLoginPill = ensureLoginPill;
 })();

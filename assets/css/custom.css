@@ -313,8 +313,9 @@ html.dark .prose table thead th {
 /* ===== 手机端导航第一行放得下 ===== */
 @media (max-width: 900px) {
   .navbar > div.order-0 {
-    flex: 1 1 auto;
+    flex: 0 1 auto;
     min-width: 0;
+    max-width: calc(100% - 150px);
   }
 
   .navbar-brand {
@@ -328,6 +329,22 @@ html.dark .prose table thead th {
   .navbar-nav {
     order: 9;
   }
+}
+
+/* ===== 表格里的人名做成看得出的链接 ===== */
+.prose table a {
+  color: #2563eb;
+  text-decoration: none;
+  border-bottom: 1px solid rgba(37, 99, 235, 0.35);
+}
+
+.prose table a:hover {
+  border-bottom-color: #2563eb;
+}
+
+html.dark .prose table a {
+  color: #7ab0ff;
+  border-bottom-color: rgba(122, 176, 255, 0.4);
 }
 
 @media (max-width: 640px) {

@@ -16,12 +16,13 @@
     });
   }
 
-  function state() {
-    try { return JSON.parse(localStorage.getItem("chenlab_member") || "null"); } catch (e) { return null; }
+  function num(v) {
+    var n = parseFloat(v);
+    return isNaN(n) ? 0 : n;
   }
 
-  function notice(html) {
-    root.innerHTML = '<div class="adm-note">' + html + '</div>';
+  function state() {
+    try { return JSON.parse(localStorage.getItem("chenlab_member") || "null"); } catch (e) { return null; }
   }
 
   function askLogin(msg) {
@@ -46,6 +47,59 @@
     });
   }
 
+  function table(heads, rows) {
+    return '<div class="adm-scroll"><table class="adm-table"><thead><tr>' +
+      heads.map(function (h) { return "<th>" + h + "</th>"; }).join("") +
+      '</tr></thead><tbody>' + rows + '</tbody></table></div>';
+  }
+
+  /* 顶部四个数字 */
+  function statsBlock(members, usage, material) {
+    var assigned = members.filter(function (m) { return m.project; }).length;
+    var devN = usage.reduce(function (a, u) { return a + num(u.n); }, 0);
+    var devH = usage.reduce(function (a, u) { return a + num(u.hours); }, 0);
+    var matG = (material || []).reduce(function (a, m) { return a + num(m.amount); }, 0);
+    return '<div class="adm-stats">' +
+      '<div class="adm-stat"><b>' + members.length + '</b><span>在册成员</span></div>' +
+      '<div class="adm-stat"><b>' + assigned + '</b><span>已挂课题</span></div>' +
+      '<div class="adm-stat"><b>' + devN + '</b><span>设备登记次数</span></div>' +
+      '<div class="adm-stat"><b>' + (Math.round(devH * 10) / 10) + '</b><span>设备累计机时</span></div>' +
+      '<div class="adm-stat"><b>' + (Math.round(matG * 10) / 10) + '</b><span>3D 打印耗材（克）</span></div>' +
+      '</div>';
+  }
+
+  /* 按课题聚合：同课题的人共用一条进度 */
+  function projectBlock(members) {
+    var order = [];
+    var map = {};
+    members.forEach(function (m) {
+      var k = m.project || "";
+      if (!map[k]) { map[k] = { name: k, n: 0, stage: "", percent: 0, note: "" }; order.push(k); }
+      map[k].n += 1;
+      if (!map[k].stage && m.stage) map[k].stage = m.stage;
+      if (num(map[k].percent) === 0 && num(m.percent) > 0) map[k].percent = num(m.percent);
+      if (!map[k].note && m.note) map[k].note = m.note;
+    });
+    var list = order.map(function (k) { return map[k]; });
+    list.sort(function (a, b) {
+      if (a.name === "") return 1;
+      if (b.name === "") return -1;
+      return num(b.percent) - num(a.percent);
+    });
+    var rows = list.map(function (p) {
+      var pct = Math.max(0, Math.min(100, Math.round(num(p.percent))));
+      return '<tr>' +
+        '<td>' + (p.name ? esc(p.name) : '<span class="adm-dim">未指定课题</span>') + '</td>' +
+        '<td>' + p.n + ' 人</td>' +
+        '<td>' + (p.stage ? esc(p.stage) : '<span class="adm-dim">—</span>') + '</td>' +
+        '<td><div class="adm-prog"><i style="width:' + pct + '%"></i></div><span class="adm-pct">' + pct + '%</span></td>' +
+        '<td>' + (p.note ? esc(p.note) : '<span class="adm-dim">—</span>') + '</td>' +
+        '</tr>';
+    }).join("");
+    return '<div class="adm-block"><h3>课题进度汇总</h3>' +
+      table(["课题", "参与人数", "当前阶段", "进度", "进度说明"], rows) + '</div>';
+  }
+
   function membersBlock(list) {
     var rows = list.map(function (m) {
       var pct = Math.max(0, Math.min(100, parseInt(m.percent, 10) || 0));
@@ -55,12 +109,12 @@
         '<td>' + (m.project ? esc(m.project) : '<span class="adm-dim">未指定</span>') + '</td>' +
         '<td>' + (m.stage ? esc(m.stage) : '<span class="adm-dim">—</span>') + '</td>' +
         '<td><div class="adm-prog"><i style="width:' + pct + '%"></i></div><span class="adm-pct">' + pct + '%</span></td>' +
+        '<td>' + (m.has_profile ? '<span class="adm-ok">已填</span>' : '<span class="adm-dim">未填</span>') + '</td>' +
         '<td>' + (m.updated_at ? esc(String(m.updated_at).slice(0, 10)) : '<span class="adm-dim">—</span>') + '</td>' +
         '</tr>';
     }).join("");
     return '<div class="adm-block"><h3>成员与课题</h3>' +
-      '<table class="adm-table"><thead><tr><th>姓名</th><th>身份</th><th>所属课题</th>' +
-      '<th>阶段</th><th>进度</th><th>资料更新</th></tr></thead><tbody>' + rows + '</tbody></table></div>';
+      table(["姓名", "身份", "所属课题", "阶段", "进度", "资料", "更新"], rows) + '</div>';
   }
 
   function usageBlock(list) {
@@ -69,8 +123,7 @@
       return '<tr><td>' + esc(u.device) + '</td><td>' + esc(u.n) + ' 次</td><td>' + esc(u.hours) + ' 小时</td></tr>';
     }).join("");
     return '<div class="adm-block"><h3>设备使用汇总</h3>' +
-      '<table class="adm-table"><thead><tr><th>设备</th><th>次数</th><th>合计时长</th></tr></thead><tbody>' +
-      rows + '</tbody></table></div>';
+      table(["设备", "次数", "合计时长"], rows) + '</div>';
   }
 
   function materialBlock(list) {
@@ -81,8 +134,7 @@
       return '<tr><td>' + esc(m.material) + '</td><td>' + esc(m.amount) + ' 克</td></tr>';
     }).join("");
     return '<div class="adm-block"><h3>3D 打印耗材</h3>' +
-      '<table class="adm-table"><thead><tr><th>耗材</th><th>累计用量</th></tr></thead><tbody>' +
-      rows + '</tbody></table></div>';
+      table(["耗材", "累计用量"], rows) + '</div>';
   }
 
   function recentBlock(list) {
@@ -93,8 +145,7 @@
         '<td>' + esc(r.hours) + ' 小时</td><td>' + esc(r.purpose || "") + mat + '</td></tr>';
     }).join("");
     return '<div class="adm-block"><h3>最近登记</h3>' +
-      '<table class="adm-table"><thead><tr><th>日期</th><th>设备</th><th>使用人</th><th>时长</th><th>用途</th></tr></thead><tbody>' +
-      rows + '</tbody></table></div>';
+      table(["日期", "设备", "使用人", "时长", "用途"], rows) + '</div>';
   }
 
   function render(s) {
@@ -106,8 +157,12 @@
           body.innerHTML = '<p class="adm-dim">没有权限读取，请重新登录管理员账号。</p>';
           return;
         }
-        body.innerHTML = membersBlock(data.members || []) +
-          usageBlock(data.usage || []) +
+        var members = data.members || [];
+        var usage = data.usage || [];
+        body.innerHTML = statsBlock(members, usage, data.material || []) +
+          projectBlock(members) +
+          membersBlock(members) +
+          usageBlock(usage) +
           materialBlock(data.material || []) +
           recentBlock(data.recent || []);
       })

@@ -376,10 +376,13 @@
 
   function ensureChip() {
     if (!state || document.querySelector(".mp-chip")) return;
+    var onAdmin = location.pathname.indexOf("/admin") === 0;
+    var adminLink = (state.role === "admin" && !onAdmin)
+      ? '<a class="mp-chip-link" href="/admin/">后台</a>' : "";
     var chip = document.createElement("div");
     chip.className = "mp-chip";
     chip.innerHTML = '<span>' + esc(state.name) + (state.role === "admin" ? " · 管理员" : "") + '</span>' +
-      '<button type="button" class="mp-chip-out">退出</button>';
+      adminLink + '<button type="button" class="mp-chip-out">退出</button>';
     document.body.appendChild(chip);
     chip.querySelector(".mp-chip-out").addEventListener("click", function () {
       state = null; persist(); markGuest(); chip.remove(); location.reload();

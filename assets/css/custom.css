@@ -1114,3 +1114,73 @@ html.dark .adm-prog {
 html.dark .eq-mat {
   color: #a7b0bd;
 }
+
+/* ===== 后台总览与滚动表 ===== */
+.adm-stats {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+  gap: 10px;
+  margin: 16px 0 4px;
+}
+
+.adm-stat {
+  padding: 12px 14px;
+  border: 1px solid #dbe4ee;
+  border-radius: 10px;
+  background: #f7fafd;
+}
+
+.adm-stat b {
+  display: block;
+  font-size: 22px;
+  line-height: 1.2;
+  color: #16324f;
+}
+
+.adm-stat span {
+  font-size: 12.5px;
+  color: #5b6b7d;
+}
+
+.adm-scroll {
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
+.adm-scroll .adm-table {
+  min-width: 520px;
+}
+
+.adm-ok {
+  color: #2f6b8f;
+  font-weight: 600;
+}
+
+.mp-chip-link {
+  margin-right: 10px;
+  font-size: 12.5px;
+  font-weight: 600;
+  color: #2f6b8f;
+  text-decoration: none;
+}
+
+.mp-chip-link:hover {
+  text-decoration: underline;
+}
+
+html.dark .adm-stat {
+  background: #171d25;
+  border-color: #2a3240;
+}
+
+html.dark .adm-stat b {
+  color: #9ec5f0;
+}
+
+html.dark .adm-stat span {
+  color: #a7b0bd;
+}
+
+html.dark .mp-chip-link {
+  color: #9ec5f0;
+}

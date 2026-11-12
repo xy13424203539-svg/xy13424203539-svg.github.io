@@ -51,5 +51,3 @@ type: page
 岭南师范学院机电工程学院官网「教授博士风采」栏目（2026 年 1 月 22 日发布）。
 
 <p class="page-updated">最后更新 2026 年 11 月 11 日</p>
-
-<script src="/js/member-auth.js"></script>

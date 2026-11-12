@@ -16,5 +16,3 @@ type: page
 | 个人联系方式 | 不公开，经本人同意后由实验室转达 |
 
 <p class="page-updated">最后更新 2026 年 11 月 11 日</p>
-
-<script src="/js/member-auth.js"></script>

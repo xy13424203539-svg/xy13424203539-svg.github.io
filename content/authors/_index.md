@@ -7,5 +7,3 @@ cascade:
     render: never
     list: always
 ---
-
-<script src="/js/member-auth.js"></script>

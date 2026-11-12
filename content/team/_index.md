@@ -60,5 +60,3 @@ type: page
 </div>
 
 <p class="page-updated">最后更新 2026 年 11 月 11 日</p>
-
-<script src="/js/member-auth.js"></script>

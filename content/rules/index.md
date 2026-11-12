@@ -77,5 +77,3 @@ type: page
 条款一经启用不再改编号，修订以追加新条款的方式进行，旧条款标注失效日期。
 
 <p class="page-updated">最后更新 2026 年 11 月 11 日</p>
-
-<script src="/js/member-auth.js"></script>

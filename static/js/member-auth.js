@@ -51,6 +51,24 @@
       .then(function (r) { return r.ok ? r.json() : []; });
   }
 
+  var PROJECTS = [];
+  var STAGES = ["方案设计", "结构与建模", "样机加工", "装配联调", "试验验证", "结题材料"];
+
+  function loadProjects() {
+    return fetch(cfg.url + "/rest/v1/projects?select=*&order=name",
+                 { headers: { apikey: cfg.key, Authorization: "Bearer " + cfg.key } })
+      .then(function (r) { return r.ok ? r.json() : []; })
+      .then(function (rows) { PROJECTS = rows || []; return PROJECTS; })
+      .catch(function () { PROJECTS = []; return PROJECTS; });
+  }
+
+  function findProject(name) {
+    for (var i = 0; i < PROJECTS.length; i++) {
+      if (PROJECTS[i].name === name) return PROJECTS[i];
+    }
+    return null;
+  }
+
   /* ---------- 登录浮层 ---------- */
 
   function buildLogin() {
@@ -186,6 +204,7 @@
         });
         dl += '</dl>';
         html += any ? dl : '<p class="mp-empty">还没有填写资料。</p>';
+        html += projectBlock(p);
         if (p.updated_at) {
           html += '<p class="mp-time">更新于 ' + esc(String(p.updated_at).slice(0, 10)) + '</p>';
         }
@@ -197,7 +216,27 @@
       host.innerHTML = html;
       var btn = host.querySelector("#mp-open-edit");
       if (btn) btn.addEventListener("click", function () { openEdit(p || {}); });
+      var pbtn = host.querySelector("#mp-open-prog");
+      if (pbtn) pbtn.addEventListener("click", function () { openProgress(p.project); });
     });
+  }
+
+  function projectBlock(p) {
+    if (!p || !p.project) return "";
+    var pr = findProject(p.project);
+    if (!pr) return "";
+    var pct = Math.max(0, Math.min(100, parseInt(pr.percent, 10) || 0));
+    var html = '<div class="mp-proj">' +
+      '<div class="mp-proj-head"><b>课题进度 · ' + esc(pr.name) + '</b>' +
+      (canEdit() ? '<button type="button" class="mp-btn mp-btn-edit" id="mp-open-prog">更新进度</button>' : '') +
+      '</div>' +
+      '<div class="mp-bar"><span style="width:' + pct + '%"></span></div>' +
+      '<div class="mp-proj-meta">' + esc(pr.stage || "尚未填写阶段") + ' · ' + pct + '%' +
+      (pr.updated_by ? ' · 最近由 ' + esc(pr.updated_by) + ' 更新于 ' + esc(String(pr.updated_at || "").slice(0, 10)) : '') +
+      '</div>' +
+      (pr.note ? '<div class="mp-proj-note">' + esc(pr.note).replace(/\n/g, "<br>") + '</div>' : '') +
+      '</div>';
+    return html;
   }
 
   /* ---------- 编辑面板 ---------- */
@@ -215,10 +254,17 @@
         '<input name="' + f[0] + '" type="text" maxlength="120" value="' + v + '"></label>';
     }).join("");
 
+    var projRow = '<label class="mp-field mp-field-wide"><span>所属课题（进度按课题共享）</span><select name="project">' +
+      '<option value="">暂不指定</option>' +
+      PROJECTS.map(function (pr) {
+        return '<option value="' + esc(pr.name) + '"' +
+          (pr.name === (p.project || "") ? " selected" : "") + '>' + esc(pr.name) + '</option>';
+      }).join("") + '</select></label>';
+
     wrap.innerHTML =
       '<div class="mp-edit">' +
         '<h3>编辑 ' + esc(currentName) + ' 的资料</h3>' +
-        '<div class="mp-form">' + rows + '</div>' +
+        '<div class="mp-form">' + projRow + rows + '</div>' +
         '<div id="mp-edit-msg" class="mp-msg"></div>' +
         '<div class="mp-btns"><button type="button" class="mp-btn mp-btn-main" id="mp-save">保存</button>' +
         '<button type="button" class="mp-btn" id="mp-cancel">取消</button></div>' +
@@ -232,6 +278,8 @@
         var el = wrap.querySelector('[name="' + f[0] + '"]');
         data[f[0]] = (el && el.value || "").trim();
       });
+      var projEl = wrap.querySelector('[name="project"]');
+      data.project = projEl ? projEl.value : "";
       var msg = wrap.querySelector("#mp-edit-msg");
       msg.className = "mp-msg"; msg.textContent = "保存中…";
       rpc("member_save", { p_name: state.name, p_sid: state.sid, p_target: currentName, p_data: data })
@@ -243,7 +291,10 @@
           }
           msg.className = "mp-msg mp-msg-ok";
           msg.textContent = "已保存。";
-          setTimeout(function () { wrap.remove(); renderProfile(); }, 600);
+          setTimeout(function () {
+            wrap.remove();
+            loadProjects().then(renderProfile);
+          }, 600);
         })
         .catch(function (e) {
           msg.className = "mp-msg mp-msg-err";
@@ -252,11 +303,76 @@
     });
   }
 
+  /* ---------- 课题进度（同课题共享）---------- */
+
+  function openProgress(projectName) {
+    if (!projectName) return;
+    var pr = findProject(projectName) || { name: projectName, stage: "", percent: 0, note: "" };
+    var pct = Math.max(0, Math.min(100, parseInt(pr.percent, 10) || 0));
+    var stageOpts = STAGES.map(function (s) {
+      return '<option' + (s === pr.stage ? " selected" : "") + '>' + esc(s) + '</option>';
+    }).join("");
+    if (pr.stage && STAGES.indexOf(pr.stage) < 0) {
+      stageOpts = '<option selected>' + esc(pr.stage) + '</option>' + stageOpts;
+    }
+
+    var wrap = document.createElement("div");
+    wrap.className = "mp-mask";
+    wrap.innerHTML =
+      '<div class="mp-edit">' +
+        '<h3>更新课题进度</h3>' +
+        '<p class="mp-login-sub">' + esc(projectName) + ' —— 同一课题的所有成员看到的是同一条进度。</p>' +
+        '<div class="mp-form">' +
+          '<label class="mp-field mp-field-wide"><span>当前阶段</span><select name="stage">' + stageOpts + '</select></label>' +
+          '<label class="mp-field mp-field-wide"><span>完成度 <b id="mp-pct-out">' + pct + '%</b></span>' +
+            '<input type="range" name="percent" min="0" max="100" step="5" value="' + pct + '"></label>' +
+          '<label class="mp-field mp-field-wide"><span>进度说明</span>' +
+            '<textarea name="note" rows="3" maxlength="400" placeholder="例如：尾鳍结构已完成建模，正在打样">' +
+            esc(pr.note || "") + '</textarea></label>' +
+        '</div>' +
+        '<div id="mp-prog-msg" class="mp-msg"></div>' +
+        '<div class="mp-btns"><button type="button" class="mp-btn mp-btn-main" id="mp-prog-save">保存进度</button>' +
+        '<button type="button" class="mp-btn" id="mp-prog-cancel">取消</button></div>' +
+      '</div>';
+    document.body.appendChild(wrap);
+
+    var range = wrap.querySelector('[name="percent"]');
+    var out = wrap.querySelector("#mp-pct-out");
+    range.addEventListener("input", function () { out.textContent = range.value + "%"; });
+
+    wrap.querySelector("#mp-prog-cancel").addEventListener("click", function () { wrap.remove(); });
+    wrap.querySelector("#mp-prog-save").addEventListener("click", function () {
+      var msg = wrap.querySelector("#mp-prog-msg");
+      msg.className = "mp-msg"; msg.textContent = "保存中…";
+      rpc("member_set_progress", {
+        p_name: state.name, p_sid: state.sid, p_project: projectName,
+        p_stage: wrap.querySelector('[name="stage"]').value,
+        p_percent: parseInt(range.value, 10),
+        p_note: (wrap.querySelector('[name="note"]').value || "").trim()
+      }).then(function (ok) {
+        if (!ok) {
+          msg.className = "mp-msg mp-msg-err";
+          msg.textContent = "只有这个课题的成员或管理员能更新进度。";
+          return;
+        }
+        msg.className = "mp-msg mp-msg-ok";
+        msg.textContent = "已更新，同课题成员会同步看到。";
+        setTimeout(function () {
+          wrap.remove();
+          loadProjects().then(renderProfile);
+        }, 600);
+      }).catch(function (e) {
+        msg.className = "mp-msg mp-msg-err";
+        msg.textContent = "保存失败（" + e.message + "）。";
+      });
+    });
+  }
+
   /* ---------- 启动 ---------- */
 
   load();
   currentName = detectName();
-  if (currentName) renderProfile();
+  if (currentName) loadProjects().then(renderProfile);
 
   function ensureChip() {
     if (!state || document.querySelector(".mp-chip")) return;
@@ -292,4 +408,5 @@
 
   window.__chenlabEnsureChip = ensureChip;
   window.__chenlabEnsureLoginPill = ensureLoginPill;
+  window.__chenlabOpenLogin = function () { if (!state) buildLogin(); };
 })();

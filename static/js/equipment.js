@@ -31,6 +31,20 @@
 
   if (dateEl) dateEl.value = today();
 
+  var matField = document.getElementById("eq-material-field");
+  var amtField = document.getElementById("eq-amount-field");
+  var matEl = document.getElementById("eq-material");
+
+  function toggleConsumable() {
+    var isPrinter = selectEl && selectEl.value === "3D 打印机";
+    if (matField) matField.hidden = !isPrinter;
+    if (amtField) amtField.hidden = !isPrinter;
+  }
+  if (selectEl) {
+    selectEl.addEventListener("change", toggleConsumable);
+    toggleConsumable();
+  }
+
   // 设备卡片点击后选中并带入表单
   document.querySelectorAll(".eq-device").forEach(function (btn) {
     btn.addEventListener("click", function () {
@@ -39,6 +53,7 @@
         for (var i = 0; i < selectEl.options.length; i++) {
           if (selectEl.options[i].value === name) selectEl.selectedIndex = i;
         }
+        toggleConsumable();
       }
       document.querySelectorAll(".eq-device").forEach(function (b) {
         b.classList.remove("is-on");
@@ -66,7 +81,7 @@
     if (!listEl) return;
     listEl.innerHTML = '<div class="eq-empty">读取中…</div>';
     fetch(cfg.url + "/rest/v1/" + cfg.table +
-          "?select=device,user_name,used_on,hours,purpose,created_at" +
+          "?select=device,user_name,used_on,hours,purpose,material,material_amount,created_at" +
           "&order=used_on.desc,created_at.desc&limit=40",
           { headers: headers() })
       .then(function (r) {
@@ -79,10 +94,15 @@
           return;
         }
         listEl.innerHTML = rows.map(function (r) {
+          var mat = r.material
+            ? '<div class="eq-mat">耗材 ' + esc(r.material) +
+              (r.material_amount ? ' · ' + esc(r.material_amount) + ' 克' : '') + '</div>'
+            : '';
           return '<div class="eq-card">' +
             '<div class="eq-card-top"><b>' + esc(r.device) + '</b>' +
             '<span class="eq-hours">' + esc(r.hours) + ' 小时</span></div>' +
             '<div class="eq-meta">' + esc(r.user_name) + ' · ' + esc(r.used_on) + '</div>' +
+            mat +
             (r.purpose ? '<div class="eq-purpose">' + esc(r.purpose) + '</div>' : '') +
             '</div>';
         }).join("");
@@ -102,6 +122,15 @@
         hours: parseFloat(form.hours.value),
         purpose: form.purpose.value.trim()
       };
+      if (data.device === "3D 打印机") {
+        data.material = (form.material && form.material.value) || "";
+        var amt = parseFloat(form.material_amount && form.material_amount.value);
+        data.material_amount = amt > 0 ? amt : null;
+        if (!data.material) { setStatus("用了 3D 打印机，请选择耗材类型。", "warn"); return; }
+      } else {
+        data.material = null;
+        data.material_amount = null;
+      }
       if (!data.user_name) { setStatus("请填写使用人。", "warn"); return; }
       if (!data.used_on) { setStatus("请选择日期。", "warn"); return; }
       if (!(data.hours > 0)) { setStatus("使用时长要大于 0。", "warn"); return; }
@@ -118,6 +147,7 @@
           setStatus("已登记。", "ok");
           form.reset();
           if (dateEl) dateEl.value = today();
+          toggleConsumable();
           document.querySelectorAll(".eq-device").forEach(function (b) { b.classList.remove("is-on"); });
           load();
         })

@@ -912,4 +912,205 @@ html.dark .mp-dl dd {
   .mp-dl {
     grid-template-columns: 74px 1fr;
   }
+
+  .adm-table {
+    font-size: 12.5px;
+  }
+
+  .adm-prog {
+    width: 62px;
+  }
+}
+
+/* ===== 个人页课题进度块 ===== */
+.mp-field select {
+  width: 100%;
+  padding: 7px 9px;
+  border: 1px solid #d7dde5;
+  border-radius: 8px;
+  font-size: 13.5px;
+  font-family: inherit;
+  background: #fbfcfd;
+  color: #1f2937;
+}
+
+html.dark .mp-field select {
+  background: #151b23;
+  border-color: #2a3240;
+  color: #e5e7eb;
+}
+
+.mp-proj {
+  margin: 16px 0 4px;
+  padding: 13px 15px;
+  border: 1px solid #dbe4ee;
+  border-radius: 10px;
+  background: #f7fafd;
+}
+
+.mp-proj-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  margin-bottom: 9px;
+}
+
+.mp-proj-head b {
+  font-size: 13.5px;
+  color: #16324f;
+}
+
+.mp-bar {
+  height: 8px;
+  border-radius: 5px;
+  background: #e3ebf4;
+  overflow: hidden;
+}
+
+.mp-bar span {
+  display: block;
+  height: 8px;
+  border-radius: 5px;
+  background: #2f6b8f;
+}
+
+.mp-proj-meta {
+  margin-top: 8px;
+  font-size: 12.5px;
+  color: #5b6b7d;
+}
+
+.mp-proj-note {
+  margin-top: 6px;
+  font-size: 13px;
+  line-height: 1.65;
+  color: #33475c;
+}
+
+html.dark .mp-proj {
+  background: #171d25;
+  border-color: #2a3240;
+}
+
+html.dark .mp-proj-head b {
+  color: #9ec5f0;
+}
+
+html.dark .mp-bar {
+  background: #232b36;
+}
+
+html.dark .mp-proj-meta,
+html.dark .mp-proj-note {
+  color: #a7b0bd;
+}
+
+/* ===== 后台管理页 ===== */
+.adm-root {
+  margin: 10px 0 28px;
+}
+
+.adm-note {
+  padding: 12px 14px;
+  border: 1px solid #dbe4ee;
+  border-radius: 10px;
+  background: #f7fafd;
+  font-size: 13.5px;
+  line-height: 1.7;
+  color: #33475c;
+}
+
+.adm-body {
+  margin-top: 16px;
+}
+
+.adm-block {
+  margin: 24px 0;
+}
+
+.adm-block h3 {
+  margin: 0 0 8px;
+  font-size: 16px;
+  color: #16324f;
+}
+
+.adm-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 13.5px;
+}
+
+.adm-table th {
+  text-align: left;
+  padding: 8px 10px;
+  border-bottom: 1px solid #d5dfe9;
+  color: #4a5c70;
+  font-weight: 600;
+}
+
+.adm-table td {
+  padding: 8px 10px;
+  border-bottom: 1px solid #eef2f6;
+  vertical-align: middle;
+}
+
+.adm-prog {
+  display: inline-block;
+  width: 92px;
+  height: 7px;
+  border-radius: 4px;
+  background: #e3ebf4;
+  overflow: hidden;
+  vertical-align: middle;
+}
+
+.adm-prog i {
+  display: block;
+  height: 7px;
+  background: #2f6b8f;
+}
+
+.adm-pct {
+  margin-left: 8px;
+  font-size: 12.5px;
+  color: #5b6b7d;
+}
+
+.adm-dim {
+  color: #8d9aa9;
+}
+
+html.dark .adm-note {
+  background: #171d25;
+  border-color: #2a3240;
+  color: #cbd5e1;
+}
+
+html.dark .adm-block h3 {
+  color: #9ec5f0;
+}
+
+html.dark .adm-table th {
+  border-bottom-color: #2a3240;
+  color: #a7b0bd;
+}
+
+html.dark .adm-table td {
+  border-bottom-color: #232b36;
+  color: #cbd5e1;
+}
+
+html.dark .adm-prog {
+  background: #232b36;
+}
+
+.eq-mat {
+  margin-top: 5px;
+  font-size: 12.5px;
+  color: #4a5c70;
+}
+
+html.dark .eq-mat {
+  color: #a7b0bd;
 }

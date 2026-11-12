@@ -48,6 +48,25 @@ type: page
     <input type="number" name="hours" min="0.5" step="0.5" placeholder="例如 1.5">
   </label>
 
+  <label class="eq-field eq-field--full" id="eq-material-field" hidden>
+    <span>耗材类型（3D 打印机）</span>
+    <select name="material" id="eq-material">
+      <option value="">请选择耗材</option>
+      <option>PLA</option>
+      <option>PETG</option>
+      <option>ABS</option>
+      <option>TPU</option>
+      <option>尼龙（PA）</option>
+      <option>光敏树脂</option>
+      <option>其他</option>
+    </select>
+  </label>
+
+  <label class="eq-field" id="eq-amount-field" hidden>
+    <span>耗材用量（克）</span>
+    <input type="number" name="material_amount" min="1" step="1" placeholder="例如 80">
+  </label>
+
   <label class="eq-field eq-field--full">
     <span>做了什么</span>
     <textarea name="purpose" rows="3" maxlength="200" placeholder="例如：打印仿生鱼尾鳍连接件，两件，PETG"></textarea>
@@ -63,7 +82,7 @@ type: page
 
 <div id="eq-list" class="eq-list"></div>
 
-<script src="/js/equipment-config.js"></script>
-<script src="/js/equipment.js"></script>
+<script src="/js/equipment-config.js?v=20261112f"></script>
+<script src="/js/equipment.js?v=20261112f"></script>
 
 <p class="page-updated">最后更新 2026 年 11 月 11 日</p>

@@ -357,3 +357,22 @@ html.dark .prose table a {
     height: 200px;
   }
 }
+
+/* ===== 手机端正文左右留白，表格不贴屏幕边 ===== */
+@media (max-width: 768px) {
+  .page-body {
+    padding-left: 18px;
+    padding-right: 18px;
+  }
+
+  .prose table {
+    width: 100%;
+    font-size: 15px;
+  }
+
+  .prose table th,
+  .prose table td {
+    padding-left: 8px;
+    padding-right: 8px;
+  }
+}

@@ -275,70 +275,15 @@ html.dark .mem-static {
   border-color: #242b36;
 }
 
-/* ===== 证书页放宽，桌面两列更舒展 ===== */
-.prose:has(.aw-grid) {
-  max-width: 1060px !important;
-}
-
-/* ===== 正文行距 ===== */
-.prose p {
-  line-height: 1.85;
-}
-
-@media (max-width: 900px) {
-  .mem-grid {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-  }
-}
+/* ===== 证书页保持原有版心宽度与行距 ===== */
 
 @media (max-width: 640px) {
   .aw-grid {
     grid-template-columns: 1fr;
-    gap: 14px;
+    gap: 12px;
   }
 
-  /* 手机上证书按原比例撑满卡片，不再压成扁条 */
   .aw-thumb {
-    height: auto;
-    padding: 0;
-    background: #fff;
-  }
-
-  .aw-thumb a {
-    display: block;
-  }
-
-  .aw-thumb img {
-    width: 100%;
-    height: auto;
-    max-height: none;
-    border-radius: 0;
-    box-shadow: none;
-  }
-
-  .aw-card {
-    overflow: hidden;
-  }
-
-  .aw-body {
-    padding: 11px 13px 13px;
-    gap: 6px;
-  }
-
-  .aw-title {
-    font-size: 14px;
-  }
-
-  .mem-grid {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap: 8px;
-  }
-
-  .mem-card {
-    padding: 10px 11px;
-  }
-
-  .mem-card b {
-    font-size: 14px;
+    height: 200px;
   }
 }

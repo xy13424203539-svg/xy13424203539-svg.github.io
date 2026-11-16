@@ -270,7 +270,7 @@
       '<div class="wbn-grid2">' +
         '<label class="wbn-field"><span>物品</span><input name="item" maxlength="40" placeholder="例如 PETG 线材、砂纸、密封胶"></label>' +
         '<label class="wbn-field"><span>规格型号</span><input name="spec" maxlength="40" placeholder="例如 1.75mm 1kg / 400 目"></label>' +
-        '<label class="wbn-field"><span>数量</span><input name="qty" type="number" step="0.1" min="0.1" value="1"></label>' +
+        '<label class="wbn-field"><span>数量</span><input name="qty" type="number" step="1" min="1" value="1" inputmode="numeric" placeholder="1"></label>' +
         '<label class="wbn-field"><span>单位</span><input name="unit" maxlength="8" value="件" placeholder="卷 / 瓶 / 包"></label>' +
         '<label class="wbn-field"><span>预估金额（元）</span><input name="budget" type="number" step="0.01" min="0" placeholder="不知道可以不填"></label>' +
         '<label class="wbn-field"><span>希望到手日期</span><input name="need_by" type="date"></label>' +
@@ -328,7 +328,7 @@
         rpc("submit_purchase", {
           p_name: me.name, p_sid: me.sid, p_project: f.project.value || "",
           p_item: item, p_spec: (f.spec.value || "").trim(),
-          p_qty: Number(f.qty.value) || 1, p_unit: (f.unit.value || "件").trim(),
+          p_qty: Math.max(1, Math.round(Number(f.qty.value) || 1)), p_unit: (f.unit.value || "件").trim(),
           p_budget: Number(f.budget.value) || 0, p_reason: (f.reason.value || "").trim(),
           p_need_by: f.need_by.value || null
         }).then(function (id) {

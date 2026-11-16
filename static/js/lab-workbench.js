@@ -446,7 +446,7 @@
 
   /* ---------- 启动 ---------- */
 
-  rest("projects?select=name&order=id").then(function (rows) { PROJECTS = rows || []; go(); });
+  rest("projects?select=name&order=name").then(function (rows) { PROJECTS = rows || []; go(); });
 
   // 登录状态变化后重画（登录浮层关掉时 member-auth 会改 localStorage）
   setInterval(function () {

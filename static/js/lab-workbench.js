@@ -72,6 +72,7 @@
 
   var TABS = [
     { k: "reports", t: "汇报材料" },
+    { k: "milestones", t: "阶段成果" },
     { k: "purchases", t: "耗材申请" },
     { k: "meetings", t: "交流安排" },
     { k: "archive", t: "学生档案" }
@@ -92,6 +93,7 @@
   function go(msg) {
     var panel;
     if (TAB === "reports") panel = renderReports();
+    else if (TAB === "milestones") panel = renderMilestones();
     else if (TAB === "purchases") panel = renderPurchases();
     else if (TAB === "meetings") panel = renderMeetings();
     else panel = renderArchive();
@@ -194,8 +196,68 @@
     });
   }
 
-  /* ---------- 耗材申请 ---------- */
+  /* ---------- 阶段成果 ---------- */
 
+  function formMilestone() {
+    if (!me) return "";
+    var opts = PROJECTS.map(function (p) {
+      var sel = (me.project && me.project === p.name) ? " selected" : "";
+      return '<option' + sel + '>' + esc(p.name) + '</option>';
+    }).join("");
+    var tip = me.role === "admin" ? "" : '<p class="wbn-tip">先在自己的个人资料里选定课题，才能登记这个课题的成果。</p>';
+    return tip + '<form class="wbn-form" id="wbn-ms-form">' +
+      '<div class="wbn-grid2">' +
+        '<label class="wbn-field"><span>成果</span><input name="title" maxlength="50" placeholder="例如 样机装配完成、专利申请受理"></label>' +
+        '<label class="wbn-field"><span>达成日期</span><input name="date" type="date"></label>' +
+        '<label class="wbn-field"><span>所属课题</span><select name="project"><option value="">不填</option>' + opts + '</select></label>' +
+        '<label class="wbn-field"><span>佐证链接（照片或文件地址，可不填）</span><input name="evidence" maxlength="200" placeholder="https://"></label>' +
+      '</div>' +
+      '<label class="wbn-field"><span>说明</span><textarea name="detail" rows="2" maxlength="120" placeholder="做到什么程度，关键数据是多少"></textarea></label>' +
+      '<div class="wbn-actions"><button type="submit" class="wbn-btn wbn-btn-main">登记成果</button><span class="wbn-msg" id="wbn-ms-msg"></span></div>' +
+      '</form>';
+  }
+
+  function milestoneList(rows) {
+    if (!rows.length) return '<p class="wbn-empty">还没有登记成果。</p>';
+    var items = rows.map(function (m) {
+      return '<div class="wbn-item">' +
+        '<div class="wbn-item-top"><b>' + esc(m.title) + '</b><span class="wbn-kind">' + esc(fmtDate(m.achieved_on)) + '</span></div>' +
+        '<div class="wbn-item-sub">' + esc(m.project || "未指定课题") + ' · ' + esc(m.created_by || "") + '</div>' +
+        (m.detail ? '<div class="wbn-item-body">' + esc(m.detail) + '</div>' : '') +
+        (m.evidence_url ? '<div class="wbn-item-foot"><a class="wbn-file" href="' + esc(m.evidence_url) + '" target="_blank" rel="noopener">查看佐证</a></div>' : '') +
+        '</div>';
+    }).join("");
+    return '<div class="wbn-list">' + items + '</div>';
+  }
+
+  function renderMilestones() {
+    return rest("milestones?select=*&order=achieved_on.desc&limit=40").then(function (rows) {
+      var html = '<h3 class="wbn-h">登记</h3>' + formMilestone() +
+        '<h3 class="wbn-h">已登记<span class="wbn-count">' + rows.length + '</span></h3>' + milestoneList(rows);
+      setTimeout(function () {
+        var f = root.querySelector("#wbn-ms-form");
+        if (!f) return;
+        f.addEventListener("submit", function (ev) {
+          ev.preventDefault();
+          var msg = root.querySelector("#wbn-ms-msg");
+          var title = (f.title.value || "").trim();
+          if (!title) { msg.className = "wbn-msg wbn-msg-err"; msg.textContent = "成果名称要填。"; return; }
+          msg.className = "wbn-msg"; msg.textContent = "保存中…";
+          rpc("add_milestone", {
+            p_name: me.name, p_sid: me.sid, p_project: f.project.value || "",
+            p_title: title, p_date: f.date.value || null,
+            p_detail: (f.detail.value || "").trim(), p_evidence: (f.evidence.value || "").trim()
+          }).then(function (id) {
+            if (!id) throw new Error("登记被拒绝，先确认个人资料里的课题和这里一致");
+            go("已登记：" + esc(title));
+          }).catch(function (e) { msg.className = "wbn-msg wbn-msg-err"; msg.textContent = e.message; });
+        });
+      }, 0);
+      return html;
+    });
+  }
+
+  /* ---------- 耗材申请 ---------- */
   function formPurchase() {
     if (!me) return "";
     var opts = PROJECTS.map(function (p) {

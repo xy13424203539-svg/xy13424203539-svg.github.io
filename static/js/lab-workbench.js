@@ -12,6 +12,17 @@
   var MAX_MB = 25;
   var TAB = "reports";
   var PROJECTS = [];
+  var CLIST = {};
+  /** 把“肖扬、李伟锐”这类输入规范成、姓名、形式，并自动带上提交人自己 */
+  function memberTag(raw, owner) {
+    var arr = String(raw || "").split(/[、,，;；\s]+/).filter(function (x) { return !!x; });
+    var seen = {}, out = [];
+    [owner].concat(arr).forEach(function (n) {
+      n = String(n || "").trim();
+      if (n && !seen[n]) { seen[n] = 1; out.push(n); }
+    });
+    return "、" + out.join("、") + "、";
+  }
 
   function state() {
     try { return JSON.parse(localStorage.getItem(STORE) || "null"); } catch (e) { return null; }
@@ -280,7 +291,8 @@
         return rpc("submit_report", {
           p_name: me.name, p_sid: me.sid, p_project: f.project.value,
           p_title: cname, p_kind: "竞赛成果", p_summary: bits.join(" · "),
-          p_file_name: u.name, p_file_url: u.url, p_file_size: u.size
+          p_file_name: u.name, p_file_url: u.url, p_file_size: u.size,
+          p_members: memberTag(mem, me.name)
         });
       }).then(function (id) {
         if (!id) throw new Error("提交被拒绝，请确认登录状态");
@@ -448,8 +460,15 @@
     return rpc("archive_overview", { p_name: me.name, p_sid: me.sid }).then(function (d) {
       if (!d) return '<p class="wbn-empty">读取失败，请重新登录。</p>';
       var list = d.students || [];
+      CLIST = {};
       var cards = list.map(function (s) {
         var pct = Math.max(0, Math.min(100, Math.round(Number(s.percent) || 0)));
+        var ct = s.contests || 0;
+        var cl = s.contest_list || [];
+        if (cl.length) CLIST[s.name] = cl;
+        var ctBtn = cl.length
+          ? '<button type="button" class="wbn-link" data-wbn-ct="' + esc(s.name) + '">竞赛成果 ' + ct + ' 项 ▾</button>'
+          : '<span class="wbn-dim">竞赛成果 0</span>';
         return '<div class="wbn-card">' +
           '<div class="wbn-card-top"><b>' + esc(s.name) + '</b>' + (s.role === "admin" ? '<span class="wbn-kind">管理员</span>' : "") + '</div>' +
           '<div class="wbn-card-proj">' + (s.project ? esc(s.project) : '<span class="wbn-dim">未认领课题</span>') + '</div>' +
@@ -459,11 +478,36 @@
             '<span>材料 ' + (s.reports || 0) + '</span>' +
             '<span>采购 ' + (s.purchases || 0) + '（在办 ' + (s.purchases_open || 0) + '）</span>' +
           '</div>' +
+          '<div class="wbn-card-ct">' + ctBtn + '</div>' +
           (s.latest_report ? '<div class="wbn-card-last">最近：' + esc(s.latest_report) + '<br><span class="wbn-dim">' + esc(s.latest_report_at) + '</span></div>' : '<div class="wbn-card-last wbn-dim">还没提交材料</div>') +
           '</div>';
       }).join("");
-      return '<h3 class="wbn-h">学生档案<span class="wbn-count">' + list.length + ' 人</span></h3>' +
+      var html = '<h3 class="wbn-h">学生档案<span class="wbn-count">' + list.length + ' 人</span></h3>' +
         '<div class="wbn-cards">' + cards + '</div>';
+      setTimeout(function () {
+        Array.prototype.forEach.call(root.querySelectorAll("[data-wbn-ct]"), function (b) {
+          b.addEventListener("click", function () {
+            var nm = b.getAttribute("data-wbn-ct");
+            var card = b.closest(".wbn-card");
+            var box = card.querySelector(".wbn-ct-box");
+            if (box) { box.remove(); b.textContent = "竞赛成果 " + (CLIST[nm] || []).length + " 项 ▾"; return; }
+            var rows = CLIST[nm] || [];
+            var inner = rows.map(function (c) {
+              return '<div class="wbn-ct-row">' +
+                '<div class="wbn-ct-t">' + esc(c.title) + '</div>' +
+                '<div class="wbn-ct-s">' + esc(c.summary || "") + ' · 提交人 ' + esc(c.by || "") + ' · ' + esc(c.created_at || "") + '</div>' +
+                (c.file_url ? '<a class="wbn-file" href="' + esc(c.file_url) + '" target="_blank" rel="noopener">证书</a>' : '') +
+                '</div>';
+            }).join("");
+            var d2 = document.createElement("div");
+            d2.className = "wbn-ct-box";
+            d2.innerHTML = inner || '<p class="wbn-empty">没有记录。</p>';
+            card.appendChild(d2);
+            b.textContent = "收起 ▴";
+          });
+        });
+      }, 0);
+      return html;
     });
   }
 

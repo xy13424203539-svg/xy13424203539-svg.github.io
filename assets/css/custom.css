@@ -1528,6 +1528,52 @@ html.dark .mp-chip-link {
   color: #4a5c70;
 }
 
+/* 档案卡片里的竞赛成果入口与展开区 */
+.wbn-card-ct {
+  margin-top: 7px;
+  font-size: 12px;
+}
+
+.wbn-link {
+  padding: 0;
+  border: 0;
+  background: none;
+  font: inherit;
+  font-size: 12px;
+  color: #0d3b66;
+  cursor: pointer;
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+
+.wbn-ct-box {
+  margin-top: 8px;
+  padding-top: 8px;
+  border-top: 1px dashed #edf1f6;
+}
+
+.wbn-ct-row {
+  padding: 6px 0;
+  border-bottom: 1px solid #f2f5f9;
+}
+
+.wbn-ct-row:last-child {
+  border-bottom: 0;
+}
+
+.wbn-ct-t {
+  font-size: 13px;
+  font-weight: 600;
+  color: #1c2a3a;
+}
+
+.wbn-ct-s {
+  margin-top: 2px;
+  font-size: 12px;
+  line-height: 1.5;
+  color: #63748a;
+}
+
 @media (max-width: 640px) {
   .wbn-grid2 {
     grid-template-columns: 1fr;

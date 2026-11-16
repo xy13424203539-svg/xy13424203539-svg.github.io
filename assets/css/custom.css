@@ -988,6 +988,26 @@ html.dark .mp-field select {
   color: #33475c;
 }
 
+.mp-proj-links {
+  margin-top: 8px;
+  padding-top: 8px;
+  border-top: 1px dashed #e3ebf4;
+  font-size: 12.5px;
+}
+
+.mp-proj-links a {
+  color: #2f6b8f;
+  text-decoration: underline;
+}
+
+html.dark .mp-proj-links {
+  border-top-color: #2a3240;
+}
+
+html.dark .mp-proj-links a {
+  color: #9ec5f0;
+}
+
 html.dark .mp-proj {
   background: #171d25;
   border-color: #2a3240;

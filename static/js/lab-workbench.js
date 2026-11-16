@@ -49,6 +49,11 @@
     return (n / 1048576).toFixed(1) + " MB";
   }
 
+  function fmtDate(s) {
+    if (!s) return "";
+    return String(s).slice(0, 10);
+  }
+
   var STATUS_TEXT = { pending: "待审核", approved: "已批准", ordered: "已采购", rejected: "不批准", done: "已完成" };
 
   function statusBadge(s) {
@@ -123,7 +128,7 @@
         : '<span class="wbn-dim">无附件</span>';
       return '<div class="wbn-item">' +
         '<div class="wbn-item-top"><b>' + esc(r.title) + '</b>' + statusNone(r.kind) + '</div>' +
-        '<div class="wbn-item-sub">' + esc(r.name) + (r.project ? ' · ' + esc(r.project) : '') + ' · ' + esc(r.created_at) + '</div>' +
+        '<div class="wbn-item-sub">' + esc(r.name) + (r.project ? ' · ' + esc(r.project) : '') + ' · ' + esc(fmtDate(r.created_at)) + '</div>' +
         (r.summary ? '<div class="wbn-item-body">' + esc(r.summary) + '</div>' : '') +
         '<div class="wbn-item-foot">' + f + '</div>' +
         '</div>';
@@ -228,7 +233,7 @@
         : (p.admin_note ? '<div class="wbn-item-foot wbn-dim">老师备注：' + esc(p.admin_note) + '</div>' : "");
       return '<div class="wbn-item">' +
         '<div class="wbn-item-top"><b>' + esc(p.item) + '</b>' + statusBadge(p.status) + '</div>' +
-        '<div class="wbn-item-sub">' + esc(p.name) + (p.project ? ' · ' + esc(p.project) : '') + ' · ' + esc(p.created_at) + '</div>' +
+        '<div class="wbn-item-sub">' + esc(p.name) + (p.project ? ' · ' + esc(p.project) : '') + ' · ' + esc(fmtDate(p.created_at)) + '</div>' +
         '<div class="wbn-item-body">' + esc([p.spec, (p.qty + " " + p.unit), (p.budget ? ("约 " + p.budget + " 元") : ""), (p.need_by ? ("希望 " + p.need_by + " 前到手") : "")]
           .filter(function (x) { return x && String(x).trim(); }).join(" · ")) + '</div>' +
         (p.reason ? '<div class="wbn-item-body wbn-quiet">' + esc(p.reason) + '</div>' : '') +
@@ -379,7 +384,7 @@
 
   /* ---------- 启动 ---------- */
 
-  rest("projects?select=name&order=name").then(function (rows) { PROJECTS = rows || []; go(); });
+  rest("projects?select=name&order=id").then(function (rows) { PROJECTS = rows || []; go(); });
 
   // 登录状态变化后重画（登录浮层关掉时 member-auth 会改 localStorage）
   setInterval(function () {

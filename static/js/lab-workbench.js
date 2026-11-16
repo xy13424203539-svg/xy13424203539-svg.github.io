@@ -114,7 +114,7 @@
       '<div class="wbn-grid2">' +
         '<label class="wbn-field"><span>标题</span><input name="title" maxlength="60" placeholder="例如 第三周结构装配进度"></label>' +
         '<label class="wbn-field"><span>类型</span><select name="kind"><option>周报</option><option>阶段汇报</option><option>结题材料</option><option>论文</option><option>竞赛材料</option><option>其他</option></select></label>' +
-        '<label class="wbn-field"><span>所属课题</span><select name="project"><option value="">不填</option>' + opts + '</select></label>' +
+        '<label class="wbn-field"><span>所属课题</span><select name="project"><option value="">请选择课题</option>' + opts + '</select></label>' +
         '<label class="wbn-field"><span>文件（PDF / PPT / Word，单份不超过 15 MB，可不传）</span><input type="file" name="file"></label>' +
       '</div>' +
       '<label class="wbn-field"><span>内容摘要</span><textarea name="summary" rows="2" maxlength="200" placeholder="一句话说明这次汇报的要点"></textarea></label>' +
@@ -159,6 +159,7 @@
       var msg = root.querySelector("#wbn-rpt-msg");
       var title = (f.title.value || "").trim();
       if (!title) { msg.className = "wbn-msg wbn-msg-err"; msg.textContent = "标题要填。"; return; }
+      if (!f.project.value) { msg.className = "wbn-msg wbn-msg-err"; msg.textContent = "先选所属课题。"; return; }
       var file = f.file.files && f.file.files[0];
       if (file && file.size > MAX_MB * 1048576) {
         msg.className = "wbn-msg wbn-msg-err"; msg.textContent = "文件超过 " + MAX_MB + " MB，先压缩或放进网盘贴链接。"; return;
@@ -209,7 +210,7 @@
       '<div class="wbn-grid2">' +
         '<label class="wbn-field"><span>成果</span><input name="title" maxlength="50" placeholder="例如 样机装配完成、专利申请受理"></label>' +
         '<label class="wbn-field"><span>达成日期</span><input name="date" type="date"></label>' +
-        '<label class="wbn-field"><span>所属课题</span><select name="project"><option value="">不填</option>' + opts + '</select></label>' +
+        '<label class="wbn-field"><span>所属课题</span><select name="project"><option value="">请选择课题</option>' + opts + '</select></label>' +
         '<label class="wbn-field"><span>佐证链接（照片或文件地址，可不填）</span><input name="evidence" maxlength="200" placeholder="https://"></label>' +
       '</div>' +
       '<label class="wbn-field"><span>说明</span><textarea name="detail" rows="2" maxlength="120" placeholder="做到什么程度，关键数据是多少"></textarea></label>' +
@@ -242,6 +243,7 @@
           var msg = root.querySelector("#wbn-ms-msg");
           var title = (f.title.value || "").trim();
           if (!title) { msg.className = "wbn-msg wbn-msg-err"; msg.textContent = "成果名称要填。"; return; }
+          if (!f.project.value) { msg.className = "wbn-msg wbn-msg-err"; msg.textContent = "先选所属课题。"; return; }
           msg.className = "wbn-msg"; msg.textContent = "保存中…";
           rpc("add_milestone", {
             p_name: me.name, p_sid: me.sid, p_project: f.project.value || "",
@@ -272,7 +274,7 @@
         '<label class="wbn-field"><span>单位</span><input name="unit" maxlength="8" value="件" placeholder="卷 / 瓶 / 包"></label>' +
         '<label class="wbn-field"><span>预估金额（元）</span><input name="budget" type="number" step="0.01" min="0" placeholder="不知道可以不填"></label>' +
         '<label class="wbn-field"><span>希望到手日期</span><input name="need_by" type="date"></label>' +
-        '<label class="wbn-field"><span>所属课题</span><select name="project"><option value="">不填</option>' + opts + '</select></label>' +
+        '<label class="wbn-field"><span>所属课题</span><select name="project"><option value="">请选择课题</option>' + opts + '</select></label>' +
       '</div>' +
       '<label class="wbn-field"><span>用途</span><textarea name="reason" rows="2" maxlength="120" placeholder="买来做什么，用在哪台设备或哪个样机上"></textarea></label>' +
       '<div class="wbn-actions"><button type="submit" class="wbn-btn wbn-btn-main">提交申请</button><span class="wbn-msg" id="wbn-pur-msg"></span></div>' +
@@ -321,6 +323,7 @@
         var msg = root.querySelector("#wbn-pur-msg");
         var item = (f.item.value || "").trim();
         if (!item) { msg.className = "wbn-msg wbn-msg-err"; msg.textContent = "物品要填。"; return; }
+        if (!f.project.value) { msg.className = "wbn-msg wbn-msg-err"; msg.textContent = "先选所属课题。"; return; }
         msg.className = "wbn-msg"; msg.textContent = "提交中…";
         rpc("submit_purchase", {
           p_name: me.name, p_sid: me.sid, p_project: f.project.value || "",

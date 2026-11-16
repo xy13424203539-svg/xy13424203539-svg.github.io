@@ -9,7 +9,7 @@
   if (!root || !cfg.url || !cfg.key) return;
 
   var STORE = "chenlab_member";
-  var MAX_MB = 15;
+  var MAX_MB = 25;
   var TAB = "reports";
   var PROJECTS = [];
 
@@ -71,8 +71,8 @@
   }
 
   var TABS = [
-    { k: "reports", t: "汇报材料" },
-    { k: "milestones", t: "阶段成果" },
+    { k: "reports", t: "汇报成果" },
+    { k: "contest", t: "竞赛成果" },
     { k: "purchases", t: "耗材申请" },
     { k: "meetings", t: "交流安排" },
     { k: "archive", t: "学生档案" }
@@ -93,7 +93,7 @@
   function go(msg) {
     var panel;
     if (TAB === "reports") panel = renderReports();
-    else if (TAB === "milestones") panel = renderMilestones();
+    else if (TAB === "contest") panel = renderContest();
     else if (TAB === "purchases") panel = renderPurchases();
     else if (TAB === "meetings") panel = renderMeetings();
     else panel = renderArchive();
@@ -112,18 +112,18 @@
     }).join("");
     return '<form class="wbn-form" id="wbn-rpt-form">' +
       '<div class="wbn-grid2">' +
-        '<label class="wbn-field"><span>标题</span><input name="title" maxlength="60" placeholder="例如 第三周结构装配进度"></label>' +
-        '<label class="wbn-field"><span>类型</span><select name="kind"><option>周报</option><option>阶段汇报</option><option>结题材料</option><option>论文</option><option>竞赛材料</option><option>其他</option></select></label>' +
+        '<label class="wbn-field"><span>标题</span><input name="title" maxlength="60" placeholder="例如 第三周结构装配进度 / 样机装配完成"></label>' +
+        '<label class="wbn-field"><span>类型</span><select name="kind"><option>周报</option><option>阶段汇报</option><option>阶段成果</option><option>结题材料</option><option>论文</option><option>竞赛材料</option><option>其他</option></select></label>' +
         '<label class="wbn-field"><span>所属课题</span><select name="project"><option value="">请选择课题</option>' + opts + '</select></label>' +
-        '<label class="wbn-field"><span>文件（PDF / PPT / Word，单份不超过 15 MB，可不传）</span><input type="file" name="file"></label>' +
+        '<label class="wbn-field"><span>证明材料（图片、压缩包、PDF、PPT、Word 等，单份不超过 25 MB，可不传）</span><input type="file" name="file"></label>' +
       '</div>' +
-      '<label class="wbn-field"><span>内容摘要</span><textarea name="summary" rows="2" maxlength="200" placeholder="一句话说明这次汇报的要点"></textarea></label>' +
-      '<div class="wbn-actions"><button type="submit" class="wbn-btn wbn-btn-main">提交汇报</button><span class="wbn-msg" id="wbn-rpt-msg"></span></div>' +
+      '<label class="wbn-field"><span>说明</span><textarea name="summary" rows="2" maxlength="200" placeholder="一句话说清这次汇报的要点，或这个成果做到什么程度、关键数据是多少"></textarea></label>' +
+      '<div class="wbn-actions"><button type="submit" class="wbn-btn wbn-btn-main">提交</button><span class="wbn-msg" id="wbn-rpt-msg"></span></div>' +
       '</form>';
   }
 
   function reportsList(rows) {
-    if (!rows.length) return '<p class="wbn-empty">还没有人提交材料。</p>';
+    if (!rows.length) return '<p class="wbn-empty">还没有人提交。</p>';
     var items = rows.map(function (r) {
       var f = r.file_url
         ? '<a class="wbn-file" href="' + esc(r.file_url) + '" target="_blank" rel="noopener">' + esc(r.file_name || "附件") + '（' + fmtSize(r.file_size) + '）</a>'
@@ -144,8 +144,8 @@
 
   function renderReports() {
     return rest("reports?select=*&order=created_at.desc&limit=60").then(function (rows) {
-      var html = '<h3 class="wbn-h">提交材料</h3>' + formReports() +
-        '<h3 class="wbn-h">全部材料<span class="wbn-count">' + rows.length + '</span></h3>' + reportsList(rows);
+      var html = '<h3 class="wbn-h">提交</h3>' + formReports() +
+        '<h3 class="wbn-h">已提交<span class="wbn-count">' + rows.length + '</span></h3>' + reportsList(rows);
       setTimeout(bindReportForm, 0);
       return html;
     });
@@ -197,65 +197,95 @@
     });
   }
 
-  /* ---------- 阶段成果 ---------- */
+  /* ---------- 竞赛成果 ---------- */
 
-  function formMilestone() {
+  var LEVELS = ["国家级", "省级", "赛区级", "市级", "校级", "国际级"];
+  var RANKS = ["一等奖", "二等奖", "三等奖", "优秀奖", "入围奖", "特等奖"];
+
+  function formContest() {
     if (!me) return "";
     var opts = PROJECTS.map(function (p) {
       var sel = (me.project && me.project === p.name) ? " selected" : "";
       return '<option' + sel + '>' + esc(p.name) + '</option>';
     }).join("");
-    var tip = me.role === "admin" ? "" : '<p class="wbn-tip">先在自己的个人资料里选定课题，才能登记这个课题的成果。</p>';
-    return tip + '<form class="wbn-form" id="wbn-ms-form">' +
+    var lv = LEVELS.map(function (x) { return "<option>" + x + "</option>"; }).join("");
+    var rk = RANKS.map(function (x) { return "<option>" + x + "</option>"; }).join("");
+    return '<form class="wbn-form" id="wbn-ct-form">' +
       '<div class="wbn-grid2">' +
-        '<label class="wbn-field"><span>成果</span><input name="title" maxlength="50" placeholder="例如 样机装配完成、专利申请受理"></label>' +
-        '<label class="wbn-field"><span>达成日期</span><input name="date" type="date"></label>' +
+        '<label class="wbn-field"><span>竞赛名称</span><input name="contest" maxlength="70" placeholder="例如 中国机械工程创新创业大赛"></label>' +
+        '<label class="wbn-field"><span>获奖级别</span><select name="level">' + lv + '</select></label>' +
+        '<label class="wbn-field"><span>奖项等次</span><select name="rank">' + rk + '</select></label>' +
+        '<label class="wbn-field"><span>获奖时间</span><input name="date" type="date"></label>' +
+        '<label class="wbn-field"><span>参赛成员（顿号分隔）</span><input name="members" maxlength="80" placeholder="例如 肖扬、李伟锐"></label>' +
         '<label class="wbn-field"><span>所属课题</span><select name="project"><option value="">请选择课题</option>' + opts + '</select></label>' +
-        '<label class="wbn-field"><span>佐证链接（照片或文件地址，可不填）</span><input name="evidence" maxlength="200" placeholder="https://"></label>' +
+        '<label class="wbn-field"><span>证书或现场照片（图片 / PDF，单份不超过 25 MB）</span><input type="file" name="file"></label>' +
       '</div>' +
-      '<label class="wbn-field"><span>说明</span><textarea name="detail" rows="2" maxlength="120" placeholder="做到什么程度，关键数据是多少"></textarea></label>' +
-      '<div class="wbn-actions"><button type="submit" class="wbn-btn wbn-btn-main">登记成果</button><span class="wbn-msg" id="wbn-ms-msg"></span></div>' +
+      '<label class="wbn-field"><span>补充说明</span><textarea name="detail" rows="2" maxlength="140" placeholder="项目名称、赛道、作品名等"></textarea></label>' +
+      '<div class="wbn-actions"><button type="submit" class="wbn-btn wbn-btn-main">提交竞赛成果</button><span class="wbn-msg" id="wbn-ct-msg"></span></div>' +
       '</form>';
   }
 
-  function milestoneList(rows) {
-    if (!rows.length) return '<p class="wbn-empty">还没有登记成果。</p>';
-    var items = rows.map(function (m) {
+  function contestTitle(c) {
+    return esc(c.title || "竞赛成果");
+  }
+
+  function contestList(rows) {
+    if (!rows.length) return '<p class="wbn-empty">还没有提交竞赛成果。</p>';
+    var items = rows.map(function (c) {
+      var f = c.file_url
+        ? '<a class="wbn-file" href="' + esc(c.file_url) + '" target="_blank" rel="noopener">' + esc(c.file_name || "证书") + '（' + fmtSize(c.file_size) + '）</a>'
+        : '<span class="wbn-dim">无证书文件</span>';
       return '<div class="wbn-item">' +
-        '<div class="wbn-item-top"><b>' + esc(m.title) + '</b><span class="wbn-kind">' + esc(fmtDate(m.achieved_on)) + '</span></div>' +
-        '<div class="wbn-item-sub">' + esc(m.project || "未指定课题") + ' · ' + esc(m.created_by || "") + '</div>' +
-        (m.detail ? '<div class="wbn-item-body">' + esc(m.detail) + '</div>' : '') +
-        (m.evidence_url ? '<div class="wbn-item-foot"><a class="wbn-file" href="' + esc(m.evidence_url) + '" target="_blank" rel="noopener">查看佐证</a></div>' : '') +
+        '<div class="wbn-item-top"><b>' + contestTitle(c) + '</b><span class="wbn-kind">' + esc(fmtDate(c.created_at)) + '</span></div>' +
+        '<div class="wbn-item-sub">' + esc(c.name) + (c.project ? ' · ' + esc(c.project) : '') + '</div>' +
+        (c.summary ? '<div class="wbn-item-body">' + esc(c.summary) + '</div>' : '') +
+        '<div class="wbn-item-foot">' + f + '</div>' +
         '</div>';
     }).join("");
     return '<div class="wbn-list">' + items + '</div>';
   }
 
-  function renderMilestones() {
-    return rest("milestones?select=*&order=achieved_on.desc&limit=40").then(function (rows) {
-      var html = '<h3 class="wbn-h">登记</h3>' + formMilestone() +
-        '<h3 class="wbn-h">已登记<span class="wbn-count">' + rows.length + '</span></h3>' + milestoneList(rows);
-      setTimeout(function () {
-        var f = root.querySelector("#wbn-ms-form");
-        if (!f) return;
-        f.addEventListener("submit", function (ev) {
-          ev.preventDefault();
-          var msg = root.querySelector("#wbn-ms-msg");
-          var title = (f.title.value || "").trim();
-          if (!title) { msg.className = "wbn-msg wbn-msg-err"; msg.textContent = "成果名称要填。"; return; }
-          if (!f.project.value) { msg.className = "wbn-msg wbn-msg-err"; msg.textContent = "先选所属课题。"; return; }
-          msg.className = "wbn-msg"; msg.textContent = "保存中…";
-          rpc("add_milestone", {
-            p_name: me.name, p_sid: me.sid, p_project: f.project.value || "",
-            p_title: title, p_date: f.date.value || null,
-            p_detail: (f.detail.value || "").trim(), p_evidence: (f.evidence.value || "").trim()
-          }).then(function (id) {
-            if (!id) throw new Error("登记被拒绝，先确认个人资料里的课题和这里一致");
-            go("已登记：" + esc(title));
-          }).catch(function (e) { msg.className = "wbn-msg wbn-msg-err"; msg.textContent = e.message; });
-        });
-      }, 0);
+  function renderContest() {
+    var q = "reports?select=*&kind=eq." + encodeURIComponent("竞赛成果") + "&order=created_at.desc&limit=40";
+    return rest(q).then(function (rows) {
+      var html = '<h3 class="wbn-h">提交</h3>' + formContest() +
+        '<h3 class="wbn-h">已提交<span class="wbn-count">' + rows.length + '</span></h3>' + contestList(rows);
+      setTimeout(bindContestForm, 0);
       return html;
+    });
+  }
+
+  function bindContestForm() {
+    var f = root.querySelector("#wbn-ct-form");
+    if (!f) return;
+    f.addEventListener("submit", function (ev) {
+      ev.preventDefault();
+      var msg = root.querySelector("#wbn-ct-msg");
+      var cname = (f.contest.value || "").trim();
+      if (!cname) { msg.className = "wbn-msg wbn-msg-err"; msg.textContent = "竞赛名称要填。"; return; }
+      if (!f.project.value) { msg.className = "wbn-msg wbn-msg-err"; msg.textContent = "先选所属课题。"; return; }
+      var file = f.file.files && f.file.files[0];
+      if (file && file.size > MAX_MB * 1048576) {
+        msg.className = "wbn-msg wbn-msg-err"; msg.textContent = "文件超过 " + MAX_MB + " MB，压缩一下再传。"; return;
+      }
+      msg.className = "wbn-msg"; msg.textContent = file ? "上传中…" : "提交中…";
+      var up = file ? uploadFile(file) : Promise.resolve({ url: "", name: "", size: 0 });
+      up.then(function (u) {
+        var bits = [f.level.value, f.rank.value];
+        var mem = (f.members.value || "").trim();
+        if (mem) bits.push("成员：" + mem);
+        if (f.date.value) bits.push(f.date.value);
+        var extra = (f.detail.value || "").trim();
+        if (extra) bits.push(extra);
+        return rpc("submit_report", {
+          p_name: me.name, p_sid: me.sid, p_project: f.project.value,
+          p_title: cname, p_kind: "竞赛成果", p_summary: bits.join(" · "),
+          p_file_name: u.name, p_file_url: u.url, p_file_size: u.size
+        });
+      }).then(function (id) {
+        if (!id) throw new Error("提交被拒绝，请确认登录状态");
+        go("已提交：" + esc(cname));
+      }).catch(function (e) { msg.className = "wbn-msg wbn-msg-err"; msg.textContent = e.message; });
     });
   }
 
@@ -427,23 +457,13 @@
           '<div class="wbn-card-meta">' + (s.stage ? esc(s.stage) : "未开始") + ' · ' + pct + '%</div>' +
           '<div class="wbn-card-stats">' +
             '<span>材料 ' + (s.reports || 0) + '</span>' +
-            '<span>成果 ' + (s.milestones || 0) + '</span>' +
             '<span>采购 ' + (s.purchases || 0) + '（在办 ' + (s.purchases_open || 0) + '）</span>' +
           '</div>' +
           (s.latest_report ? '<div class="wbn-card-last">最近：' + esc(s.latest_report) + '<br><span class="wbn-dim">' + esc(s.latest_report_at) + '</span></div>' : '<div class="wbn-card-last wbn-dim">还没提交材料</div>') +
           '</div>';
       }).join("");
-      var ms = (d.milestones || []).map(function (m) {
-        return '<div class="wbn-item"><div class="wbn-item-top"><b>' + esc(m.title) + '</b><span class="wbn-kind">' + esc(m.achieved_on || "") + '</span></div>' +
-          '<div class="wbn-item-sub">' + esc(m.project || "未指定课题") + ' · ' + esc(m.created_by || "") + '</div>' +
-          (m.detail ? '<div class="wbn-item-body">' + esc(m.detail) + '</div>' : "") +
-          (m.evidence_url ? '<div class="wbn-item-foot"><a class="wbn-file" href="' + esc(m.evidence_url) + '" target="_blank" rel="noopener">查看佐证</a></div>' : "") +
-          '</div>';
-      }).join("");
       return '<h3 class="wbn-h">学生档案<span class="wbn-count">' + list.length + ' 人</span></h3>' +
-        '<div class="wbn-cards">' + cards + '</div>' +
-        '<h3 class="wbn-h">阶段性成果<span class="wbn-count">' + (d.milestones || []).length + '</span></h3>' +
-        ((d.milestones || []).length ? '<div class="wbn-list">' + ms + '</div>' : '<p class="wbn-empty">还没有登记成果。</p>');
+        '<div class="wbn-cards">' + cards + '</div>';
     });
   }
 

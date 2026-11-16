@@ -23,3 +23,6 @@ main:
   - name: 设备登记
     url: equipment/
     weight: 80
+  - name: 工作台
+    url: workbench/
+    weight: 90

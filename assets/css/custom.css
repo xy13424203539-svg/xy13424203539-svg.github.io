@@ -1183,3 +1183,376 @@ html.dark .adm-stat span {
 html.dark .mp-chip-link {
   color: #9ec5f0;
 }
+
+/* ===== 实验室工作台 ===== */
+.wbn-root {
+  margin: 18px 0 32px;
+}
+
+.wbn-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  flex-wrap: wrap;
+  padding: 11px 14px;
+  border: 1px solid #dbe4ee;
+  border-radius: 10px;
+  background: #f7fafd;
+  font-size: 13.5px;
+  color: #33475c;
+}
+
+.wbn-who b {
+  color: #16324f;
+}
+
+.wbn-tabs {
+  display: flex;
+  gap: 6px;
+  flex-wrap: wrap;
+  margin: 18px 0 16px;
+  border-bottom: 1px solid #e3ebf4;
+}
+
+.wbn-tab {
+  padding: 8px 14px;
+  border: 0;
+  border-bottom: 2px solid transparent;
+  background: none;
+  font-size: 14px;
+  color: #5b6b7d;
+  cursor: pointer;
+}
+
+.wbn-tab.is-on {
+  color: #16324f;
+  font-weight: 600;
+  border-bottom-color: #2f6b8f;
+}
+
+.wbn-h {
+  margin: 22px 0 10px;
+  font-size: 16px;
+  color: #16324f;
+}
+
+.wbn-count {
+  margin-left: 8px;
+  font-size: 12.5px;
+  font-weight: 400;
+  color: #8d9aa9;
+}
+
+.wbn-form {
+  padding: 14px 16px;
+  border: 1px solid #dbe4ee;
+  border-radius: 10px;
+  background: #fbfcfd;
+}
+
+.wbn-grid2 {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px 14px;
+}
+
+.wbn-field {
+  display: block;
+  margin-bottom: 10px;
+  font-size: 12.5px;
+  color: #5b6b7d;
+}
+
+.wbn-field span {
+  display: block;
+  margin-bottom: 4px;
+}
+
+.wbn-field input,
+.wbn-field select,
+.wbn-field textarea {
+  width: 100%;
+  padding: 7px 9px;
+  border: 1px solid #d7dde5;
+  border-radius: 8px;
+  font-size: 13.5px;
+  font-family: inherit;
+  background: #fff;
+  color: #1f2937;
+}
+
+.wbn-field input[type="file"] {
+  padding: 5px 7px;
+  background: #f4f7fa;
+}
+
+.wbn-actions {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.wbn-btn {
+  padding: 7px 16px;
+  border: 1px solid #cfd9e4;
+  border-radius: 8px;
+  background: #fff;
+  font-size: 13.5px;
+  cursor: pointer;
+  color: #33475c;
+}
+
+.wbn-btn-main {
+  border-color: #16324f;
+  background: #16324f;
+  color: #fff;
+}
+
+.wbn-btn-main:hover {
+  background: #1f4368;
+}
+
+.wbn-mini {
+  padding: 4px 10px;
+  font-size: 12.5px;
+}
+
+.wbn-msg {
+  font-size: 13px;
+  color: #2f6b8f;
+}
+
+.wbn-msg-err {
+  color: #b0413e;
+}
+
+.wbn-tip {
+  margin-bottom: 12px;
+  padding: 9px 12px;
+  border-left: 3px solid #2f6b8f;
+  background: #f2f7fb;
+  font-size: 13.5px;
+  color: #33475c;
+}
+
+.wbn-list {
+  display: grid;
+  gap: 10px;
+}
+
+.wbn-item {
+  padding: 12px 14px;
+  border: 1px solid #e3ebf4;
+  border-radius: 10px;
+  background: #fff;
+}
+
+.wbn-item-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  font-size: 14px;
+  color: #16324f;
+}
+
+.wbn-item-sub {
+  margin-top: 3px;
+  font-size: 12.5px;
+  color: #6b7a8c;
+}
+
+.wbn-item-body {
+  margin-top: 6px;
+  font-size: 13.5px;
+  line-height: 1.65;
+  color: #33475c;
+}
+
+.wbn-item-foot {
+  margin-top: 7px;
+  font-size: 12.5px;
+}
+
+.wbn-quiet {
+  color: #6b7a8c;
+}
+
+.wbn-dim {
+  color: #8d9aa9;
+}
+
+.wbn-kind {
+  padding: 2px 8px;
+  border-radius: 20px;
+  background: #eef4f9;
+  font-size: 11.5px;
+  color: #2f6b8f;
+  white-space: nowrap;
+}
+
+.wbn-badge {
+  padding: 2px 9px;
+  border-radius: 20px;
+  font-size: 11.5px;
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+.wbn-badge-pending { background: #fdf3e2; color: #9a6413; }
+.wbn-badge-approved { background: #e6f2e9; color: #2c6b3c; }
+.wbn-badge-ordered { background: #e8eef7; color: #2f5c8f; }
+.wbn-badge-done { background: #e8f0ee; color: #2b6157; }
+.wbn-badge-rejected { background: #f8e8e7; color: #a0403c; }
+
+.wbn-file {
+  color: #2f6b8f;
+  text-decoration: underline;
+}
+
+.wbn-empty {
+  margin: 10px 0;
+  font-size: 13.5px;
+  color: #8d9aa9;
+}
+
+.wbn-admin-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+  margin-top: 9px;
+  padding-top: 9px;
+  border-top: 1px dashed #e3ebf4;
+}
+
+.wbn-admin-row select,
+.wbn-admin-row input {
+  padding: 5px 8px;
+  border: 1px solid #d7dde5;
+  border-radius: 7px;
+  font-size: 12.5px;
+  font-family: inherit;
+  background: #fff;
+}
+
+.wbn-admin-row input {
+  flex: 1;
+  min-width: 120px;
+}
+
+.wbn-cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(215px, 1fr));
+  gap: 11px;
+}
+
+.wbn-card {
+  padding: 12px 13px;
+  border: 1px solid #e0e8f0;
+  border-radius: 10px;
+  background: #fff;
+}
+
+.wbn-card-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  font-size: 14.5px;
+  color: #16324f;
+}
+
+.wbn-card-proj {
+  margin-top: 4px;
+  font-size: 12.5px;
+  color: #4a5c70;
+  min-height: 18px;
+}
+
+.wbn-bar {
+  height: 7px;
+  margin: 8px 0 5px;
+  border-radius: 4px;
+  background: #e9eff6;
+  overflow: hidden;
+}
+
+.wbn-bar i {
+  display: block;
+  height: 7px;
+  background: #2f6b8f;
+}
+
+.wbn-card-meta {
+  font-size: 12px;
+  color: #6b7a8c;
+}
+
+.wbn-card-stats {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+  margin-top: 7px;
+  font-size: 12px;
+  color: #4a5c70;
+}
+
+.wbn-card-last {
+  margin-top: 8px;
+  padding-top: 8px;
+  border-top: 1px dashed #edf1f6;
+  font-size: 12px;
+  line-height: 1.5;
+  color: #4a5c70;
+}
+
+@media (max-width: 640px) {
+  .wbn-grid2 {
+    grid-template-columns: 1fr;
+  }
+
+  .wbn-cards {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .wbn-head {
+    font-size: 12.5px;
+  }
+}
+
+html.dark .wbn-head,
+html.dark .wbn-form,
+html.dark .wbn-item,
+html.dark .wbn-card {
+  background: #171d25;
+  border-color: #2a3240;
+  color: #cbd5e1;
+}
+
+html.dark .wbn-h,
+html.dark .wbn-item-top b,
+html.dark .wbn-card-top b,
+html.dark .wbn-who b {
+  color: #9ec5f0;
+}
+
+html.dark .wbn-field input,
+html.dark .wbn-field select,
+html.dark .wbn-field textarea,
+html.dark .wbn-admin-row input,
+html.dark .wbn-admin-row select {
+  background: #10151c;
+  border-color: #2a3240;
+  color: #e5e7eb;
+}
+
+html.dark .wbn-tabs {
+  border-bottom-color: #2a3240;
+}
+
+html.dark .wbn-tip {
+  background: #182029;
+  color: #cbd5e1;
+}

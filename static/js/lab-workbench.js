@@ -126,7 +126,7 @@
         '<label class="wbn-field"><span>标题</span><input name="title" maxlength="60" placeholder="例如 第三周结构装配进度 / 样机装配完成"></label>' +
         '<label class="wbn-field"><span>类型</span><select name="kind"><option>周报</option><option>阶段汇报</option><option>阶段成果</option><option>结题材料</option><option>论文</option><option>竞赛材料</option><option>其他</option></select></label>' +
         '<label class="wbn-field"><span>所属课题</span><select name="project"><option value="">请选择课题</option>' + opts + '</select></label>' +
-        '<label class="wbn-field"><span>证明材料（图片、压缩包、PDF、PPT、Word 等，单份不超过 25 MB，可不传）</span><input type="file" name="file"></label>' +
+        '<label class="wbn-field"><span>证明材料（图片、压缩包、PDF、PPT、Word 等，单份不超过 25 MB，可不传；也可以 Ctrl+V 粘贴截图或文件、直接拖进来）</span><input type="file" name="file"></label>' +
       '</div>' +
       '<label class="wbn-field"><span>说明</span><textarea name="summary" rows="2" maxlength="200" placeholder="一句话说清这次汇报的要点，或这个成果做到什么程度、关键数据是多少"></textarea></label>' +
       '<div class="wbn-actions"><button type="submit" class="wbn-btn wbn-btn-main">提交</button><span class="wbn-msg" id="wbn-rpt-msg"></span></div>' +
@@ -173,7 +173,7 @@
     var form = me
       ? '<form class="wbn-cmt-form" data-report="' + id + '">' +
           '<div class="wbn-cmt-row">' +
-            '<input name="body" maxlength="300" placeholder="回复这条，可直接贴链接；也可只发图片或语音">' +
+            '<input name="body" maxlength="300" placeholder="回复这条：可以直接贴链接、Ctrl+V 粘贴截图或文件">' +
             '<label class="wbn-cmt-pick">附件<input type="file" name="file" hidden accept="image/*,.pdf,.zip,.doc,.docx,.ppt,.pptx,.xlsx,.txt"></label>' +
             '<button type="button" class="wbn-cmt-rec">录音</button>' +
             '<button type="submit" class="wbn-cmt-send">发送</button>' +
@@ -200,6 +200,11 @@
       }
 
       fileIn.addEventListener("change", function () {
+        f._voice = null;
+        showPicked(fileIn.files);
+      });
+
+      pasteInto(f, fileIn, function () {
         f._voice = null;
         showPicked(fileIn.files);
       });
@@ -305,6 +310,7 @@
   function bindReportForm() {
     var f = root.querySelector("#wbn-rpt-form");
     if (!f) return;
+    pasteInto(f, f.file);
     f.addEventListener("submit", function (ev) {
       ev.preventDefault();
       var msg = root.querySelector("#wbn-rpt-msg");
@@ -329,6 +335,58 @@
       }).catch(function (e) {
         msg.className = "wbn-msg wbn-msg-err"; msg.textContent = e.message;
       });
+    });
+  }
+
+  /* 支持在表单里 Ctrl+V 粘贴截图/文件，或直接把文件拖进来 */
+  function pasteInto(form, input, onPicked) {
+    if (!form || !input) return;
+
+    function hand(file) {
+      if (!file) return false;
+      var f = file;
+      if (!file.name || file.name.indexOf(".") < 0) {
+        var ext = (file.type && file.type.indexOf("image/") === 0) ? (file.type.split("/")[1] || "png") : "file";
+        try { f = new File([file], "粘贴_" + Date.now() + "." + ext, { type: file.type }); } catch (e) { f = file; }
+      }
+      try {
+        var dt = new DataTransfer();
+        dt.items.add(f);
+        input.files = dt.files;
+        input.dispatchEvent(new Event("change", { bubbles: true }));
+        if (onPicked) onPicked(f);
+        return true;
+      } catch (e) {
+        return false;
+      }
+    }
+
+    form.addEventListener("paste", function (ev) {
+      var cd = ev.clipboardData || window.clipboardData;
+      if (!cd) return;
+      if (cd.files && cd.files.length) {
+        if (hand(cd.files[0])) ev.preventDefault();
+        return;
+      }
+      var items = cd.items || [];
+      for (var i = 0; i < items.length; i++) {
+        if (items[i].kind === "file") {
+          var f = items[i].getAsFile();
+          if (hand(f)) { ev.preventDefault(); return; }
+        }
+      }
+    });
+
+    form.addEventListener("dragover", function (ev) {
+      if (ev.dataTransfer && ev.dataTransfer.files && ev.dataTransfer.files.length) {
+        ev.preventDefault();
+      }
+    });
+    form.addEventListener("drop", function (ev) {
+      if (ev.dataTransfer && ev.dataTransfer.files && ev.dataTransfer.files.length) {
+        ev.preventDefault();
+        hand(ev.dataTransfer.files[0]);
+      }
     });
   }
 
@@ -369,7 +427,7 @@
         '<label class="wbn-field"><span>获奖时间</span><input name="date" type="date"></label>' +
         '<label class="wbn-field"><span>参赛成员（顿号分隔）</span><input name="members" maxlength="80" placeholder="例如 肖扬、李伟锐"></label>' +
         '<label class="wbn-field"><span>所属课题</span><select name="project"><option value="">请选择课题</option>' + opts + '</select></label>' +
-        '<label class="wbn-field"><span>证书或现场照片（图片 / PDF，单份不超过 25 MB）</span><input type="file" name="file"></label>' +
+        '<label class="wbn-field"><span>证书或现场照片（图片 / PDF，单份不超过 25 MB；也可以 Ctrl+V 粘贴、直接拖进来）</span><input type="file" name="file"></label>' +
       '</div>' +
       '<label class="wbn-field"><span>补充说明</span><textarea name="detail" rows="2" maxlength="140" placeholder="项目名称、赛道、作品名等"></textarea></label>' +
       '<div class="wbn-actions"><button type="submit" class="wbn-btn wbn-btn-main">提交竞赛成果</button><span class="wbn-msg" id="wbn-ct-msg"></span></div>' +
@@ -415,6 +473,7 @@
   function bindContestForm() {
     var f = root.querySelector("#wbn-ct-form");
     if (!f) return;
+    pasteInto(f, f.file);
     f.addEventListener("submit", function (ev) {
       ev.preventDefault();
       var msg = root.querySelector("#wbn-ct-msg");

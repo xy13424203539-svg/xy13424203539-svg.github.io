@@ -133,7 +133,56 @@
       '</form>';
   }
 
-  function reportsList(rows) {
+  function commentsByReport(rows) {
+    var g = {};
+    (rows || []).forEach(function (c) {
+      var k = String(c.report_id);
+      (g[k] = g[k] || []).push(c);
+    });
+    return g;
+  }
+
+  function threadBlock(id, cs) {
+    var list = (cs || []).map(function (c) {
+      var t = String(c.created_at || "").slice(0, 16).replace("T", " ");
+      return '<div class="wbn-cmt"><div class="wbn-cmt-h"><b>' + esc(c.name) + '</b><span class="wbn-cmt-t">' + esc(t) + '</span></div>' +
+        '<div class="wbn-cmt-b">' + esc(c.body) + '</div></div>';
+    }).join("");
+    var form = me
+      ? '<form class="wbn-cmt-form" data-report="' + id + '">' +
+          '<input name="body" maxlength="300" placeholder="回复这条，例如“证书收到，等次按省级二等登记”">' +
+          '<button type="submit" class="wbn-cmt-send">发送</button></form>'
+      : '<p class="wbn-cmt-hint">登录后可以回复。</p>';
+    return '<details class="wbn-thread"><summary>讨论 ' + (cs ? cs.length : 0) + '</summary>' +
+      '<div class="wbn-cmt-list">' + (list || '<p class="wbn-cmt-hint">还没有留言。</p>') + '</div>' + form + '</details>';
+  }
+
+  function bindThreads() {
+    Array.prototype.forEach.call(root.querySelectorAll(".wbn-cmt-form"), function (f) {
+      f.addEventListener("submit", function (ev) {
+        ev.preventDefault();
+        if (!me) return;
+        var body = (f.body.value || "").trim();
+        if (!body) return;
+        var btn = f.querySelector(".wbn-cmt-send");
+        btn.disabled = true;
+        btn.textContent = "发送中…";
+        rpc("add_comment", {
+          p_name: me.name, p_sid: me.sid,
+          p_report_id: Number(f.getAttribute("data-report")), p_body: body
+        }).then(function (id) {
+          if (!id) throw new Error("留言被拒绝，请重新登录后再试");
+          go();
+        }).catch(function (e) {
+          btn.disabled = false;
+          btn.textContent = "发送";
+          alert(e.message);
+        });
+      });
+    });
+  }
+
+  function reportsList(rows, cm) {
     if (!rows.length) return '<p class="wbn-empty">还没有人提交。</p>';
     var items = rows.map(function (r) {
       var f = r.file_url
@@ -144,6 +193,7 @@
         '<div class="wbn-item-sub">' + esc(r.name) + (r.project ? ' · ' + esc(r.project) : '') + ' · ' + esc(fmtDate(r.created_at)) + '</div>' +
         (r.summary ? '<div class="wbn-item-body">' + esc(r.summary) + '</div>' : '') +
         '<div class="wbn-item-foot">' + f + '</div>' +
+        threadBlock(r.id, (cm || {})[String(r.id)]) +
         '</div>';
     }).join("");
     return '<div class="wbn-list">' + items + '</div>';
@@ -154,10 +204,15 @@
   }
 
   function renderReports() {
-    return rest("reports?select=*&order=created_at.desc&limit=60").then(function (rows) {
+    return Promise.all([
+      rest("reports?select=*&order=created_at.desc&limit=60"),
+      rest("report_comments?select=*&order=id.asc&limit=400")
+    ]).then(function (res) {
+      var rows = res[0] || [];
+      var cm = commentsByReport(res[1]);
       var html = '<h3 class="wbn-h">提交</h3>' + formReports() +
-        '<h3 class="wbn-h">已提交<span class="wbn-count">' + rows.length + '</span></h3>' + reportsList(rows);
-      setTimeout(bindReportForm, 0);
+        '<h3 class="wbn-h">已提交<span class="wbn-count">' + rows.length + '</span></h3>' + reportsList(rows, cm);
+      setTimeout(function () { bindReportForm(); bindThreads(); }, 0);
       return html;
     });
   }
@@ -240,7 +295,7 @@
     return esc(c.title || "竞赛成果");
   }
 
-  function contestList(rows) {
+  function contestList(rows, cm) {
     if (!rows.length) return '<p class="wbn-empty">还没有提交竞赛成果。</p>';
     var items = rows.map(function (c) {
       var f = c.file_url
@@ -251,6 +306,7 @@
         '<div class="wbn-item-sub">' + esc(c.name) + (c.project ? ' · ' + esc(c.project) : '') + '</div>' +
         (c.summary ? '<div class="wbn-item-body">' + esc(c.summary) + '</div>' : '') +
         '<div class="wbn-item-foot">' + f + '</div>' +
+        threadBlock(c.id, (cm || {})[String(c.id)]) +
         '</div>';
     }).join("");
     return '<div class="wbn-list">' + items + '</div>';
@@ -258,10 +314,15 @@
 
   function renderContest() {
     var q = "reports?select=*&kind=eq." + encodeURIComponent("竞赛成果") + "&order=created_at.desc&limit=40";
-    return rest(q).then(function (rows) {
+    return Promise.all([
+      rest(q),
+      rest("report_comments?select=*&order=id.asc&limit=400")
+    ]).then(function (res) {
+      var rows = res[0] || [];
+      var cm = commentsByReport(res[1]);
       var html = '<h3 class="wbn-h">提交</h3>' + formContest() +
-        '<h3 class="wbn-h">已提交<span class="wbn-count">' + rows.length + '</span></h3>' + contestList(rows);
-      setTimeout(bindContestForm, 0);
+        '<h3 class="wbn-h">已提交<span class="wbn-count">' + rows.length + '</span></h3>' + contestList(rows, cm);
+      setTimeout(function () { bindContestForm(); bindThreads(); }, 0);
       return html;
     });
   }

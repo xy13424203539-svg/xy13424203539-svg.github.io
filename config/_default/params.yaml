@@ -61,6 +61,11 @@ hugoblox:
   typography:
     # Theme pack: name from data/fonts/
     pack: "academic"
+    # 用系统自带字体，不再向 Google Fonts 拉字体（国内访问会被墙，首屏会卡住几秒）
+    families:
+      heading: "system-serif"
+      body: "system-serif"
+      code: "system-mono"
 
   # ────────────────────────────────────────────────────────────────────────────
   # LAYOUT

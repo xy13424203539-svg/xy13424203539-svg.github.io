@@ -9,7 +9,7 @@
   if (!root || !cfg.url || !cfg.key) return;
 
   var STORE = "chenlab_member";
-  var MAX_MB = 25;
+  var MAX_MB = 50; /* Supabase 免费额度单文件上限 50 MB */
   var TAB = "reports";
   var PROJECTS = [];
   var CLIST = {};
@@ -67,6 +67,26 @@
 
   var STATUS_TEXT = { pending: "待审核", approved: "已批准", ordered: "已采购", rejected: "不批准", done: "已完成" };
 
+  function projectOpts(cur) {
+    return PROJECTS.map(function (p) {
+      var sel = (cur && cur === p.name) ? " selected" : "";
+      return '<option' + sel + '>' + esc(p.name) + '</option>';
+    }).join("");
+  }
+
+  function fileZone(label) {
+    return '<div class="wbn-drop">' +
+      '<input type="file" name="file" hidden>' +
+      '<div class="wbn-drop-row">' +
+        '<button type="button" class="wbn-plus" title="从文件夹选择文件">+</button>' +
+        '<span class="wbn-drop-t">' + esc(label || "添加文件") + '</span>' +
+        '<button type="button" class="wbn-drop-clear" hidden>移除</button>' +
+      '</div>' +
+      '<div class="wbn-drop-hint">点 + 打开文件夹选择；也可以 Ctrl+V 粘贴截图或文件，或直接把文件拖进来</div>' +
+      '<div class="wbn-drop-file"></div>' +
+    '</div>';
+  }
+
   function statusBadge(s) {
     return '<span class="wbn-badge wbn-badge-' + esc(s) + '">' + esc(STATUS_TEXT[s] || s) + "</span>";
   }
@@ -117,29 +137,16 @@
 
   function formReports() {
     if (!me) return "";
-    var opts = PROJECTS.map(function (p) {
-      var sel = (me.project && me.project === p.name) ? " selected" : "";
-      return '<option' + sel + '>' + esc(p.name) + '</option>';
-    }).join("");
     return '<form class="wbn-form" id="wbn-rpt-form">' +
       '<div class="wbn-grid2">' +
         '<label class="wbn-field"><span>标题</span><input name="title" maxlength="60" placeholder="例如 第三周结构装配进度 / 样机装配完成"></label>' +
         '<label class="wbn-field"><span>类型</span><select name="kind"><option>周报</option><option>阶段汇报</option><option>阶段成果</option><option>结题材料</option><option>论文</option><option>竞赛材料</option><option>其他</option></select></label>' +
-        '<label class="wbn-field"><span>所属课题</span><select name="project"><option value="">请选择课题</option>' + opts + '</select></label>' +
-        '<label class="wbn-field"><span>证明材料（图片、压缩包、PDF、PPT、Word 等，单份不超过 25 MB，可不传；也可以 Ctrl+V 粘贴截图或文件、直接拖进来）</span><input type="file" name="file"></label>' +
+        '<label class="wbn-field"><span>所属课题</span><select name="project"><option value="">请选择课题</option>' + projectOpts(me.project) + '</select></label>' +
       '</div>' +
+      '<div class="wbn-field"><span>证明材料（图片、压缩包、PDF、PPT、Word 等，单份最大 50 MB，可不传）</span>' + fileZone("添加证明材料") + '</div>' +
       '<label class="wbn-field"><span>说明</span><textarea name="summary" rows="2" maxlength="200" placeholder="一句话说清这次汇报的要点，或这个成果做到什么程度、关键数据是多少"></textarea></label>' +
       '<div class="wbn-actions"><button type="submit" class="wbn-btn wbn-btn-main">提交</button><span class="wbn-msg" id="wbn-rpt-msg"></span></div>' +
       '</form>';
-  }
-
-  function commentsByReport(rows) {
-    var g = {};
-    (rows || []).forEach(function (c) {
-      var k = String(c.report_id);
-      (g[k] = g[k] || []).push(c);
-    });
-    return g;
   }
 
   function linkify(txt) {
@@ -162,33 +169,58 @@
       esc(c.file_name || "附件") + "</a>";
   }
 
-  function threadBlock(id, cs) {
-    var list = (cs || []).map(function (c) {
-      var t = String(c.created_at || "").slice(0, 16).replace("T", " ");
-      return '<div class="wbn-cmt"><div class="wbn-cmt-h"><b>' + esc(c.name) + '</b><span class="wbn-cmt-t">' + esc(t) + '</span></div>' +
-        (c.body ? '<div class="wbn-cmt-b">' + linkify(c.body) + '</div>' : '') +
-        (c.file_url ? '<div class="wbn-cmt-attach">' + attachHtml(c) + '</div>' : '') +
-        '</div>';
-    }).join("");
+  function countBy(rows) {
+    var g = {};
+    (rows || []).forEach(function (c) { var k = String(c.report_id); g[k] = (g[k] || 0) + 1; });
+    return g;
+  }
+
+  function threadBlock(id, n) {
     var form = me
       ? '<form class="wbn-cmt-form" data-report="' + id + '">' +
           '<div class="wbn-cmt-row">' +
             '<input name="body" maxlength="300" placeholder="回复这条：可以直接贴链接、Ctrl+V 粘贴截图或文件">' +
-            '<label class="wbn-cmt-pick">附件<input type="file" name="file" hidden accept="image/*,.pdf,.zip,.doc,.docx,.ppt,.pptx,.xlsx,.txt"></label>' +
+            '<button type="button" class="wbn-cmt-plus" title="添加图片或文件">+</button>' +
             '<button type="button" class="wbn-cmt-rec">录音</button>' +
             '<button type="submit" class="wbn-cmt-send">发送</button>' +
+            '<input type="file" name="file" hidden accept="image/*,.pdf,.zip,.doc,.docx,.ppt,.pptx,.xlsx,.txt,.mp4">' +
           '</div>' +
           '<div class="wbn-cmt-picked"></div>' +
         '</form>'
       : '<p class="wbn-cmt-hint">登录后可以回复。</p>';
-    return '<details class="wbn-thread"><summary>讨论 ' + (cs ? cs.length : 0) + '</summary>' +
-      '<div class="wbn-cmt-list">' + (list || '<p class="wbn-cmt-hint">还没有留言。</p>') + '</div>' + form + '</details>';
+    return '<details class="wbn-thread" data-report="' + id + '"><summary>讨论 ' + (n || 0) + '</summary>' +
+      '<div class="wbn-cmt-list"><p class="wbn-cmt-hint">展开后加载留言。</p></div>' + form + '</details>';
+  }
+
+  function cmtHtml(c) {
+    var t = String(c.created_at || "").slice(0, 16).replace("T", " ");
+    return '<div class="wbn-cmt"><div class="wbn-cmt-h"><b>' + esc(c.name) + '</b><span class="wbn-cmt-t">' + esc(t) + '</span></div>' +
+      (c.body ? '<div class="wbn-cmt-b">' + linkify(c.body) + '</div>' : '') +
+      (c.file_url ? '<div class="wbn-cmt-attach">' + attachHtml(c) + '</div>' : '') +
+      '</div>';
   }
 
   function bindThreads() {
+    Array.prototype.forEach.call(root.querySelectorAll(".wbn-thread"), function (d) {
+      d.addEventListener("toggle", function () {
+        if (!d.open || d.getAttribute("data-loaded")) return;
+        d.setAttribute("data-loaded", "1");
+        var list = d.querySelector(".wbn-cmt-list");
+        var id = d.getAttribute("data-report");
+        rest("report_comments?select=*&report_id=eq." + encodeURIComponent(id) + "&order=id.asc&limit=200")
+          .then(function (rows) {
+            list.innerHTML = rows.length ? rows.map(cmtHtml).join("") : '<p class="wbn-cmt-hint">还没有留言。</p>';
+            var s = d.querySelector("summary");
+            if (s) s.textContent = "讨论 " + rows.length;
+          })
+          .catch(function () { list.innerHTML = '<p class="wbn-cmt-hint">留言没加载出来，刷新试试。</p>'; });
+      });
+    });
+
     Array.prototype.forEach.call(root.querySelectorAll(".wbn-cmt-form"), function (f) {
       var picked = f.querySelector(".wbn-cmt-picked");
       var fileIn = f.querySelector('input[name="file"]');
+      var plusBtn = f.querySelector(".wbn-cmt-plus");
       var recBtn = f.querySelector(".wbn-cmt-rec");
       var rec = { mr: null, chunks: [], stream: null };
 
@@ -198,6 +230,8 @@
         if (f._voice) arr.push("语音 " + Math.round((f._voice.size || 0) / 1024) + " KB");
         picked.textContent = arr.length ? "已选择：" + arr.join("、") : "";
       }
+
+      if (plusBtn) plusBtn.addEventListener("click", function () { fileIn.click(); });
 
       fileIn.addEventListener("change", function () {
         f._voice = null;
@@ -250,6 +284,10 @@
         var body = (f.body.value || "").trim();
         var file = f._voice || (fileIn.files && fileIn.files[0]) || null;
         if (!body && !file) return;
+        if (file && file.size > MAX_MB * 1048576) {
+          picked.textContent = "单个文件最大 " + MAX_MB + " MB，这个有点大，压缩一下或贴网盘链接。";
+          return;
+        }
         var btn = f.querySelector(".wbn-cmt-send");
         btn.disabled = true;
         btn.textContent = file ? "上传中…" : "发送中…";
@@ -294,23 +332,36 @@
   }
 
   function renderReports() {
-    return Promise.all([
-      rest("reports?select=*&order=created_at.desc&limit=60"),
-      rest("report_comments?select=*&order=id.asc&limit=400")
+    setTimeout(function () {
+      bindReportForm();
+      fillReports();
+    }, 0);
+    return '<h3 class="wbn-h">提交</h3>' + formReports() +
+      '<h3 class="wbn-h">已提交<span class="wbn-count" id="wbn-rpt-cnt"></span></h3>' +
+      '<div id="wbn-rpt-slot"><p class="wbn-dim">加载中…</p></div>';
+  }
+
+  function fillReports() {
+    var slot = root.querySelector("#wbn-rpt-slot");
+    if (!slot) return;
+    Promise.all([
+      rest("reports?select=*&order=created_at.desc&limit=40"),
+      rest("report_comments?select=report_id&limit=1200")
     ]).then(function (res) {
       var rows = res[0] || [];
-      var cm = commentsByReport(res[1]);
-      var html = '<h3 class="wbn-h">提交</h3>' + formReports() +
-        '<h3 class="wbn-h">已提交<span class="wbn-count">' + rows.length + '</span></h3>' + reportsList(rows, cm);
-      setTimeout(function () { bindReportForm(); bindThreads(); }, 0);
-      return html;
+      slot.innerHTML = reportsList(rows, countBy(res[1]));
+      var c = root.querySelector("#wbn-rpt-cnt");
+      if (c) c.textContent = rows.length;
+      bindThreads();
+    }).catch(function (e) {
+      slot.innerHTML = '<p class="wbn-empty">列表没加载出来：' + esc(e.message) + '</p>';
     });
   }
 
   function bindReportForm() {
     var f = root.querySelector("#wbn-rpt-form");
     if (!f) return;
-    pasteInto(f, f.file);
+    bindFileZone(f);
     f.addEventListener("submit", function (ev) {
       ev.preventDefault();
       var msg = root.querySelector("#wbn-rpt-msg");
@@ -340,7 +391,8 @@
 
   /* 支持在表单里 Ctrl+V 粘贴截图/文件，或直接把文件拖进来 */
   function pasteInto(form, input, onPicked) {
-    if (!form || !input) return;
+    if (!form || !input || form.__wbnPaste) return;
+    form.__wbnPaste = 1;
 
     function hand(file) {
       if (!file) return false;
@@ -390,6 +442,39 @@
     });
   }
 
+  /* 上传框：+ 号打开文件夹、Ctrl+V 粘贴、拖入，显示已选文件并可移除 */
+  function bindFileZone(form, onPicked) {
+    Array.prototype.forEach.call(form.querySelectorAll(".wbn-drop"), function (zone) {
+      var input = zone.querySelector('input[type="file"]');
+      if (!input) return;
+      var plus = zone.querySelector(".wbn-plus");
+      var clear = zone.querySelector(".wbn-drop-clear");
+      var box = zone.querySelector(".wbn-drop-file");
+
+      function refresh() {
+        var f = input.files && input.files[0];
+        if (!f) {
+          box.textContent = "";
+          if (clear) clear.hidden = true;
+          return;
+        }
+        box.textContent = f.name + "（" + fmtSize(f.size) + "）";
+        if (clear) clear.hidden = false;
+      }
+
+      if (plus) plus.addEventListener("click", function () { input.click(); });
+      if (clear) clear.addEventListener("click", function () {
+        try { input.value = ""; } catch (e) {}
+        form._voice = null;
+        refresh();
+        if (onPicked) onPicked(null);
+      });
+      input.addEventListener("change", function () { refresh(); if (onPicked) onPicked(input.files[0] || null); });
+      pasteInto(form, input, function (f) { refresh(); if (onPicked) onPicked(f); });
+      refresh();
+    });
+  }
+
   function uploadFile(file, folder) {
     var safe = file.name.replace(/[^\w.\-]+/g, "_").slice(-60) || "file";
     var path = (folder || "reports") + "/" + Date.now() + "_" + safe;
@@ -413,10 +498,6 @@
 
   function formContest() {
     if (!me) return "";
-    var opts = PROJECTS.map(function (p) {
-      var sel = (me.project && me.project === p.name) ? " selected" : "";
-      return '<option' + sel + '>' + esc(p.name) + '</option>';
-    }).join("");
     var lv = LEVELS.map(function (x) { return "<option>" + x + "</option>"; }).join("");
     var rk = RANKS.map(function (x) { return "<option>" + x + "</option>"; }).join("");
     return '<form class="wbn-form" id="wbn-ct-form">' +
@@ -426,8 +507,8 @@
         '<label class="wbn-field"><span>奖项等次</span><select name="rank">' + rk + '</select></label>' +
         '<label class="wbn-field"><span>获奖时间</span><input name="date" type="date"></label>' +
         '<label class="wbn-field"><span>参赛成员（顿号分隔）</span><input name="members" maxlength="80" placeholder="例如 肖扬、李伟锐"></label>' +
-        '<label class="wbn-field"><span>所属课题</span><select name="project"><option value="">请选择课题</option>' + opts + '</select></label>' +
-        '<label class="wbn-field"><span>证书或现场照片（图片 / PDF，单份不超过 25 MB；也可以 Ctrl+V 粘贴、直接拖进来）</span><input type="file" name="file"></label>' +
+        '<label class="wbn-field"><span>所属课题</span><select name="project"><option value="">请选择课题</option>' + projectOpts(me.project) + '</select></label>' +
+        '<label class="wbn-field" style="grid-column:1/-1"><span>证书或现场照片（图片 / PDF，单份最大 50 MB）</span>' + fileZone("添加证书或照片") + '</label>' +
       '</div>' +
       '<label class="wbn-field"><span>补充说明</span><textarea name="detail" rows="2" maxlength="140" placeholder="项目名称、赛道、作品名等"></textarea></label>' +
       '<div class="wbn-actions"><button type="submit" class="wbn-btn wbn-btn-main">提交竞赛成果</button><span class="wbn-msg" id="wbn-ct-msg"></span></div>' +
@@ -456,24 +537,37 @@
   }
 
   function renderContest() {
+    setTimeout(function () {
+      bindContestForm();
+      fillContest();
+    }, 0);
+    return '<h3 class="wbn-h">提交</h3>' + formContest() +
+      '<h3 class="wbn-h">已提交<span class="wbn-count" id="wbn-ct-cnt"></span></h3>' +
+      '<div id="wbn-ct-slot"><p class="wbn-dim">加载中…</p></div>';
+  }
+
+  function fillContest() {
+    var slot = root.querySelector("#wbn-ct-slot");
+    if (!slot) return;
     var q = "reports?select=*&kind=eq." + encodeURIComponent("竞赛成果") + "&order=created_at.desc&limit=40";
-    return Promise.all([
+    Promise.all([
       rest(q),
-      rest("report_comments?select=*&order=id.asc&limit=400")
+      rest("report_comments?select=report_id&limit=1200")
     ]).then(function (res) {
       var rows = res[0] || [];
-      var cm = commentsByReport(res[1]);
-      var html = '<h3 class="wbn-h">提交</h3>' + formContest() +
-        '<h3 class="wbn-h">已提交<span class="wbn-count">' + rows.length + '</span></h3>' + contestList(rows, cm);
-      setTimeout(function () { bindContestForm(); bindThreads(); }, 0);
-      return html;
+      slot.innerHTML = contestList(rows, countBy(res[1]));
+      var c = root.querySelector("#wbn-ct-cnt");
+      if (c) c.textContent = rows.length;
+      bindThreads();
+    }).catch(function (e) {
+      slot.innerHTML = '<p class="wbn-empty">列表没加载出来：' + esc(e.message) + '</p>';
     });
   }
 
   function bindContestForm() {
     var f = root.querySelector("#wbn-ct-form");
     if (!f) return;
-    pasteInto(f, f.file);
+    bindFileZone(f);
     f.addEventListener("submit", function (ev) {
       ev.preventDefault();
       var msg = root.querySelector("#wbn-ct-msg");
@@ -509,10 +603,6 @@
   /* ---------- 耗材申请 ---------- */
   function formPurchase() {
     if (!me) return "";
-    var opts = PROJECTS.map(function (p) {
-      var sel = (me.project && me.project === p.name) ? " selected" : "";
-      return '<option' + sel + '>' + esc(p.name) + '</option>';
-    }).join("");
     return '<form class="wbn-form" id="wbn-pur-form">' +
       '<div class="wbn-grid2">' +
         '<label class="wbn-field"><span>物品</span><input name="item" maxlength="40" placeholder="例如 PETG 线材、砂纸、密封胶"></label>' +
@@ -521,7 +611,7 @@
         '<label class="wbn-field"><span>单位</span><input name="unit" maxlength="8" value="件" placeholder="卷 / 瓶 / 包"></label>' +
         '<label class="wbn-field"><span>预估金额（元）</span><input name="budget" type="number" step="0.01" min="0" placeholder="不知道可以不填"></label>' +
         '<label class="wbn-field"><span>希望到手日期</span><input name="need_by" type="date"></label>' +
-        '<label class="wbn-field"><span>所属课题</span><select name="project"><option value="">请选择课题</option>' + opts + '</select></label>' +
+        '<label class="wbn-field"><span>所属课题</span><select name="project"><option value="">请选择课题</option>' + projectOpts(me.project) + '</select></label>' +
       '</div>' +
       '<label class="wbn-field"><span>用途</span><textarea name="reason" rows="2" maxlength="120" placeholder="买来做什么，用在哪台设备或哪个样机上"></textarea></label>' +
       '<div class="wbn-actions"><button type="submit" class="wbn-btn wbn-btn-main">提交申请</button><span class="wbn-msg" id="wbn-pur-msg"></span></div>' +
@@ -717,8 +807,20 @@
   }
 
   /* ---------- 启动 ---------- */
+  // 先用上一次缓存的课题把界面画出来，不等网络；随后再拉最新课题刷新下拉
+  try { PROJECTS = JSON.parse(localStorage.getItem("chenlab_projects") || "[]") || []; } catch (e) { PROJECTS = []; }
+  go();
 
-  rest("projects?select=name&order=name").then(function (rows) { PROJECTS = rows || []; go(); });
+  rest("projects?select=name&order=name").then(function (rows) {
+    if (!rows || !rows.length) return;
+    PROJECTS = rows;
+    try { localStorage.setItem("chenlab_projects", JSON.stringify(rows)); } catch (e) {}
+    Array.prototype.forEach.call(root.querySelectorAll('select[name="project"]'), function (sel) {
+      var want = sel.value || (me && me.project) || "";
+      sel.innerHTML = '<option value="">请选择课题</option>' + projectOpts(want);
+      sel.value = want || "";
+    });
+  });
 
   // 登录状态变化后重画（登录浮层关掉时 member-auth 会改 localStorage）
   setInterval(function () {

@@ -156,7 +156,7 @@
         '<img class="wbn-cmt-img" src="' + esc(c.file_url) + '" loading="lazy" alt="附件图片"></a>';
     }
     if (/\.(webm|mp3|m4a|ogg|wav|aac|mp4)$/.test(n)) {
-      return '<audio class="wbn-cmt-audio" controls preload="none" src="' + esc(c.file_url) + '"></audio>';
+      return '<audio class="wbn-cmt-audio" controls preload="metadata" src="' + esc(c.file_url) + '"></audio>';
     }
     return '<a class="wbn-file" href="' + esc(c.file_url) + '" target="_blank" rel="noopener">' +
       esc(c.file_name || "附件") + "</a>";

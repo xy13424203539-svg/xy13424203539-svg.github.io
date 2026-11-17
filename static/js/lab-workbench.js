@@ -142,16 +142,44 @@
     return g;
   }
 
+  function linkify(txt) {
+    return esc(txt).replace(/(https?:\/\/[^\s<）)]+)/g, function (u) {
+      return '<a href="' + u + '" target="_blank" rel="noopener">' + u + "</a>";
+    });
+  }
+
+  function attachHtml(c) {
+    if (!c.file_url) return "";
+    var n = String(c.file_name || c.file_url).toLowerCase();
+    if (/\.(png|jpg|jpeg|gif|webp|bmp)$/.test(n)) {
+      return '<a class="wbn-cmt-imgwrap" href="' + esc(c.file_url) + '" target="_blank" rel="noopener">' +
+        '<img class="wbn-cmt-img" src="' + esc(c.file_url) + '" loading="lazy" alt="附件图片"></a>';
+    }
+    if (/\.(webm|mp3|m4a|ogg|wav|aac|mp4)$/.test(n)) {
+      return '<audio class="wbn-cmt-audio" controls preload="none" src="' + esc(c.file_url) + '"></audio>';
+    }
+    return '<a class="wbn-file" href="' + esc(c.file_url) + '" target="_blank" rel="noopener">' +
+      esc(c.file_name || "附件") + "</a>";
+  }
+
   function threadBlock(id, cs) {
     var list = (cs || []).map(function (c) {
       var t = String(c.created_at || "").slice(0, 16).replace("T", " ");
       return '<div class="wbn-cmt"><div class="wbn-cmt-h"><b>' + esc(c.name) + '</b><span class="wbn-cmt-t">' + esc(t) + '</span></div>' +
-        '<div class="wbn-cmt-b">' + esc(c.body) + '</div></div>';
+        (c.body ? '<div class="wbn-cmt-b">' + linkify(c.body) + '</div>' : '') +
+        (c.file_url ? '<div class="wbn-cmt-attach">' + attachHtml(c) + '</div>' : '') +
+        '</div>';
     }).join("");
     var form = me
       ? '<form class="wbn-cmt-form" data-report="' + id + '">' +
-          '<input name="body" maxlength="300" placeholder="回复这条，例如“证书收到，等次按省级二等登记”">' +
-          '<button type="submit" class="wbn-cmt-send">发送</button></form>'
+          '<div class="wbn-cmt-row">' +
+            '<input name="body" maxlength="300" placeholder="回复这条，可直接贴链接；也可只发图片或语音">' +
+            '<label class="wbn-cmt-pick">附件<input type="file" name="file" hidden accept="image/*,.pdf,.zip,.doc,.docx,.ppt,.pptx,.xlsx,.txt"></label>' +
+            '<button type="button" class="wbn-cmt-rec">录音</button>' +
+            '<button type="submit" class="wbn-cmt-send">发送</button>' +
+          '</div>' +
+          '<div class="wbn-cmt-picked"></div>' +
+        '</form>'
       : '<p class="wbn-cmt-hint">登录后可以回复。</p>';
     return '<details class="wbn-thread"><summary>讨论 ' + (cs ? cs.length : 0) + '</summary>' +
       '<div class="wbn-cmt-list">' + (list || '<p class="wbn-cmt-hint">还没有留言。</p>') + '</div>' + form + '</details>';
@@ -159,24 +187,81 @@
 
   function bindThreads() {
     Array.prototype.forEach.call(root.querySelectorAll(".wbn-cmt-form"), function (f) {
+      var picked = f.querySelector(".wbn-cmt-picked");
+      var fileIn = f.querySelector('input[name="file"]');
+      var recBtn = f.querySelector(".wbn-cmt-rec");
+      var rec = { mr: null, chunks: [], stream: null };
+
+      function showPicked(files) {
+        var arr = [];
+        if (files) Array.prototype.forEach.call(files, function (x) { arr.push(x.name + "（" + fmtSize(x.size) + "）"); });
+        if (f._voice) arr.push("语音 " + Math.round((f._voice.size || 0) / 1024) + " KB");
+        picked.textContent = arr.length ? "已选择：" + arr.join("、") : "";
+      }
+
+      fileIn.addEventListener("change", function () {
+        f._voice = null;
+        showPicked(fileIn.files);
+      });
+
+      recBtn.addEventListener("click", function () {
+        if (rec.mr && rec.mr.state === "recording") {
+          rec.mr.stop();
+          return;
+        }
+        if (!navigator.mediaDevices || !window.MediaRecorder) {
+          picked.textContent = "这台设备的浏览器不支持录音，可以直接发文字或链接。";
+          return;
+        }
+        navigator.mediaDevices.getUserMedia({ audio: true }).then(function (stream) {
+          var type = (window.MediaRecorder.isTypeSupported && MediaRecorder.isTypeSupported("audio/webm"))
+            ? "audio/webm"
+            : (MediaRecorder.isTypeSupported && MediaRecorder.isTypeSupported("audio/mp4")) ? "audio/mp4" : "";
+          var mr = type ? new MediaRecorder(stream, { mimeType: type }) : new MediaRecorder(stream);
+          rec.mr = mr;
+          rec.stream = stream;
+          rec.chunks = [];
+          mr.ondataavailable = function (e) { if (e.data && e.data.size) rec.chunks.push(e.data); };
+          mr.onstop = function () {
+            stream.getTracks().forEach(function (t) { t.stop(); });
+            var mt = (mr.mimeType || "audio/webm");
+            var ext = mt.indexOf("mp4") >= 0 ? "m4a" : (mt.indexOf("ogg") >= 0 ? "ogg" : "webm");
+            var blob = new Blob(rec.chunks, { type: mt });
+            f._voice = new File([blob], "voice_" + Date.now() + "." + ext, { type: mt });
+            fileIn.value = "";
+            showPicked(null);
+          };
+          mr.start();
+          recBtn.textContent = "停止";
+          recBtn.classList.add("is-rec");
+        }).catch(function () {
+          picked.textContent = "没有麦克风权限，浏览器里允许一下麦克风再试。";
+        });
+      });
+
       f.addEventListener("submit", function (ev) {
         ev.preventDefault();
         if (!me) return;
         var body = (f.body.value || "").trim();
-        if (!body) return;
+        var file = f._voice || (fileIn.files && fileIn.files[0]) || null;
+        if (!body && !file) return;
         var btn = f.querySelector(".wbn-cmt-send");
         btn.disabled = true;
-        btn.textContent = "发送中…";
-        rpc("add_comment", {
-          p_name: me.name, p_sid: me.sid,
-          p_report_id: Number(f.getAttribute("data-report")), p_body: body
+        btn.textContent = file ? "上传中…" : "发送中…";
+        var up = file ? uploadFile(file, "comments") : Promise.resolve({ url: "", name: "", size: 0 });
+        up.then(function (u) {
+          return rpc("add_comment", {
+            p_name: me.name, p_sid: me.sid,
+            p_report_id: Number(f.getAttribute("data-report")),
+            p_body: body, p_file_url: u.url, p_file_name: u.name
+          });
         }).then(function (id) {
           if (!id) throw new Error("留言被拒绝，请重新登录后再试");
           go();
         }).catch(function (e) {
           btn.disabled = false;
           btn.textContent = "发送";
-          alert(e.message);
+          picked.textContent = e.message;
         });
       });
     });
@@ -247,9 +332,9 @@
     });
   }
 
-  function uploadFile(file) {
+  function uploadFile(file, folder) {
     var safe = file.name.replace(/[^\w.\-]+/g, "_").slice(-60) || "file";
-    var path = "reports/" + Date.now() + "_" + safe;
+    var path = (folder || "reports") + "/" + Date.now() + "_" + safe;
     return fetch(cfg.url + "/storage/v1/object/lab-files/" + encodeURI(path), {
       method: "POST",
       headers: {

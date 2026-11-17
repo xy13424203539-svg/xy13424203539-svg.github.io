@@ -1496,12 +1496,16 @@ html.dark .mp-chip-link {
 }
 
 .wbn-cmt-form {
-  display: flex;
-  gap: 6px;
   margin-top: 8px;
 }
 
-.wbn-cmt-form input {
+.wbn-cmt-row {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.wbn-cmt-form input[name="body"] {
   flex: 1;
   min-width: 0;
   padding: 7px 10px;
@@ -1511,25 +1515,73 @@ html.dark .mp-chip-link {
   background: #fbfcfe;
 }
 
-.wbn-cmt-form input:focus {
+.wbn-cmt-form input[name="body"]:focus {
   outline: none;
   border-color: #9db8d3;
   background: #fff;
 }
 
+.wbn-cmt-pick,
+.wbn-cmt-rec,
 .wbn-cmt-send {
-  padding: 0 14px;
+  flex: 0 0 auto;
+  padding: 7px 11px;
   border: 1px solid #dde5ee;
   border-radius: 6px;
   background: #fff;
   font-size: 13px;
   color: #1c3b5a;
   cursor: pointer;
+  white-space: nowrap;
+  line-height: 1.2;
+}
+
+.wbn-cmt-pick {
+  display: inline-block;
+}
+
+.wbn-cmt-rec.is-rec {
+  border-color: #c9564f;
+  color: #a3382f;
+}
+
+.wbn-cmt-send {
+  background: #1c3b5a;
+  border-color: #1c3b5a;
+  color: #fff;
 }
 
 .wbn-cmt-send:disabled {
   opacity: 0.6;
   cursor: default;
+}
+
+.wbn-cmt-picked {
+  margin-top: 4px;
+  font-size: 11.5px;
+  color: #8d9aa9;
+}
+
+.wbn-cmt-attach {
+  margin-top: 6px;
+}
+
+.wbn-cmt-imgwrap {
+  display: inline-block;
+}
+
+.wbn-cmt-img {
+  max-width: 210px;
+  max-height: 210px;
+  border-radius: 6px;
+  border: 1px solid #e6ecf3;
+  display: block;
+}
+
+.wbn-cmt-audio {
+  width: 100%;
+  max-width: 300px;
+  height: 34px;
 }
 
 .wbn-admin-row {

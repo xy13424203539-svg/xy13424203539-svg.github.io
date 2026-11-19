@@ -2099,3 +2099,123 @@ html.dark .wbn-tip {
   background: #182029;
   color: #cbd5e1;
 }
+
+/* ===== 整站分组侧边导航（桌面左侧，手机隐藏走顶部汉堡） ===== */
+.sn-side {
+  display: none;
+}
+
+@media (min-width: 1024px) {
+  /* 工作台页内部已有自己的分组侧栏，不再叠加整站侧栏 */
+  body.sn-on:not(.wbn-page) .sn-side {
+    display: block;
+    position: fixed;
+    left: 0;
+    top: var(--navbar-height, 60px);
+    bottom: 0;
+    width: 232px;
+    overflow-y: auto;
+    padding: 18px 14px 40px;
+    border-right: 1px solid #e6ebf1;
+    background: var(--hb-color-background, #ffffff);
+    z-index: 50;
+  }
+
+  /* 桌面端顶部横排导航由左侧分组侧栏承担 */
+  body.sn-on:not(.wbn-page) #nav-menu {
+    display: none !important;
+  }
+
+  /* 隐藏主题自带的空次级边栏与右侧目录 */
+  body.sn-on:not(.wbn-page) .hb-sidebar-container,
+  body.sn-on:not(.wbn-page) .hb-toc {
+    display: none !important;
+  }
+
+  /* 主内容右移，给侧栏留位 */
+  body.sn-on:not(.wbn-page) .page-body {
+    margin-left: 232px;
+  }
+
+  body.sn-on:not(.wbn-page) .page-body > .mx-auto,
+  body.sn-on:not(.wbn-page) .page-body > .hbb-section {
+    max-width: 1120px !important;
+  }
+
+  /* 正文解除 65ch 窄限宽，横向展开 */
+  body.sn-on:not(.wbn-page) .prose,
+  body.sn-on:not(.wbn-page) .prose.max-w-prose,
+  body.sn-on:not(.wbn-page) .max-w-prose,
+  body.sn-on:not(.wbn-page) .max-w-3xl {
+    max-width: 1040px !important;
+  }
+
+  .sn-nav {
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+  }
+
+  .sn-group {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+  }
+
+  .sn-gt {
+    font-size: 12px;
+    font-weight: 700;
+    color: #8a96a5;
+    letter-spacing: 0.04em;
+    margin: 0 0 6px 11px;
+  }
+
+  .sn-item {
+    display: flex;
+    align-items: center;
+    gap: 9px;
+    padding: 8px 11px;
+    border-radius: 9px;
+    font-size: 14px;
+    color: #46586b;
+    text-decoration: none;
+  }
+
+  .sn-item:hover {
+    background: #f1f5f9;
+  }
+
+  .sn-item.active {
+    background: #eef4fa;
+    color: #16324f;
+    font-weight: 600;
+  }
+
+  .sn-ic {
+    width: 18px;
+    text-align: center;
+    flex: 0 0 18px;
+  }
+}
+
+html.dark .sn-side {
+  border-right-color: #2a3240;
+  background: var(--hb-color-background, #141a22);
+}
+
+html.dark .sn-gt {
+  color: #6b7787;
+}
+
+html.dark .sn-item {
+  color: #c2ccd8;
+}
+
+html.dark .sn-item:hover {
+  background: #1f2833;
+}
+
+html.dark .sn-item.active {
+  background: #1f2833;
+  color: #9ec5f0;
+}

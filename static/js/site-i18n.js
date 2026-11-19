@@ -85,7 +85,11 @@
     var path = location.pathname || "/";
     if (path.indexOf("/projects/") === 0 || path === "/projects") {
       var art = document.querySelector("article.prose") || document.querySelector("article");
-      if (art) art.classList.add("proj-page");
+      if (art) {
+        art.classList.add("proj-page");
+        var wrap = art.closest(".max-w-prose") || art.parentElement;
+        if (wrap) wrap.classList.add("proj-wrap");
+      }
     }
   }
 

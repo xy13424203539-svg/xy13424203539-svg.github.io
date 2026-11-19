@@ -2408,7 +2408,7 @@ html.dark .prose thead th {
 }
 
 /* ===== 科研项目页：字号阶梯、收窄行宽、方向卡片 ===== */
-.proj-page .max-w-prose {
+.proj-wrap {
   max-width: 880px;
 }
 

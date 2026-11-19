@@ -51,12 +51,12 @@
     var els = root.querySelectorAll("*");
     for (var i = 0; i < els.length; i++) {
       var el = els[i];
-      if (SKIP[el.tagName]) continue;
       ["title", "aria-label"].forEach(function (a) {
         var v = el.getAttribute(a);
         if (v && MAP[v.trim()] !== undefined) el.setAttribute(a, MAP[v.trim()]);
       });
       if (el.placeholder === "Search for answers...") el.placeholder = "搜索文档…";
+      if (SKIP[el.tagName]) continue;
       var kids = el.childNodes;
       for (var j = 0; j < kids.length; j++) {
         if (kids[j].nodeType === 3) translateText(kids[j]);
@@ -104,6 +104,7 @@
         var added = m.addedNodes;
         for (var j = 0; j < added.length; j++) {
           if (added[j].nodeType === 1) pending.push(added[j]);
+          else if (added[j].nodeType === 3) translateText(added[j]);
         }
       }
     }

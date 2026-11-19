@@ -1121,6 +1121,10 @@ html.dark .adm-table td {
   color: #cbd5e1;
 }
 
+html.dark .adm-sub {
+  color: #9aa7b6;
+}
+
 html.dark .adm-prog {
   background: #232b36;
 }
@@ -1174,6 +1178,42 @@ html.dark .eq-mat {
   color: #2f6b8f;
   font-weight: 600;
 }
+
+.adm-sub {
+  margin-top: 3px;
+  font-size: 12.5px;
+  color: #6b7a8a;
+}
+
+.adm-count {
+  margin-left: 8px;
+  font-size: 12.5px;
+  font-weight: 500;
+  color: #8d9aa9;
+}
+
+.adm-link {
+  color: #2f6b8f;
+  text-decoration: none;
+}
+
+.adm-link:hover {
+  text-decoration: underline;
+}
+
+.adm-badge {
+  padding: 2px 9px;
+  border-radius: 20px;
+  font-size: 11.5px;
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+.adm-badge-pending { background: #fdf3e2; color: #9a6413; }
+.adm-badge-approved { background: #e6f2e9; color: #2c6b3c; }
+.adm-badge-ordered { background: #e8eef7; color: #2f5c8f; }
+.adm-badge-done { background: #e8f0ee; color: #2b6157; }
+.adm-badge-rejected { background: #f8e8e7; color: #a0403c; }
 
 .mp-chip-link {
   margin-right: 10px;
@@ -1255,6 +1295,7 @@ body.wbn-page .hb-toc {
   color: #5b6b7d;
   cursor: pointer;
   text-align: left;
+  text-decoration: none;
 }
 
 .wbn-side-home {
@@ -1310,6 +1351,8 @@ body.wbn-page .hb-toc {
   font-size: 13px;
   color: #2f6b8f;
   cursor: pointer;
+  text-decoration: none;
+  display: inline-block;
 }
 
 .wbn-back:hover {
@@ -1354,6 +1397,8 @@ body.wbn-page .hb-toc {
   background: #fff;
   text-align: left;
   cursor: pointer;
+  text-decoration: none;
+  color: inherit;
   transition: border-color .15s, box-shadow .15s;
 }
 

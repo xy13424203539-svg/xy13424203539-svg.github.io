@@ -8,15 +8,21 @@
   var root = document.getElementById("wbn-root");
   if (!root || !cfg.url || !cfg.key) return;
 
-  /* 工作台解除文章正文 65ch 限宽与 flex 收缩，给侧栏 + 卡片网格留出宽屏空间 */
-  document.body.classList.add("wbn-page");
-  (function markWide(el) {
-    for (var i = 0; i < 3 && el; i++) { el.classList.add("wbn-wide"); el = el.parentElement; }
-  })(root.parentElement);
+  /* 独立栏目页通过 data-wbn-mod 指定只渲染哪一个模块；工作台首页无该属性，走卡片导航 */
+  var PAGE_MOD = (root.getAttribute("data-wbn-mod") || "home").trim();
+  var isHome = PAGE_MOD === "home";
+
+  /* 工作台首页保留自己的内部分组侧栏；独立栏目页交还整站左侧导航 */
+  if (isHome) {
+    document.body.classList.add("wbn-page");
+    (function markWide(el) {
+      for (var i = 0; i < 3 && el; i++) { el.classList.add("wbn-wide"); el = el.parentElement; }
+    })(root.parentElement);
+  }
 
   var STORE = "chenlab_member";
   var MAX_MB = 50; /* Supabase 免费额度单文件上限 50 MB */
-  var TAB = "home";
+  var TAB = PAGE_MOD;
   var PROJECTS = [];
   var CLIST = {};
   /** 把“肖扬、李伟锐”这类输入规范成、姓名、形式，并自动带上提交人自己 */
@@ -108,11 +114,11 @@
   }
 
   var MODULES = [
-    { k: "reports", group: "成果产出", t: "汇报成果", icon: "📝", desc: "周报、阶段汇报、论文与结题材料" },
-    { k: "contest", group: "成果产出", t: "竞赛成果", icon: "🏆", desc: "比赛奖项、证书与参赛成员" },
-    { k: "meetings", group: "协作事务", t: "交流安排", icon: "🗓", desc: "组会、进度对齐与讨论时间" },
-    { k: "purchases", group: "协作事务", t: "耗材申请", icon: "🧾", desc: "耗材采购需求，提交后老师审核" },
-    { k: "archive", group: "成员档案", t: "学生档案", icon: "👥", desc: "成员课题、进度与成果汇总", admin: true }
+    { k: "reports", url: "/reports/", group: "成果产出", t: "汇报成果", icon: "📝", desc: "周报、阶段汇报、论文与结题材料" },
+    { k: "contest", url: "/contest/", group: "成果产出", t: "竞赛成果", icon: "🏆", desc: "比赛奖项、证书与参赛成员" },
+    { k: "meetings", url: "/meetings/", group: "协作事务", t: "交流安排", icon: "🗓", desc: "组会、进度对齐与讨论时间" },
+    { k: "purchases", url: "/purchases/", group: "协作事务", t: "耗材申请", icon: "🧾", desc: "耗材采购需求，提交后老师审核" },
+    { k: "archive", url: "/archive/", group: "成员档案", t: "学生档案", icon: "👥", desc: "成员课题、进度与成果汇总", admin: true }
   ];
   var GROUPS = ["成果产出", "协作事务", "成员档案"];
 
@@ -127,17 +133,18 @@
       if (!rows.length) return "";
       return '<div class="wbn-side-group"><div class="wbn-side-t">' + esc(g) + '</div>' +
         rows.map(function (m) {
-          return '<button type="button" class="wbn-side-item' + (m.k === TAB ? " is-on" : "") + '" data-mod="' + m.k + '">' +
+          return '<a class="wbn-side-item" href="' + esc(m.url) + '">' +
             '<span class="wbn-side-ic">' + m.icon + '</span><span class="wbn-side-n">' + esc(m.t) + '</span>' +
-            '<span class="wbn-side-badge" data-badge="' + m.k + '"></span></button>';
+            '<span class="wbn-side-badge" data-badge="' + m.k + '"></span></a>';
         }).join("") + '</div>';
     }).join("");
-    return '<aside class="wbn-side"><button type="button" class="wbn-side-home' + (TAB === "home" ? " is-on" : "") + '" data-mod="home">工作台首页</button>' + groups + '</aside>';
+    return '<aside class="wbn-side"><a class="wbn-side-home is-on" href="/workbench/">工作台首页</a>' + groups + '</aside>';
   }
 
   function shell(inner) {
-    var back = TAB !== "home" ? '<button type="button" class="wbn-back" data-mod="home">‹ 返回工作台</button>' : "";
-    root.innerHTML = '<div class="wbn-shell">' + sideNav() +
+    var side = isHome ? sideNav() : "";
+    var back = isHome ? "" : '<a class="wbn-back" href="/workbench/">‹ 返回工作台</a>';
+    root.innerHTML = '<div class="wbn-shell' + (isHome ? "" : " wbn-shell-solo") + '">' + side +
       '<main class="wbn-main"><div class="wbn-top">' + headBox() + '</div>' + back +
       '<div class="wbn-panel" id="wbn-panel">' + inner + '</div></main></div>';
     var lb = root.querySelector("#wbn-login");
@@ -169,12 +176,12 @@
       if (!rows.length) return "";
       return '<div class="wbn-home-group"><div class="wbn-home-gt">' + esc(g) + '</div>' +
         '<div class="wbn-home-grid">' + rows.map(function (m) {
-          return '<button type="button" class="wbn-tile" data-mod="' + m.k + '">' +
+          return '<a class="wbn-tile" href="' + esc(m.url) + '">' +
             '<span class="wbn-tile-ic">' + m.icon + '</span>' +
             '<span class="wbn-tile-main"><span class="wbn-tile-t">' + esc(m.t) + '</span>' +
             '<span class="wbn-tile-d">' + esc(m.desc) + '</span></span>' +
             '<span class="wbn-tile-badge" data-badge="' + m.k + '"></span>' +
-            '<span class="wbn-tile-arrow">›</span></button>';
+            '<span class="wbn-tile-arrow">›</span></a>';
         }).join("") + '</div></div>';
     }).join("");
     setTimeout(fillCounts, 0);

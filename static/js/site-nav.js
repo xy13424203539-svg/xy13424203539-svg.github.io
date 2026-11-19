@@ -19,21 +19,31 @@
       t: "科研与成果",
       items: [
         { ic: "🧪", label: "科研项目", url: "/projects/" },
-        { ic: "🏆", label: "成果荣誉", url: "/awards/" }
+        { ic: "🏆", label: "成果荣誉", url: "/awards/" },
+        { ic: "📝", label: "汇报成果", url: "/reports/" },
+        { ic: "🥇", label: "竞赛成果", url: "/contest/" }
+      ]
+    },
+    {
+      t: "协作事务",
+      items: [
+        { ic: "🗓", label: "交流安排", url: "/meetings/" },
+        { ic: "🧾", label: "耗材申请", url: "/purchases/" },
+        { ic: "🔧", label: "设备登记", url: "/equipment/" }
       ]
     },
     {
       t: "规范与资源",
       items: [
         { ic: "📋", label: "实验室制度", url: "/rules/" },
-        { ic: "🎁", label: "奖励机制", url: "/reward/" },
-        { ic: "🔧", label: "设备登记", url: "/equipment/" }
+        { ic: "🎁", label: "奖励机制", url: "/reward/" }
       ]
     },
     {
-      t: "工作台",
+      t: "工作台与管理",
       items: [
         { ic: "🗂️", label: "工作台", url: "/workbench/" },
+        { ic: "👥", label: "学生档案", url: "/archive/", admin: true },
         { ic: "⚙️", label: "后台管理", url: "/admin/", admin: true }
       ]
     }

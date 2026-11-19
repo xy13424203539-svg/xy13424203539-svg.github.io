@@ -14,15 +14,27 @@ main:
   - name: 成果荣誉
     url: awards/
     weight: 50
+  - name: 汇报成果
+    url: reports/
+    weight: 60
+  - name: 竞赛成果
+    url: contest/
+    weight: 70
+  - name: 交流安排
+    url: meetings/
+    weight: 80
+  - name: 耗材申请
+    url: purchases/
+    weight: 90
   - name: 实验室制度
     url: rules/
-    weight: 60
+    weight: 100
   - name: 奖励机制
     url: reward/
-    weight: 70
+    weight: 110
   - name: 设备登记
     url: equipment/
-    weight: 80
+    weight: 120
   - name: 工作台
     url: workbench/
-    weight: 90
+    weight: 130

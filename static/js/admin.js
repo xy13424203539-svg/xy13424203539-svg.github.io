@@ -21,6 +21,25 @@
     return isNaN(n) ? 0 : n;
   }
 
+  var STATUS_TEXT = { pending: "待审核", approved: "已批准", ordered: "已采购", rejected: "不批准", done: "已完成" };
+
+  function fmtSize(n) {
+    n = Number(n) || 0;
+    if (n < 1024) return n + " B";
+    if (n < 1048576) return (n / 1024).toFixed(0) + " KB";
+    return (n / 1048576).toFixed(1) + " MB";
+  }
+
+  function cleanMembers(s) {
+    return String(s || "").split(/[、,，;；\s]+/).filter(function (x) { return !!x; }).join("、");
+  }
+
+  function fileLink(r) {
+    if (!r.file_url) return '<span class="adm-dim">无附件</span>';
+    return '<a class="adm-link" href="' + esc(r.file_url) + '" target="_blank" rel="noopener">' +
+      esc(r.file_name || "附件") + (r.file_size ? "（" + fmtSize(r.file_size) + "）" : "") + "</a>";
+  }
+
   function state() {
     try { return JSON.parse(localStorage.getItem("chenlab_member") || "null"); } catch (e) { return null; }
   }
@@ -148,24 +167,92 @@
       table(["日期", "设备", "使用人", "时长", "用途"], rows) + '</div>';
   }
 
+  /* 成员提交：组会 / 阶段汇报（不含竞赛） */
+  function reportsAdminBlock(list) {
+    if (!list.length) return '<div class="adm-block"><h3>组会 / 阶段汇报</h3><p class="adm-dim">还没有提交汇报材料。</p></div>';
+    var rows = list.map(function (r) {
+      var body = r.summary ? '<div class="adm-sub">' + esc(r.summary) + '</div>' : "";
+      var kind = r.kind ? '<div class="adm-sub">' + esc(r.kind) + '</div>' : "";
+      return '<tr>' +
+        '<td>' + esc(r.created_at) + '</td>' +
+        '<td>' + esc(r.name) + '</td>' +
+        '<td>' + (r.project ? esc(r.project) : '<span class="adm-dim">—</span>') + '</td>' +
+        '<td><b>' + esc(r.title) + '</b>' + kind + body + '</td>' +
+        '<td>' + fileLink(r) + '</td>' +
+        '</tr>';
+    }).join("");
+    return '<div class="adm-block"><h3>组会 / 阶段汇报<span class="adm-count">' + list.length + '</span></h3>' +
+      table(["日期", "提交人", "课题", "标题 / 说明", "附件"], rows) + '</div>';
+  }
+
+  /* 成员提交：竞赛成果 */
+  function contestAdminBlock(list) {
+    if (!list.length) return '<div class="adm-block"><h3>竞赛成果</h3><p class="adm-dim">还没有竞赛成果记录。</p></div>';
+    var rows = list.map(function (c) {
+      var mem = cleanMembers(c.members) || c.name;
+      return '<tr>' +
+        '<td>' + esc(c.created_at) + '</td>' +
+        '<td><b>' + esc(c.title) + '</b>' + (c.summary ? '<div class="adm-sub">' + esc(c.summary) + '</div>' : '') + '</td>' +
+        '<td>' + esc(mem) + '</td>' +
+        '<td>' + (c.project ? esc(c.project) : '<span class="adm-dim">—</span>') + '</td>' +
+        '<td>' + fileLink(c) + '</td>' +
+        '</tr>';
+    }).join("");
+    return '<div class="adm-block"><h3>竞赛成果<span class="adm-count">' + list.length + '</span></h3>' +
+      table(["日期", "奖项 / 说明", "参赛成员", "课题", "证书"], rows) + '</div>';
+  }
+
+  /* 成员提交：耗材申请全量 */
+  function purchaseAdminBlock(list) {
+    if (!list.length) return '<div class="adm-block"><h3>耗材申请</h3><p class="adm-dim">还没有采购申请。</p></div>';
+    var rows = list.map(function (p) {
+      var st = STATUS_TEXT[p.status] || p.status;
+      var qty = num(p.qty) + " " + (p.unit || "件");
+      var budget = num(p.budget) ? "约 " + num(p.budget) + " 元" : "—";
+      return '<tr>' +
+        '<td>' + esc(p.created_at) + '</td>' +
+        '<td>' + esc(p.name) + '</td>' +
+        '<td>' + (p.project ? esc(p.project) : '<span class="adm-dim">—</span>') + '</td>' +
+        '<td><b>' + esc(p.item) + '</b>' + (p.spec ? '<div class="adm-sub">' + esc(p.spec) + '</div>' : '') + '</td>' +
+        '<td>' + esc(qty) + '</td>' +
+        '<td>' + budget + '</td>' +
+        '<td><span class="adm-badge adm-badge-' + esc(p.status) + '">' + esc(st) + '</span></td>' +
+        '<td>' + (p.admin_note ? esc(p.admin_note) : '<span class="adm-dim">—</span>') + '</td>' +
+        '</tr>';
+    }).join("");
+    return '<div class="adm-block"><h3>耗材申请<span class="adm-count">' + list.length + '</span></h3>' +
+      table(["日期", "申请人", "课题", "物品 / 规格", "数量", "预算", "状态", "备注"], rows) + '</div>';
+  }
+
   function render(s) {
     root.innerHTML = '<div class="adm-note">已以管理员身份进入：' + esc(s.name) + '</div><div class="adm-body">读取中…</div>';
-    rpc("admin_overview", { p_name: s.name, p_sid: s.sid })
-      .then(function (data) {
-        var body = root.querySelector(".adm-body");
-        if (!data) {
-          body.innerHTML = '<p class="adm-dim">没有权限读取，请重新登录管理员账号。</p>';
-          return;
-        }
-        var members = data.members || [];
-        var usage = data.usage || [];
-        body.innerHTML = statsBlock(members, usage, data.material || []) +
-          projectBlock(members) +
-          membersBlock(members) +
-          usageBlock(usage) +
-          materialBlock(data.material || []) +
-          recentBlock(data.recent || []);
-      })
+    Promise.all([
+      rpc("admin_overview", { p_name: s.name, p_sid: s.sid }),
+      rpc("archive_overview", { p_name: s.name, p_sid: s.sid }).catch(function () { return null; })
+    ]).then(function (res) {
+      var data = res[0];
+      var arch = res[1] || {};
+      var body = root.querySelector(".adm-body");
+      if (!data) {
+        body.innerHTML = '<p class="adm-dim">没有权限读取，请重新登录管理员账号。</p>';
+        return;
+      }
+      var members = data.members || [];
+      var usage = data.usage || [];
+      var allReports = arch.reports || [];
+      var purchases = arch.purchases || [];
+      var normal = allReports.filter(function (r) { return r.kind !== "竞赛成果"; });
+      var contest = allReports.filter(function (r) { return r.kind === "竞赛成果"; });
+      body.innerHTML = statsBlock(members, usage, data.material || []) +
+        projectBlock(members) +
+        membersBlock(members) +
+        reportsAdminBlock(normal) +
+        contestAdminBlock(contest) +
+        purchaseAdminBlock(purchases) +
+        usageBlock(usage) +
+        materialBlock(data.material || []) +
+        recentBlock(data.recent || []);
+    })
       .catch(function (e) {
         var body = root.querySelector(".adm-body");
         if (body) body.innerHTML = '<p class="adm-dim">读取失败（' + esc(e.message) + '）。</p>';

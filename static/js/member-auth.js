@@ -235,7 +235,7 @@
       (pr.updated_by ? ' · 最近由 ' + esc(pr.updated_by) + ' 更新于 ' + esc(String(pr.updated_at || "").slice(0, 10)) : '') +
       '</div>' +
       (pr.note ? '<div class="mp-proj-note">' + esc(pr.note).replace(/\n/g, "<br>") + '</div>' : '') +
-      '<div class="mp-proj-links"><a href="/workbench/">汇报材料与耗材申请 →</a></div>' +
+      '<div class="mp-proj-links"><a href="/reports/">汇报成果 →</a>　<a href="/purchases/">耗材申请 →</a></div>' +
       '</div>';
     return html;
   }

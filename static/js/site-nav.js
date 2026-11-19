@@ -40,9 +40,8 @@
       ]
     },
     {
-      t: "工作台与管理",
+      t: "管理",
       items: [
-        { ic: "🗂️", label: "工作台", url: "/workbench/" },
         { ic: "👥", label: "学生档案", url: "/archive/", admin: true },
         { ic: "⚙️", label: "后台管理", url: "/admin/", admin: true }
       ]

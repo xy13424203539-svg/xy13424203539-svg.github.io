@@ -138,14 +138,13 @@
             '<span class="wbn-side-badge" data-badge="' + m.k + '"></span></a>';
         }).join("") + '</div>';
     }).join("");
-    return '<aside class="wbn-side"><a class="wbn-side-home is-on" href="/workbench/">工作台首页</a>' + groups + '</aside>';
+    return '<aside class="wbn-side">' + groups + '</aside>';
   }
 
   function shell(inner) {
     var side = isHome ? sideNav() : "";
-    var back = isHome ? "" : '<a class="wbn-back" href="/workbench/">‹ 返回工作台</a>';
     root.innerHTML = '<div class="wbn-shell' + (isHome ? "" : " wbn-shell-solo") + '">' + side +
-      '<main class="wbn-main"><div class="wbn-top">' + headBox() + '</div>' + back +
+      '<main class="wbn-main"><div class="wbn-top">' + headBox() + '</div>' +
       '<div class="wbn-panel" id="wbn-panel">' + inner + '</div></main></div>';
     var lb = root.querySelector("#wbn-login");
     if (lb) lb.addEventListener("click", function () { if (window.__chenlabOpenLogin) window.__chenlabOpenLogin(); });

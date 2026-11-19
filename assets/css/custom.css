@@ -2195,6 +2195,27 @@ html.dark .wbn-tip {
     max-width: 1040px !important;
   }
 
+  /* B 类列表页（团队成员 / 科研项目）：解除 flex 居中收缩，正文与卡片网格横向铺开 */
+  body.sn-on:not(.wbn-page) .page-body > .max-w-prose.mx-auto.flex.justify-center {
+    display: block !important;
+    max-width: 1120px !important;
+  }
+  body.sn-on:not(.wbn-page) .page-body > .max-w-prose.mx-auto.flex.justify-center > article,
+  body.sn-on:not(.wbn-page) .page-body > .max-w-prose.mx-auto.flex.justify-center > .prose {
+    width: 100% !important;
+    max-width: 1040px !important;
+  }
+  body.sn-on:not(.wbn-page) .page-body > .flex.flex-col.items-center {
+    align-items: stretch !important;
+    max-width: 1040px !important;
+  }
+  body.sn-on:not(.wbn-page) .page-body .max-w-\[65ch\] {
+    max-width: 1040px !important;
+  }
+  body.sn-on:not(.wbn-page) .page-body .grid.grid-cols-1.gap-6 {
+    grid-template-columns: repeat(2, 1fr) !important;
+  }
+
   .sn-nav {
     display: flex;
     flex-direction: column;

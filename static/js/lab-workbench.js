@@ -25,6 +25,8 @@
   var TAB = PAGE_MOD;
   var PROJECTS = [];
   var CLIST = {};
+  var RLIST = {};
+  var PLIST = {};
   /** 把“肖扬、李伟锐”这类输入规范成、姓名、形式，并自动带上提交人自己 */
   function memberTag(raw, owner) {
     var arr = String(raw || "").split(/[、,，;；\s]+/).filter(function (x) { return !!x; });
@@ -828,57 +830,109 @@
 
   /* ---------- 学生档案 ---------- */
 
+  function archiveRptRow(r) {
+    var f = r.file_url
+      ? '<a class="wbn-file" href="' + esc(r.file_url) + '" target="_blank" rel="noopener">' + esc(r.file_name || "附件") + '（' + fmtSize(r.file_size) + '）</a>'
+      : '<span class="wbn-dim">无附件</span>';
+    return '<div class="wbn-ct-row">' +
+      '<div class="wbn-ct-t">' + esc(r.title) + (r.kind ? ' <span class="wbn-kind">' + esc(r.kind) + '</span>' : '') + '</div>' +
+      '<div class="wbn-ct-s">' + [r.project, fmtDate(r.created_at)].filter(function (x) { return x; }).join(" · ") + '</div>' +
+      (r.summary ? '<div class="wbn-ct-s">' + esc(r.summary) + '</div>' : '') +
+      '<div class="wbn-ct-s">' + f + '</div></div>';
+  }
+
+  function archivePurRow(p) {
+    var qty = (Number(p.qty) || 0) + " " + (p.unit || "件");
+    var budget = Number(p.budget) ? "约 " + p.budget + " 元" : "";
+    return '<div class="wbn-ct-row">' +
+      '<div class="wbn-ct-t">' + esc(p.item) + ' ' + statusBadge(p.status) + '</div>' +
+      '<div class="wbn-ct-s">' + [p.spec, qty, budget, fmtDate(p.created_at)].filter(function (x) { return x && String(x).trim(); }).join(" · ") + '</div>' +
+      (p.admin_note ? '<div class="wbn-ct-s">老师备注：' + esc(p.admin_note) + '</div>' : '') +
+      '</div>';
+  }
+
   function renderArchive() {
     if (!isAdmin()) return Promise.resolve('<p class="wbn-empty">暂无内容。</p>');
-    return rpc("archive_overview", { p_name: me.name, p_sid: me.sid }).then(function (d) {
+    return Promise.all([
+      rpc("archive_overview", { p_name: me.name, p_sid: me.sid }),
+      rest("reports?select=*&limit=400"),
+      rest("purchases?select=*&limit=200")
+    ]).then(function (res) {
+      var d = res[0] || {};
+      var allRep = res[1] || [];
+      var allPur = res[2] || [];
       if (!d) return '<p class="wbn-empty">读取失败，请重新登录。</p>';
       var list = d.students || [];
       CLIST = {};
+      RLIST = {};
+      PLIST = {};
+      list.forEach(function (s) {
+        RLIST[s.name] = allRep.filter(function (r) {
+          if (r.kind === "竞赛成果") return false;
+          return r.name === s.name || String(r.members || "").indexOf(s.name) >= 0;
+        });
+        PLIST[s.name] = allPur.filter(function (p) { return p.name === s.name; });
+        var cl = s.contest_list || [];
+        if (cl.length) CLIST[s.name] = cl;
+      });
       var cards = list.map(function (s) {
         var pct = Math.max(0, Math.min(100, Math.round(Number(s.percent) || 0)));
         var ct = s.contests || 0;
-        var cl = s.contest_list || [];
-        if (cl.length) CLIST[s.name] = cl;
+        var cl = CLIST[s.name] || [];
+        var rn = (RLIST[s.name] || []).length;
+        var pn = (PLIST[s.name] || []).length;
+        var open = '<button type="button" class="wbn-link"';
         var ctBtn = cl.length
-          ? '<button type="button" class="wbn-link" data-wbn-ct="' + esc(s.name) + '">竞赛成果 ' + ct + ' 项 ▾</button>'
+          ? open + ' data-wbn-ct="' + esc(s.name) + '" data-label="竞赛成果 ' + ct + ' 项 ▾">竞赛成果 ' + ct + ' 项 ▾</button>'
           : '<span class="wbn-dim">竞赛成果 0</span>';
+        var rptBtn = rn
+          ? open + ' data-wbn-rpt="' + esc(s.name) + '" data-label="材料 ' + rn + ' ▾">材料 ' + rn + ' ▾</button>'
+          : '<span class="wbn-dim">材料 0</span>';
+        var purBtn = pn
+          ? open + ' data-wbn-pur="' + esc(s.name) + '" data-label="采购 ' + pn + '（在办 ' + (s.purchases_open || 0) + '）▾">采购 ' + pn + '（在办 ' + (s.purchases_open || 0) + '）▾</button>'
+          : '<span class="wbn-dim">采购 ' + (s.purchases || 0) + '（在办 ' + (s.purchases_open || 0) + '）</span>';
+        var last = s.latest_report
+          ? '<button type="button" class="wbn-card-last" data-wbn-rpt="' + esc(s.name) + '">最近：' + esc(s.latest_report) + '<br><span class="wbn-dim">' + esc(s.latest_report_at) + '</span></button>'
+          : '<div class="wbn-card-last wbn-dim">还没提交材料</div>';
         return '<div class="wbn-card">' +
           '<div class="wbn-card-top"><b>' + esc(s.name) + '</b>' + (s.role === "admin" ? '<span class="wbn-kind">管理员</span>' : "") + '</div>' +
           '<div class="wbn-card-proj">' + (s.project ? esc(s.project) : '<span class="wbn-dim">未认领课题</span>') + '</div>' +
           '<div class="wbn-bar"><i style="width:' + pct + '%"></i></div>' +
           '<div class="wbn-card-meta">' + (s.stage ? esc(s.stage) : "未开始") + ' · ' + pct + '%</div>' +
-          '<div class="wbn-card-stats">' +
-            '<span>材料 ' + (s.reports || 0) + '</span>' +
-            '<span>采购 ' + (s.purchases || 0) + '（在办 ' + (s.purchases_open || 0) + '）</span>' +
-          '</div>' +
+          '<div class="wbn-card-stats">' + rptBtn + purBtn + '</div>' +
           '<div class="wbn-card-ct">' + ctBtn + '</div>' +
-          (s.latest_report ? '<div class="wbn-card-last">最近：' + esc(s.latest_report) + '<br><span class="wbn-dim">' + esc(s.latest_report_at) + '</span></div>' : '<div class="wbn-card-last wbn-dim">还没提交材料</div>') +
+          last +
           '</div>';
       }).join("");
       var html = '<h3 class="wbn-h">学生档案<span class="wbn-count">' + list.length + ' 人</span></h3>' +
         '<div class="wbn-cards">' + cards + '</div>';
       setTimeout(function () {
-        Array.prototype.forEach.call(root.querySelectorAll("[data-wbn-ct]"), function (b) {
-          b.addEventListener("click", function () {
-            var nm = b.getAttribute("data-wbn-ct");
-            var card = b.closest(".wbn-card");
-            var box = card.querySelector(".wbn-ct-box");
-            if (box) { box.remove(); b.textContent = "竞赛成果 " + (CLIST[nm] || []).length + " 项 ▾"; return; }
-            var rows = CLIST[nm] || [];
-            var inner = rows.map(function (c) {
-              return '<div class="wbn-ct-row">' +
-                '<div class="wbn-ct-t">' + esc(c.title) + '</div>' +
-                '<div class="wbn-ct-s">' + esc(c.summary || "") + ' · 提交人 ' + esc(c.by || "") + ' · ' + esc(c.created_at || "") + '</div>' +
-                (c.file_url ? '<a class="wbn-file" href="' + esc(c.file_url) + '" target="_blank" rel="noopener">证书</a>' : '') +
-                '</div>';
-            }).join("");
-            var d2 = document.createElement("div");
-            d2.className = "wbn-ct-box";
-            d2.innerHTML = inner || '<p class="wbn-empty">没有记录。</p>';
-            card.appendChild(d2);
-            b.textContent = "收起 ▴";
+        function bind(attr, rows, rowHtml) {
+          Array.prototype.forEach.call(root.querySelectorAll("[" + attr + "]"), function (b) {
+            b.addEventListener("click", function () {
+              var nm = b.getAttribute(attr);
+              var card = b.closest(".wbn-card");
+              var box = card.querySelector(".wbn-ct-box");
+              if (box) { box.remove(); b.textContent = b.getAttribute("data-label") || b.textContent; return; }
+              var list = rows[nm] || [];
+              var inner = list.map(rowHtml).join("");
+              var d2 = document.createElement("div");
+              d2.className = "wbn-ct-box";
+              d2.innerHTML = inner || '<p class="wbn-empty">没有记录。</p>';
+              card.appendChild(d2);
+              b.textContent = "收起 ▴";
+            });
           });
+        }
+        bind("data-wbn-ct", CLIST, function (c) {
+          return '<div class="wbn-ct-row">' +
+            '<div class="wbn-ct-t">' + esc(c.title) + '</div>' +
+            '<div class="wbn-ct-s">' + esc(c.summary || "") + ' · 提交人 ' + esc(c.by || "") + ' · ' + esc(c.created_at || "") + '</div>' +
+            (c.file_url ? '<a class="wbn-file" href="' + esc(c.file_url) + '" target="_blank" rel="noopener">证书</a>' : '') +
+            '</div>';
         });
+        bind("data-wbn-rpt", RLIST, archiveRptRow);
+        bind("data-wbn-pur", PLIST, archivePurRow);
       }, 0);
       return html;
     });

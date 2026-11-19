@@ -2077,6 +2077,15 @@ body.wbn-page .hb-toc {
   color: #4a5c70;
 }
 
+button.wbn-card-last {
+  display: block;
+  width: 100%;
+  border: 0;
+  background: none;
+  text-align: left;
+  cursor: pointer;
+}
+
 /* 档案卡片里的竞赛成果入口与展开区 */
 .wbn-card-ct {
   margin-top: 7px;

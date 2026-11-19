@@ -2449,7 +2449,7 @@ html.dark .prose thead th {
   table-layout: fixed;
 }
 
-.proj-card thead th {
+.proj-card table thead th {
   position: static;
   background: #eef1f5;
   border-bottom: 1px solid #e2e7ee;
@@ -2494,7 +2494,7 @@ html.dark .proj-card h3 {
   color: #dbe4ee;
 }
 
-html.dark .proj-card thead th {
+html.dark .proj-card table thead th {
   background: #1e293b;
   border-bottom-color: #334155;
 }

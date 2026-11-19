@@ -261,7 +261,11 @@
   function showMember(name) {
     var d = CACHE;
     var m = (d.members || []).find(function (x) { return x.name === name; }) || { name: name };
-    var reps = (d.reports || []).filter(function (r) { return r.name === name; });
+    var reps = (d.reports || []).filter(function (r) {
+      if (r.name === name) return true;
+      var mem = cleanMembers(r.members);
+      return mem.split("、").indexOf(name) >= 0;
+    });
     var normal = reps.filter(function (r) { return r.kind !== "竞赛成果"; });
     var contest = reps.filter(function (r) { return r.kind === "竞赛成果"; });
     var pur = (d.purchases || []).filter(function (p) { return p.name === name; });

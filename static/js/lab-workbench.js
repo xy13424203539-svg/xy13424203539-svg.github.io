@@ -8,6 +8,9 @@
   var root = document.getElementById("wbn-root");
   if (!root || !cfg.url || !cfg.key) return;
 
+  /* 工作台正文解除文章 65ch 限宽，给侧栏 + 卡片网格留出宽屏空间 */
+  if (root.parentElement) root.parentElement.classList.add("wbn-prose-wide");
+
   var STORE = "chenlab_member";
   var MAX_MB = 50; /* Supabase 免费额度单文件上限 50 MB */
   var TAB = "home";

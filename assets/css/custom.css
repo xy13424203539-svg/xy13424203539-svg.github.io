@@ -1219,6 +1219,12 @@ article.wbn-wide {
   flex: 1 1 auto;
 }
 
+/* 工作台页隐藏站点次级边栏与右侧目录，正文占满宽屏 */
+body.wbn-page .hb-sidebar-container,
+body.wbn-page .hb-toc {
+  display: none !important;
+}
+
 /* 左右分栏：桌面端侧边分组导航 + 主内容；手机端折成顶部胶囊条 */
 .wbn-shell {
   display: flex;

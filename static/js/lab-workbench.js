@@ -9,6 +9,7 @@
   if (!root || !cfg.url || !cfg.key) return;
 
   /* 工作台解除文章正文 65ch 限宽与 flex 收缩，给侧栏 + 卡片网格留出宽屏空间 */
+  document.body.classList.add("wbn-page");
   (function markWide(el) {
     for (var i = 0; i < 3 && el; i++) { el.classList.add("wbn-wide"); el = el.parentElement; }
   })(root.parentElement);

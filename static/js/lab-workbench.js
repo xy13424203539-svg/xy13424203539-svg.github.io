@@ -828,7 +828,7 @@
   /* ---------- 学生档案 ---------- */
 
   function renderArchive() {
-    if (!isAdmin()) return Promise.resolve('<p class="wbn-empty">学生档案只有管理员能看。</p>');
+    if (!isAdmin()) return Promise.resolve('<p class="wbn-empty">暂无内容。</p>');
     return rpc("archive_overview", { p_name: me.name, p_sid: me.sid }).then(function (d) {
       if (!d) return '<p class="wbn-empty">读取失败，请重新登录。</p>';
       var list = d.students || [];

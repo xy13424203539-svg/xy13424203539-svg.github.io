@@ -45,8 +45,9 @@
   }
 
   function askLogin(msg) {
-    root.innerHTML = '<div class="adm-note">' + (msg || "这个页面只有管理员登录后才能看到。") +
-      '<br><button type="button" class="mp-btn mp-btn-main" id="adm-login">用管理员账号登录</button></div>';
+    root.innerHTML = '<div class="adm-note">' +
+      (msg ? esc(msg) + '<br>' : '') +
+      '<button type="button" class="mp-btn mp-btn-main" id="adm-login">登录</button></div>';
     var b = root.querySelector("#adm-login");
     if (b) {
       b.addEventListener("click", function () {
@@ -234,7 +235,7 @@
       var arch = res[1] || {};
       var body = root.querySelector(".adm-body");
       if (!data) {
-        body.innerHTML = '<p class="adm-dim">没有权限读取，请重新登录管理员账号。</p>';
+        body.innerHTML = '<p class="adm-dim">没有权限读取，请重新登录。</p>';
         return;
       }
       var members = data.members || [];
@@ -270,8 +271,7 @@
       return;
     }
     if (s.role !== "admin") {
-      var msg = "当前登录的是 " + esc(s.name) + "，只有管理员能看这个页面。";
-      if (lastNotice !== msg) { lastNotice = msg; askLogin(msg); }
+      askLogin("");
       return;
     }
     if (!rendered) { rendered = true; render(s); }

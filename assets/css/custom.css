@@ -2290,3 +2290,71 @@ html.dark .sn-item.active {
   color: #9ec5f0;
   box-shadow: inset 3px 0 0 #3b82f6;
 }
+
+/* ===== 本轮 UI 评审修复：正文居中放宽 / 去重复日期 / 收紧留白 / 浮窗避让 / 深色对比 ===== */
+
+/* 桌面：正文容器在侧栏剩余空间内居中并放宽 */
+@media (min-width: 1024px) {
+  body.sn-on:not(.wbn-page) .page-body > .mx-auto,
+  body.sn-on:not(.wbn-page) .page-body > .max-w-prose.mx-auto,
+  body.sn-on:not(.wbn-page) .page-body > .hbb-section {
+    max-width: 1180px !important;
+    margin-left: auto !important;
+    margin-right: auto !important;
+  }
+
+  body.sn-on:not(.wbn-page) .prose,
+  body.sn-on:not(.wbn-page) .prose.max-w-prose,
+  body.sn-on:not(.wbn-page) .max-w-prose,
+  body.sn-on:not(.wbn-page) .max-w-3xl,
+  body.sn-on:not(.wbn-page) .max-w-\[65ch\] {
+    max-width: 1100px !important;
+  }
+
+  body.sn-on:not(.wbn-page) .page-body > .max-w-prose.mx-auto.flex.justify-center > article,
+  body.sn-on:not(.wbn-page) .page-body > .max-w-prose.mx-auto.flex.justify-center > .prose {
+    width: 100% !important;
+    max-width: 1100px !important;
+  }
+
+  /* 文章区不再强制撑满一屏，短内容贴合高度，去掉底部多余空白 */
+  body.sn-on:not(.wbn-page) article {
+    min-height: auto !important;
+  }
+
+  /* 隐藏模板在文章 meta 区自动渲染的日期，保留正文末尾手写的“最后更新” */
+  body.sn-on:not(.wbn-page) .page-body article time.mt-12 {
+    display: none !important;
+  }
+}
+
+/* 手机端：登录浮窗上移，避免压住底部联系方式；给页面底部留出避让空间 */
+@media (max-width: 1023px) {
+  .mp-pill, .mp-chip {
+    bottom: 26px !important;
+    right: 12px !important;
+  }
+  body { padding-bottom: 60px; }
+
+  /* 表格首列（标签列）收窄，内容列加宽，减少长文本折行 */
+  .prose table th:first-child,
+  .prose table td:first-child {
+    width: 32%;
+  }
+}
+
+/* 深色模式：正文与表格线对比度加强 */
+html.dark .prose,
+html.dark .prose p,
+html.dark .prose li,
+html.dark .prose td {
+  color: #dbe4ee;
+}
+html.dark .prose table,
+html.dark .prose th,
+html.dark .prose td {
+  border-color: #334155 !important;
+}
+html.dark .prose thead th {
+  background: #1e293b;
+}

@@ -7,6 +7,9 @@
   if (window.__chenlabI18n) return;
   window.__chenlabI18n = true;
 
+  /* 过渡兼容：未登录先按访客进入，不自动弹登录框，只在右下角留入口按钮 */
+  try { if (!localStorage.getItem("chenlab_member")) localStorage.setItem("chenlab_guest", "1"); } catch (e) {}
+
   var MAP = {
     "Open Menu": "打开菜单",
     "Close Menu": "关闭菜单",

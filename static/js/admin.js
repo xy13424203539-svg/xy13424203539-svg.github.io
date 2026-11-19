@@ -124,7 +124,7 @@
     var rows = list.map(function (m) {
       var pct = Math.max(0, Math.min(100, parseInt(m.percent, 10) || 0));
       return '<tr>' +
-        '<td>' + esc(m.name) + '</td>' +
+        '<td><button type="button" class="adm-member-link" data-adm-member="' + esc(m.name) + '">' + esc(m.name) + '</button></td>' +
         '<td>' + (m.role === "admin" ? "管理员" : "成员") + '</td>' +
         '<td>' + (m.project ? esc(m.project) : '<span class="adm-dim">未指定</span>') + '</td>' +
         '<td>' + (m.stage ? esc(m.stage) : '<span class="adm-dim">—</span>') + '</td>' +
@@ -133,7 +133,7 @@
         '<td>' + (m.updated_at ? esc(String(m.updated_at).slice(0, 10)) : '<span class="adm-dim">—</span>') + '</td>' +
         '</tr>';
     }).join("");
-    return '<div class="adm-block"><h3>成员与课题</h3>' +
+    return '<div class="adm-block"><h3>成员与课题<span class="adm-count">点击姓名查看该成员详情</span></h3>' +
       table(["姓名", "身份", "所属课题", "阶段", "进度", "资料", "更新"], rows) + '</div>';
   }
 
@@ -225,6 +225,63 @@
       table(["日期", "申请人", "课题", "物品 / 规格", "数量", "预算", "状态", "备注"], rows) + '</div>';
   }
 
+  var CACHE = null;
+
+  function renderList() {
+    var d = CACHE;
+    var members = d.members || [];
+    var usage = d.usage || [];
+    var allReports = d.reports || [];
+    var purchases = d.purchases || [];
+    var normal = allReports.filter(function (r) { return r.kind !== "竞赛成果"; });
+    var contest = allReports.filter(function (r) { return r.kind === "竞赛成果"; });
+    root.querySelector(".adm-body").innerHTML = statsBlock(members, usage, d.material || []) +
+      projectBlock(members) +
+      membersBlock(members) +
+      reportsAdminBlock(normal) +
+      contestAdminBlock(contest) +
+      purchaseAdminBlock(purchases) +
+      usageBlock(usage) +
+      materialBlock(d.material || []) +
+      recentBlock(d.recent || []);
+  }
+
+  function memberDetailBlock(m) {
+    var pct = Math.max(0, Math.min(100, parseInt(m.percent, 10) || 0));
+    var rows =
+      '<tr><td>身份</td><td>' + (m.role === "admin" ? "管理员" : "成员") + '</td></tr>' +
+      '<tr><td>所属课题</td><td>' + (m.project ? esc(m.project) : '<span class="adm-dim">未指定</span>') + '</td></tr>' +
+      '<tr><td>当前阶段</td><td>' + (m.stage ? esc(m.stage) : '<span class="adm-dim">—</span>') + '</td></tr>' +
+      '<tr><td>进度</td><td><div class="adm-prog"><i style="width:' + pct + '%"></i></div><span class="adm-pct">' + pct + '%</span></td></tr>' +
+      '<tr><td>资料</td><td>' + (m.has_profile ? '<span class="adm-ok">已填</span>' : '<span class="adm-dim">未填</span>') + '</td></tr>' +
+      '<tr><td>更新</td><td>' + (m.updated_at ? esc(String(m.updated_at).slice(0, 10)) : '<span class="adm-dim">—</span>') + '</td></tr>';
+    return '<div class="adm-block"><h3>基本信息</h3>' + table(["项目", "内容"], rows) + '</div>';
+  }
+
+  function showMember(name) {
+    var d = CACHE;
+    var m = (d.members || []).find(function (x) { return x.name === name; }) || { name: name };
+    var reps = (d.reports || []).filter(function (r) { return r.name === name; });
+    var normal = reps.filter(function (r) { return r.kind !== "竞赛成果"; });
+    var contest = reps.filter(function (r) { return r.kind === "竞赛成果"; });
+    var pur = (d.purchases || []).filter(function (p) { return p.name === name; });
+    var rec = (d.recent || []).filter(function (r) { return r.user_name === name; });
+    root.querySelector(".adm-body").innerHTML =
+      '<button type="button" class="adm-back" data-adm-back>← 返回成员列表</button>' +
+      '<div class="adm-block"><h3>成员详情：' + esc(name) + '</h3></div>' +
+      memberDetailBlock(m) +
+      reportsAdminBlock(normal) +
+      contestAdminBlock(contest) +
+      purchaseAdminBlock(pur) +
+      (rec.length ? recentBlock(rec) : '<div class="adm-block"><h3>设备登记记录</h3><p class="adm-dim">暂无设备登记记录。</p></div>');
+  }
+
+  root.addEventListener("click", function (ev) {
+    var link = ev.target.closest("[data-adm-member]");
+    if (link) { showMember(link.getAttribute("data-adm-member")); return; }
+    if (ev.target.closest("[data-adm-back]")) { renderList(); }
+  });
+
   function render(s) {
     root.innerHTML = '<div class="adm-note">已以管理员身份进入：' + esc(s.name) + '</div><div class="adm-body">读取中…</div>';
     Promise.all([
@@ -238,21 +295,15 @@
         body.innerHTML = '<p class="adm-dim">没有权限读取，请重新登录。</p>';
         return;
       }
-      var members = data.members || [];
-      var usage = data.usage || [];
-      var allReports = arch.reports || [];
-      var purchases = arch.purchases || [];
-      var normal = allReports.filter(function (r) { return r.kind !== "竞赛成果"; });
-      var contest = allReports.filter(function (r) { return r.kind === "竞赛成果"; });
-      body.innerHTML = statsBlock(members, usage, data.material || []) +
-        projectBlock(members) +
-        membersBlock(members) +
-        reportsAdminBlock(normal) +
-        contestAdminBlock(contest) +
-        purchaseAdminBlock(purchases) +
-        usageBlock(usage) +
-        materialBlock(data.material || []) +
-        recentBlock(data.recent || []);
+      CACHE = {
+        members: data.members || [],
+        usage: data.usage || [],
+        material: data.material || [],
+        recent: data.recent || [],
+        reports: arch.reports || [],
+        purchases: arch.purchases || []
+      };
+      renderList();
     })
       .catch(function (e) {
         var body = root.querySelector(".adm-body");

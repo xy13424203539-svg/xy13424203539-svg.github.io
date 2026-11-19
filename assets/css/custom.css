@@ -1201,6 +1201,45 @@ html.dark .eq-mat {
   text-decoration: underline;
 }
 
+.adm-member-link {
+  border: 0;
+  background: none;
+  padding: 0;
+  cursor: pointer;
+  color: #1d4ed8;
+  font-size: 13.5px;
+  font-weight: 600;
+}
+
+.adm-member-link:hover {
+  text-decoration: underline;
+}
+
+.adm-back {
+  border: 1px solid #c7d2e0;
+  background: #fff;
+  border-radius: 8px;
+  padding: 7px 13px;
+  font-size: 13px;
+  color: #16324f;
+  cursor: pointer;
+  margin: 4px 0 8px;
+}
+
+.adm-back:hover {
+  background: #f1f5f9;
+}
+
+html.dark .adm-member-link {
+  color: #9ec5f0;
+}
+
+html.dark .adm-back {
+  background: #1a2029;
+  border-color: #2a3240;
+  color: #9ec5f0;
+}
+
 .adm-badge {
   padding: 2px 9px;
   border-radius: 20px;

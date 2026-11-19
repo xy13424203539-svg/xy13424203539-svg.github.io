@@ -81,7 +81,16 @@
     });
   }
 
+  function markPage() {
+    var path = location.pathname || "/";
+    if (path.indexOf("/projects/") === 0 || path === "/projects") {
+      var art = document.querySelector("article.prose") || document.querySelector("article");
+      if (art) art.classList.add("proj-page");
+    }
+  }
+
   function run() {
+    markPage();
     walk(document.body);
     removeBrand();
   }

@@ -2406,3 +2406,136 @@ html.dark .prose td {
 html.dark .prose thead th {
   background: #1e293b;
 }
+
+/* ===== 科研项目页：字号阶梯、收窄行宽、方向卡片 ===== */
+.proj-page .max-w-prose {
+  max-width: 880px;
+}
+
+.proj-page h1 {
+  font-size: 42px;
+  line-height: 1.2;
+  margin-bottom: 1.2rem;
+}
+
+.proj-page .prose > p {
+  font-size: 18px;
+  line-height: 1.8;
+}
+
+/* 方向卡片 */
+.proj-card {
+  background: #f7f8fa;
+  border: 1px solid #eceef2;
+  border-radius: 14px;
+  padding: 22px 24px;
+  margin-top: 26px;
+}
+
+.proj-card h3 {
+  font-size: 26px;
+  line-height: 1.3;
+  margin: 0 0 16px;
+  color: #16324f;
+}
+
+.proj-card table {
+  width: 100%;
+  font-size: 17px;
+  line-height: 1.6;
+  border: none;
+  background: transparent;
+}
+
+.proj-card thead th {
+  position: static;
+  background: #eef1f5;
+  border-bottom: 1px solid #e2e7ee;
+}
+
+.proj-card th,
+.proj-card td {
+  border: none;
+  border-bottom: 1px solid #eceef2;
+  padding: 12px 14px;
+}
+
+.proj-card tbody tr:last-child th,
+.proj-card tbody tr:last-child td {
+  border-bottom: none;
+}
+
+.proj-card tbody tr:hover td {
+  background: #f2f5f9;
+}
+
+.proj-card th:first-child,
+.proj-card td:first-child {
+  width: 26%;
+}
+
+.proj-page .page-updated {
+  font-size: 14px;
+  color: #6b7280;
+}
+
+html.dark .proj-card {
+  background: #151b23;
+  border-color: #242b36;
+}
+
+html.dark .proj-card h3 {
+  color: #dbe4ee;
+}
+
+html.dark .proj-card thead th {
+  background: #1e293b;
+  border-bottom-color: #334155;
+}
+
+html.dark .proj-card th,
+html.dark .proj-card td {
+  border-bottom-color: #2a3240;
+}
+
+html.dark .proj-card tbody tr:hover td {
+  background: #1c2530;
+}
+
+html.dark .proj-page .page-updated {
+  color: #8b96a5;
+}
+
+@media (max-width: 768px) {
+  .proj-page h1 {
+    font-size: 30px;
+  }
+
+  .proj-page .prose > p {
+    font-size: 16px;
+  }
+
+  .proj-card {
+    padding: 16px;
+    margin-top: 18px;
+  }
+
+  .proj-card h3 {
+    font-size: 20px;
+    margin-bottom: 12px;
+  }
+
+  .proj-card table {
+    font-size: 15px;
+  }
+
+  .proj-card th,
+  .proj-card td {
+    padding: 10px 8px;
+  }
+
+  .proj-card th:first-child,
+  .proj-card td:first-child {
+    width: 25%;
+  }
+}

@@ -20,6 +20,7 @@
     "FAQ": "常见问题",
     "Documentation": "文档",
     "Untitled": "未命名",
+    "Team": "成员",
     "Powered by Hugo Blox": "",
     "Search term 1": "",
     "Search term 2": ""
@@ -43,6 +44,8 @@
       node.nodeValue = "未找到 “" + m[1] + "” 相关内容";
     } else if ((m = v.match(/^(\d+)\s+filters$/))) {
       node.nodeValue = m[1] + " 个筛选";
+    } else if ((m = v.match(/^Team \((\d+)\)$/))) {
+      node.nodeValue = "成员 (" + m[1] + ")";
     }
   }
 

@@ -72,60 +72,138 @@
   /* ---------- 登录浮层 ---------- */
 
   function buildLogin() {
+    var old = document.getElementById("mp-login-mask");
+    if (old) old.remove();
     var wrap = document.createElement("div");
     wrap.className = "mp-mask";
     wrap.id = "mp-login-mask";
-    wrap.innerHTML =
-      '<div class="mp-login">' +
-        '<h3>实验室成员登录</h3>' +
-        '<p class="mp-login-sub">输入姓名和学号，可以填写或修改自己的个人资料；不登录也能查看全部内容。</p>' +
+    var pending = { name: "", sid: "" };
+
+    function shell(title, sub, bodyHtml, mainText) {
+      wrap.innerHTML =
+        '<div class="mp-login">' +
+          '<h3>' + title + '</h3>' +
+          '<p class="mp-login-sub">' + sub + '</p>' +
+          bodyHtml +
+          '<div id="mp-login-msg" class="mp-msg"></div>' +
+          '<div class="mp-btns">' +
+            '<button type="button" class="mp-btn mp-btn-main" id="mp-do-main">' + mainText + '</button>' +
+            '<button type="button" class="mp-btn" id="mp-back">返回</button>' +
+            '<button type="button" class="mp-btn" id="mp-close-login">只看不登录</button>' +
+          '</div>' +
+        '</div>';
+      var msg = wrap.querySelector("#mp-login-msg");
+      wrap.querySelector("#mp-close-login").addEventListener("click", function () {
+        markGuest();
+        wrap.remove();
+        ensureLoginPill();
+      });
+      return msg;
+    }
+
+    function finish(identity, msg) {
+      state = identity;
+      persist();
+      clearGuest();
+      var pill = document.querySelector(".mp-pill");
+      if (pill) pill.remove();
+      msg.className = "mp-msg mp-msg-ok";
+      msg.textContent = "已登录：" + state.name + (state.role === "admin" ? "（管理员）" : "");
+      setTimeout(function () {
+        wrap.remove();
+        renderProfile();
+        if (window.__chenlabEnsureChip) window.__chenlabEnsureChip();
+      }, 700);
+    }
+
+    // 面板 1：身份核验（姓名 + 学号/教师码）
+    function viewVerify() {
+      var msg = shell("实验室成员登录", "首次登录先核验姓名和学号，通过后设置密码；之后用姓名和密码登录。",
         '<div class="mp-row"><label>姓名<input id="mp-in-name" type="text" maxlength="10" placeholder="例如 张三"></label></div>' +
-        '<div class="mp-row"><label>学号 / 教师登录码<input id="mp-in-sid" type="text" maxlength="20" placeholder="学生填 12 位学号；教师填实验室给的登录码"></label></div>' +
-        '<div id="mp-login-msg" class="mp-msg"></div>' +
-        '<div class="mp-btns">' +
-          '<button type="button" class="mp-btn mp-btn-main" id="mp-do-login">登录</button>' +
-          '<button type="button" class="mp-btn" id="mp-close-login">只看不登录</button>' +
-        '</div>' +
-      '</div>';
-    document.body.appendChild(wrap);
-
-    var msg = wrap.querySelector("#mp-login-msg");
-    wrap.querySelector("#mp-close-login").addEventListener("click", function () {
-      markGuest();
-      wrap.remove();
-      ensureLoginPill();
-    });
-    wrap.querySelector("#mp-do-login").addEventListener("click", function () {
-      var n = (wrap.querySelector("#mp-in-name").value || "").trim();
-      var s = (wrap.querySelector("#mp-in-sid").value || "").trim();
-      if (!n || !s) { msg.className = "mp-msg mp-msg-warn"; msg.textContent = "姓名和学号都要填。"; return; }
-      msg.className = "mp-msg"; msg.textContent = "验证中…";
-      rpc("member_login", { p_name: n, p_sid: s })
-        .then(function (rows) {
-          if (!rows || !rows.length) {
+        '<div class="mp-row"><label>学号 / 教师登录码<input id="mp-in-sid" type="text" maxlength="20" placeholder="学生填 12 位学号；教师填实验室给的登录码"></label></div>',
+        "下一步");
+      wrap.querySelector("#mp-back").style.display = "none";
+      wrap.querySelector("#mp-do-main").addEventListener("click", function () {
+        var n = (wrap.querySelector("#mp-in-name").value || "").trim();
+        var s = (wrap.querySelector("#mp-in-sid").value || "").trim();
+        if (!n || !s) { msg.className = "mp-msg mp-msg-warn"; msg.textContent = "姓名和学号都要填。"; return; }
+        msg.className = "mp-msg"; msg.textContent = "验证中…";
+        rpc("member_verify", { p_name: n, p_sid: s })
+          .then(function (row) {
+            if (!row) {
+              msg.className = "mp-msg mp-msg-err";
+              msg.textContent = "姓名或学号不在实验室名单里，你只有查看权限。";
+              return;
+            }
+            pending.name = row.name; pending.sid = s;
+            if (row.has_password) viewPwd(); else viewSetPwd();
+          })
+          .catch(function (e) {
             msg.className = "mp-msg mp-msg-err";
-            msg.textContent = "姓名或学号不在实验室名单里，你只有查看权限。";
-            return;
-          }
-          state = { name: rows[0].name, sid: s, role: rows[0].role };
-          persist();
-          clearGuest();
-          var pill = document.querySelector(".mp-pill");
-          if (pill) pill.remove();
-          msg.className = "mp-msg mp-msg-ok";
-          msg.textContent = "已登录：" + state.name + (state.role === "admin" ? "（管理员）" : "");
-          setTimeout(function () {
-            wrap.remove();
-            renderProfile();
-            if (window.__chenlabEnsureChip) window.__chenlabEnsureChip();
-          }, 700);
-        })
-        .catch(function (e) {
-          msg.className = "mp-msg mp-msg-err";
-          msg.textContent = "登录失败（" + e.message + "）。";
-        });
-    });
+            msg.textContent = "登录失败（" + e.message + "）。";
+          });
+      });
+    }
 
+    // 面板 2：密码登录
+    function viewPwd() {
+      var msg = shell("登录", "该账号已设置密码，请输入密码登录。",
+        '<div class="mp-row"><label>姓名<input id="mp-in-name" type="text" maxlength="10" value="' + esc(pending.name) + '"></label></div>' +
+        '<div class="mp-row"><label>密码<input id="mp-in-pwd" type="password" maxlength="30" placeholder="请输入登录密码"></label></div>',
+        "登录");
+      wrap.querySelector("#mp-back").addEventListener("click", viewVerify);
+      wrap.querySelector("#mp-do-main").addEventListener("click", function () {
+        var n = (wrap.querySelector("#mp-in-name").value || "").trim();
+        var p = (wrap.querySelector("#mp-in-pwd").value || "").trim();
+        if (!n || !p) { msg.className = "mp-msg mp-msg-warn"; msg.textContent = "姓名和密码都要填。"; return; }
+        msg.className = "mp-msg"; msg.textContent = "登录中…";
+        rpc("member_login_pwd", { p_name: n, p_pwd: p })
+          .then(function (rows) {
+            if (!rows || !rows.length) {
+              msg.className = "mp-msg mp-msg-err";
+              msg.textContent = "姓名或密码不正确。";
+              return;
+            }
+            finish({ name: rows[0].name, sid: rows[0].student_id, role: rows[0].role }, msg);
+          })
+          .catch(function (e) {
+            msg.className = "mp-msg mp-msg-err";
+            msg.textContent = "登录失败（" + e.message + "）。";
+          });
+      });
+    }
+
+    // 面板 3：首次设置密码
+    function viewSetPwd() {
+      var msg = shell("设置登录密码", "核验通过，为你的账号设置一个密码，至少 6 位；下次用姓名和这个密码登录。",
+        '<div class="mp-row"><label>姓名<input id="mp-in-name" type="text" maxlength="10" value="' + esc(pending.name) + '" readonly></label></div>' +
+        '<div class="mp-row"><label>新密码<input id="mp-in-pwd" type="password" maxlength="30" placeholder="至少 6 位"></label></div>' +
+        '<div class="mp-row"><label>确认密码<input id="mp-in-pwd2" type="password" maxlength="30" placeholder="再输一次"></label></div>',
+        "设置并登录");
+      wrap.querySelector("#mp-back").addEventListener("click", viewVerify);
+      wrap.querySelector("#mp-do-main").addEventListener("click", function () {
+        var p1 = (wrap.querySelector("#mp-in-pwd").value || "").trim();
+        var p2 = (wrap.querySelector("#mp-in-pwd2").value || "").trim();
+        if (p1.length < 6) { msg.className = "mp-msg mp-msg-warn"; msg.textContent = "密码至少 6 位。"; return; }
+        if (p1 !== p2) { msg.className = "mp-msg mp-msg-warn"; msg.textContent = "两次输入的密码不一致。"; return; }
+        msg.className = "mp-msg"; msg.textContent = "保存中…";
+        rpc("member_set_password", { p_name: pending.name, p_sid: pending.sid, p_pwd: p1 })
+          .then(function (ok) {
+            if (!ok) { msg.className = "mp-msg mp-msg-err"; msg.textContent = "设置失败，请确认学号后重试。"; return; }
+            return rpc("member_login_pwd", { p_name: pending.name, p_pwd: p1 }).then(function (rows) {
+              if (!rows || !rows.length) throw new Error("密码已保存，但自动登录失败，请返回用密码登录");
+              finish({ name: rows[0].name, sid: rows[0].student_id, role: rows[0].role }, msg);
+            });
+          })
+          .catch(function (e) {
+            msg.className = "mp-msg mp-msg-err";
+            msg.textContent = e.message;
+          });
+      });
+    }
+
+    document.body.appendChild(wrap);
+    viewVerify();
     return wrap;
   }
 
@@ -404,8 +482,8 @@
   }
 
   if (!state) {
-    if (isGuest()) setTimeout(ensureLoginPill, 200);
-    else setTimeout(function () { buildLogin(); }, 400);
+    /* 未登录不自动弹浮层，先在右下角放小按钮，点击才打开登录框 */
+    setTimeout(ensureLoginPill, 200);
   } else {
     ensureChip();
   }

@@ -1316,7 +1316,7 @@ html.dark .mp-chip-link {
 
 .wbn-home-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
   gap: 12px;
 }
 
@@ -1324,6 +1324,7 @@ html.dark .mp-chip-link {
   display: flex;
   align-items: center;
   gap: 12px;
+  min-width: 0;
   padding: 14px;
   border: 1px solid #e0e8f0;
   border-radius: 12px;

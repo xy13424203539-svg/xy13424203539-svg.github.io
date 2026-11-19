@@ -2158,9 +2158,9 @@ html.dark .wbn-tip {
     left: 0;
     top: var(--navbar-height, 60px);
     bottom: 0;
-    width: 232px;
+    width: 248px;
     overflow-y: auto;
-    padding: 18px 14px 40px;
+    padding: 22px 16px 40px;
     border-right: 1px solid #e6ebf1;
     background: var(--hb-color-background, #ffffff);
     z-index: 50;
@@ -2179,7 +2179,7 @@ html.dark .wbn-tip {
 
   /* 主内容右移，给侧栏留位 */
   body.sn-on:not(.wbn-page) .page-body {
-    margin-left: 232px;
+    margin-left: 248px;
   }
 
   body.sn-on:not(.wbn-page) .page-body > .mx-auto,
@@ -2219,32 +2219,34 @@ html.dark .wbn-tip {
   .sn-nav {
     display: flex;
     flex-direction: column;
-    gap: 18px;
+    gap: 22px;
   }
 
   .sn-group {
     display: flex;
     flex-direction: column;
-    gap: 2px;
+    gap: 4px;
   }
 
   .sn-gt {
-    font-size: 12px;
+    font-size: 13px;
     font-weight: 700;
-    color: #8a96a5;
-    letter-spacing: 0.04em;
-    margin: 0 0 6px 11px;
+    color: #7c8a99;
+    letter-spacing: 0.05em;
+    margin: 0 0 9px 12px;
   }
 
   .sn-item {
     display: flex;
     align-items: center;
-    gap: 9px;
-    padding: 8px 11px;
-    border-radius: 9px;
-    font-size: 14px;
+    gap: 11px;
+    padding: 11px 13px;
+    border-radius: 11px;
+    font-size: 15px;
+    line-height: 1.3;
     color: #46586b;
     text-decoration: none;
+    transition: background 0.15s ease, color 0.15s ease, box-shadow 0.15s ease;
   }
 
   .sn-item:hover {
@@ -2252,15 +2254,17 @@ html.dark .wbn-tip {
   }
 
   .sn-item.active {
-    background: #eef4fa;
-    color: #16324f;
+    background: #e7f0fb;
+    color: #1d4ed8;
     font-weight: 600;
+    box-shadow: inset 3px 0 0 #2563eb;
   }
 
   .sn-ic {
-    width: 18px;
+    width: 20px;
     text-align: center;
-    flex: 0 0 18px;
+    flex: 0 0 20px;
+    font-size: 17px;
   }
 }
 
@@ -2284,4 +2288,5 @@ html.dark .sn-item:hover {
 html.dark .sn-item.active {
   background: #1f2833;
   color: #9ec5f0;
+  box-shadow: inset 3px 0 0 #3b82f6;
 }

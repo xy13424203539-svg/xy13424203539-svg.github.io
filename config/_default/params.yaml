@@ -24,7 +24,7 @@ hugoblox:
     description: "岭南师范学院机电工程学院微纳制造与智能传感实验室（CHEN LAB），研究方向为微纳制造与 3D 打印、静电纺丝与 EHD 喷印、智能传感、水下与跨介质机器人。"
     # Social accounts (used for meta tags like Twitter Cards)
     social:
-      twitter: "GoOwnable" # Twitter/X handle for Twitter Cards (without @)
+      twitter: "" # Twitter/X handle for Twitter Cards (without @)
 
   # ────────────────────────────────────────────────────────────────────────────
   # THEME
@@ -109,7 +109,7 @@ hugoblox:
   footer:
     # Footer style variant
     style: minimal # minimal | columns | centered
-    language_switcher: true
+    language_switcher: false
     # Custom footer text (HTML supported)
     text: ""
 
@@ -166,7 +166,7 @@ hugoblox:
       enable: true
     # Reading time estimates
     reading_time:
-      enable: true
+      enable: false
     # Academic citations
     citations:
       style: apa # apa | mla | chicago | ieee
@@ -244,9 +244,9 @@ hugoblox:
   # Regional formatting preferences
   # ────────────────────────────────────────────────────────────────────────────
   locale:
-    date_format: "Jan 2, 2006" # Go time format
-    time_format: "3:04 PM"
-    address_format: en-us
+    date_format: "2006年1月2日" # Go time format
+    time_format: "15:04"
+    address_format: zh-cn
 
   # ────────────────────────────────────────────────────────────────────────────
   # SECURITY
@@ -287,7 +287,7 @@ hugoblox:
     # Requires: HugoBlox Premium to support HugoBlox via alternative means
     # Note: Even with Premium, you can keep this false to support open source!
     # Get Premium: https://hugoblox.com/premium
-    hide_attribution: false
+    hide_attribution: true
 
     # Affiliate referral code for rewards program
     # Join affiliate program: https://hugoblox.com/affiliates

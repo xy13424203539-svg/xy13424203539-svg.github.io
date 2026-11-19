@@ -360,7 +360,7 @@
         if (!me) return;
         var body = (f.body.value || "").trim();
         var file = f._voice || (fileIn.files && fileIn.files[0]) || null;
-        if (!body && !file) return;
+        if (!body && !file) { picked.textContent = "先写点内容，或发个图片、文件、语音。"; return; }
         if (file && file.size > MAX_MB * 1048576) {
           picked.textContent = "单个文件最大 " + MAX_MB + " MB，这个有点大，压缩一下或贴网盘链接。";
           return;
@@ -808,6 +808,7 @@
         f.addEventListener("submit", function (ev) {
           ev.preventDefault();
           var msg = root.querySelector("#wbn-meet-msg");
+          if (!f.title.value.trim()) { msg.className = "wbn-msg wbn-msg-err"; msg.textContent = "主题要填。"; return; }
           if (!f.date.value) { msg.className = "wbn-msg wbn-msg-err"; msg.textContent = "日期要选。"; return; }
           msg.className = "wbn-msg"; msg.textContent = "保存中…";
           rpc("add_meeting", {

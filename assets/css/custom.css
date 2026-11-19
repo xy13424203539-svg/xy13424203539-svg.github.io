@@ -2446,6 +2446,7 @@ html.dark .prose thead th {
   line-height: 1.6;
   border: none;
   background: transparent;
+  table-layout: fixed;
 }
 
 .proj-card thead th {
@@ -2459,6 +2460,10 @@ html.dark .prose thead th {
   border: none;
   border-bottom: 1px solid #eceef2;
   padding: 12px 14px;
+}
+
+.proj-card td:last-child {
+  word-break: break-word;
 }
 
 .proj-card tbody tr:last-child th,

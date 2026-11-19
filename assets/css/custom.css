@@ -2316,16 +2316,16 @@ html.dark .sn-item.active {
     width: 100% !important;
     max-width: 1100px !important;
   }
+}
 
-  /* 文章区不再强制撑满一屏，短内容贴合高度，去掉底部多余空白 */
-  body.sn-on:not(.wbn-page) article {
-    min-height: auto !important;
-  }
+/* 文章区不再强制撑满一屏，短内容贴合高度，去掉底部多余空白（桌面与手机均生效） */
+body.sn-on:not(.wbn-page) article {
+  min-height: auto !important;
+}
 
-  /* 隐藏模板在文章 meta 区自动渲染的日期，保留正文末尾手写的“最后更新” */
-  body.sn-on:not(.wbn-page) .page-body article time.mt-12 {
-    display: none !important;
-  }
+/* 隐藏模板在文章 meta 区自动渲染的日期，保留正文末尾手写的“最后更新”（桌面与手机均生效） */
+body.sn-on:not(.wbn-page) .page-body article time.mt-12 {
+  display: none !important;
 }
 
 /* 手机端：登录浮窗上移，避免压住底部联系方式；给页面底部留出避让空间 */

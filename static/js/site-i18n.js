@@ -1,6 +1,8 @@
 /* 全站模板文案中文化 + 去除 Hugo Blox 品牌残留。
    主题模块文案硬编码在编译产物里，这里在运行时把可见英文替换为中文，
-   并移除页脚的品牌链接行。不改动业务逻辑。 */
+   并移除页脚的品牌链接行。不改动业务逻辑。
+   性能：初始静态文案只遍历一次；观察器按帧节流，新增元素只处理其子树，
+   文本节点改动只处理被改的节点本身，避免动态重绘时反复全量遍历。 */
 (function () {
   if (window.__chenlabI18n) return;
   window.__chenlabI18n = true;
@@ -23,16 +25,18 @@
     "Search term 2": ""
   };
 
+  var SKIP = { SCRIPT: 1, STYLE: 1, NOSCRIPT: 1, TEXTAREA: 1, INPUT: 1 };
+
   function translateText(node) {
     var t = node.nodeValue;
     if (t == null) return;
     var v = t.trim();
     if (!v) return;
+    var m;
     if (MAP[v] !== undefined) {
       node.nodeValue = t.replace(v, MAP[v]);
       return;
     }
-    var m;
     if ((m = v.match(/^Finding results for "(.*)"$/))) {
       node.nodeValue = "正在查找 “" + m[1] + "”";
     } else if ((m = v.match(/^No results for "(.*)"$/))) {
@@ -47,6 +51,7 @@
     var els = root.querySelectorAll("*");
     for (var i = 0; i < els.length; i++) {
       var el = els[i];
+      if (SKIP[el.tagName]) continue;
       ["title", "aria-label"].forEach(function (a) {
         var v = el.getAttribute(a);
         if (v && MAP[v.trim()] !== undefined) el.setAttribute(a, MAP[v.trim()]);
@@ -81,16 +86,31 @@
     run();
   }
 
+  var pending = [];
+  var scheduled = false;
+  function flush() {
+    scheduled = false;
+    var nodes = pending;
+    pending = [];
+    for (var i = 0; i < nodes.length; i++) walk(nodes[i]);
+  }
+
   var mo = new MutationObserver(function (ms) {
-    ms.forEach(function (m) {
+    for (var k = 0; k < ms.length; k++) {
+      var m = ms[k];
       if (m.type === "characterData") {
         translateText(m.target);
       } else {
-        m.addedNodes.forEach(function (n) {
-          if (n.nodeType === 1) walk(n);
-        });
+        var added = m.addedNodes;
+        for (var j = 0; j < added.length; j++) {
+          if (added[j].nodeType === 1) pending.push(added[j]);
+        }
       }
-    });
+    }
+    if (pending.length && !scheduled) {
+      scheduled = true;
+      requestAnimationFrame(flush);
+    }
   });
   mo.observe(document.documentElement, { childList: true, subtree: true, characterData: true });
 })();

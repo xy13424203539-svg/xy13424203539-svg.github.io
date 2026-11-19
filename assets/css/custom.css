@@ -1209,9 +1209,14 @@ html.dark .mp-chip-link {
   margin: 18px 0 32px;
 }
 
-/* 工作台正文容器解除文章 65ch 限宽（宽屏分栏需要） */
-.wbn-prose-wide {
-  max-width: 1100px !important;
+/* 工作台正文解除文章 65ch 限宽与 flex 收缩（宽屏分栏需要） */
+.wbn-wide {
+  max-width: none !important;
+  width: 100% !important;
+}
+
+article.wbn-wide {
+  flex: 1 1 auto;
 }
 
 /* 左右分栏：桌面端侧边分组导航 + 主内容；手机端折成顶部胶囊条 */

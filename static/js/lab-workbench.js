@@ -8,8 +8,10 @@
   var root = document.getElementById("wbn-root");
   if (!root || !cfg.url || !cfg.key) return;
 
-  /* 工作台正文解除文章 65ch 限宽，给侧栏 + 卡片网格留出宽屏空间 */
-  if (root.parentElement) root.parentElement.classList.add("wbn-prose-wide");
+  /* 工作台解除文章正文 65ch 限宽与 flex 收缩，给侧栏 + 卡片网格留出宽屏空间 */
+  (function markWide(el) {
+    for (var i = 0; i < 3 && el; i++) { el.classList.add("wbn-wide"); el = el.parentElement; }
+  })(root.parentElement);
 
   var STORE = "chenlab_member";
   var MAX_MB = 50; /* Supabase 免费额度单文件上限 50 MB */

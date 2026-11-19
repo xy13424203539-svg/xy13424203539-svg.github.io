@@ -844,11 +844,42 @@
   function archivePurRow(p) {
     var qty = (Number(p.qty) || 0) + " " + (p.unit || "件");
     var budget = Number(p.budget) ? "约 " + p.budget + " 元" : "";
+    var STATUS_KEYS = ["pending", "approved", "ordered", "done", "rejected"];
+    var adminRow = p.id
+      ? '<div class="wbn-admin-row">' +
+          '<select class="wbn-status-sel" data-id="' + p.id + '">' +
+            STATUS_KEYS.map(function (s) {
+              return '<option value="' + s + '"' + (p.status === s ? " selected" : "") + '>' + STATUS_TEXT[s] + '</option>';
+            }).join("") +
+          '</select>' +
+          '<input class="wbn-note-in" data-id="' + p.id + '" maxlength="40" placeholder="审批备注" value="' + esc(p.admin_note || "") + '">' +
+          '<button type="button" class="wbn-btn wbn-mini wbn-save-status" data-id="' + p.id + '">保存</button>' +
+        '</div>'
+      : "";
     return '<div class="wbn-ct-row">' +
       '<div class="wbn-ct-t">' + esc(p.item) + ' ' + statusBadge(p.status) + '</div>' +
       '<div class="wbn-ct-s">' + [p.spec, qty, budget, fmtDate(p.created_at)].filter(function (x) { return x && String(x).trim(); }).join(" · ") + '</div>' +
-      (p.admin_note ? '<div class="wbn-ct-s">老师备注：' + esc(p.admin_note) + '</div>' : '') +
+      (p.id ? "" : (p.admin_note ? '<div class="wbn-ct-s">老师备注：' + esc(p.admin_note) + '</div>' : "")) +
+      adminRow +
       '</div>';
+  }
+
+  function bindPurSave(scope) {
+    Array.prototype.forEach.call(scope.querySelectorAll(".wbn-save-status"), function (b) {
+      b.addEventListener("click", function () {
+        var id = b.getAttribute("data-id");
+        var sel = scope.querySelector('.wbn-status-sel[data-id="' + id + '"]');
+        var note = scope.querySelector('.wbn-note-in[data-id="' + id + '"]');
+        b.textContent = "保存中…";
+        rpc("set_purchase_status", {
+          p_name: me.name, p_sid: me.sid, p_id: Number(id),
+          p_status: sel.value, p_note: (note ? note.value : "")
+        }).then(function (ok) {
+          if (!ok) throw new Error("没有权限");
+          go("已更新状态。");
+        }).catch(function (e) { b.textContent = e.message; });
+      });
+    });
   }
 
   function renderArchive() {
@@ -920,6 +951,7 @@
               d2.className = "wbn-ct-box";
               d2.innerHTML = inner || '<p class="wbn-empty">没有记录。</p>';
               card.appendChild(d2);
+              bindPurSave(d2);
               b.textContent = "收起 ▴";
             });
           });

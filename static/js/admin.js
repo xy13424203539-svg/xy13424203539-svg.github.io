@@ -203,13 +203,23 @@
       table(["日期", "奖项 / 说明", "参赛成员", "课题", "证书"], rows) + '</div>';
   }
 
-  /* 成员提交：耗材申请全量 */
+  /* 成员提交：耗材申请全量（管理员可直接改状态、写备注） */
   function purchaseAdminBlock(list) {
     if (!list.length) return '<div class="adm-block"><h3>耗材申请</h3><p class="adm-dim">还没有采购申请。</p></div>';
+    var STATUS_KEYS = ["pending", "approved", "ordered", "done", "rejected"];
     var rows = list.map(function (p) {
-      var st = STATUS_TEXT[p.status] || p.status;
       var qty = num(p.qty) + " " + (p.unit || "件");
       var budget = num(p.budget) ? "约 " + num(p.budget) + " 元" : "—";
+      var sel = p.id
+        ? '<select class="adm-sel" data-id="' + esc(p.id) + '">' +
+          STATUS_KEYS.map(function (s) {
+            return '<option value="' + s + '"' + (p.status === s ? " selected" : "") + '>' + STATUS_TEXT[s] + '</option>';
+          }).join("") + "</select>"
+        : '<span class="adm-badge adm-badge-' + esc(p.status) + '">' + esc(STATUS_TEXT[p.status] || p.status) + '</span>';
+      var note = p.id
+        ? '<input class="adm-note-in" data-id="' + esc(p.id) + '" maxlength="40" placeholder="审批备注" value="' + esc(p.admin_note || "") + '">' +
+          ' <button type="button" class="adm-mini-btn" data-adm-save-pur="' + esc(p.id) + '">保存</button>'
+        : (p.admin_note ? esc(p.admin_note) : '<span class="adm-dim">—</span>');
       return '<tr>' +
         '<td>' + esc(p.created_at) + '</td>' +
         '<td>' + esc(p.name) + '</td>' +
@@ -217,17 +227,51 @@
         '<td><b>' + esc(p.item) + '</b>' + (p.spec ? '<div class="adm-sub">' + esc(p.spec) + '</div>' : '') + '</td>' +
         '<td>' + esc(qty) + '</td>' +
         '<td>' + budget + '</td>' +
-        '<td><span class="adm-badge adm-badge-' + esc(p.status) + '">' + esc(st) + '</span></td>' +
-        '<td>' + (p.admin_note ? esc(p.admin_note) : '<span class="adm-dim">—</span>') + '</td>' +
+        '<td>' + sel + '</td>' +
+        '<td class="adm-note-cell">' + note + '</td>' +
         '</tr>';
     }).join("");
-    return '<div class="adm-block"><h3>耗材申请<span class="adm-count">' + list.length + '</span></h3>' +
-      table(["日期", "申请人", "课题", "物品 / 规格", "数量", "预算", "状态", "备注"], rows) + '</div>';
+    return '<div class="adm-block"><h3>耗材申请<span class="adm-count">选状态、写备注后点保存</span></h3>' +
+      table(["日期", "申请人", "课题", "物品 / 规格", "数量", "预算", "状态", "备注 / 操作"], rows) + '</div>';
+  }
+
+  function savePurchase(id, btn) {
+    var sel = root.querySelector('.adm-sel[data-id="' + id + '"]');
+    var note = root.querySelector('.adm-note-in[data-id="' + id + '"]');
+    if (!sel || !ME) return;
+    btn.textContent = "保存中…";
+    btn.disabled = true;
+    rpc("set_purchase_status", {
+      p_name: ME.name, p_sid: ME.sid, p_id: Number(id),
+      p_status: sel.value, p_note: (note ? note.value : "")
+    }).then(function (ok) {
+      if (!ok) throw new Error("没有权限");
+      var rec = (CACHE.purchases || []).find(function (x) { return String(x.id) === String(id); });
+      if (rec) { rec.status = sel.value; rec.admin_note = note ? note.value : ""; }
+      rerender();
+    }).catch(function (e) {
+      btn.textContent = "重试";
+      btn.disabled = false;
+      var cell = btn.closest(".adm-note-cell");
+      if (cell) {
+        var msg = cell.querySelector(".adm-save-msg");
+        if (!msg) { msg = document.createElement("div"); msg.className = "adm-save-msg"; cell.appendChild(msg); }
+        msg.textContent = e.message;
+      }
+    });
   }
 
   var CACHE = null;
+  var ME = null;
+  var VIEW = { mode: "list", name: "" };
+
+  function rerender() {
+    if (VIEW.mode === "member" && VIEW.name) showMember(VIEW.name);
+    else renderList();
+  }
 
   function renderList() {
+    VIEW.mode = "list"; VIEW.name = "";
     var d = CACHE;
     var members = d.members || [];
     var usage = d.usage || [];
@@ -259,6 +303,7 @@
   }
 
   function showMember(name) {
+    VIEW.mode = "member"; VIEW.name = name;
     var d = CACHE;
     var m = (d.members || []).find(function (x) { return x.name === name; }) || { name: name };
     var reps = (d.reports || []).filter(function (r) {
@@ -283,10 +328,13 @@
   root.addEventListener("click", function (ev) {
     var link = ev.target.closest("[data-adm-member]");
     if (link) { showMember(link.getAttribute("data-adm-member")); return; }
-    if (ev.target.closest("[data-adm-back]")) { renderList(); }
+    if (ev.target.closest("[data-adm-back]")) { renderList(); return; }
+    var sv = ev.target.closest("[data-adm-save-pur]");
+    if (sv) { savePurchase(sv.getAttribute("data-adm-save-pur"), sv); }
   });
 
   function render(s) {
+    ME = s;
     root.innerHTML = '<div class="adm-note">已以管理员身份进入：' + esc(s.name) + '</div><div class="adm-body">读取中…</div>';
     Promise.all([
       rpc("admin_overview", { p_name: s.name, p_sid: s.sid }),

@@ -1254,6 +1254,49 @@ html.dark .adm-back {
 .adm-badge-done { background: #e8f0ee; color: #2b6157; }
 .adm-badge-rejected { background: #f8e8e7; color: #a0403c; }
 
+.adm-sel,
+.adm-note-in {
+  padding: 5px 8px;
+  border: 1px solid #d7dde5;
+  border-radius: 7px;
+  font-size: 12.5px;
+  font-family: inherit;
+  background: #fff;
+  color: #33475c;
+}
+
+.adm-note-in {
+  min-width: 130px;
+}
+
+.adm-mini-btn {
+  padding: 5px 11px;
+  border: 1px solid #16324f;
+  border-radius: 7px;
+  background: #16324f;
+  color: #fff;
+  font-size: 12.5px;
+  cursor: pointer;
+  white-space: nowrap;
+}
+
+.adm-mini-btn:hover { background: #1f4368; }
+.adm-mini-btn:disabled { opacity: .6; cursor: default; }
+.adm-note-cell { min-width: 210px; }
+.adm-save-msg { margin-top: 4px; font-size: 12px; color: #b0413e; }
+
+html.dark .adm-sel,
+html.dark .adm-note-in {
+  background: #10151c;
+  border-color: #2a3240;
+  color: #e5e7eb;
+}
+
+html.dark .adm-mini-btn {
+  background: #1f4368;
+  border-color: #2f5c8f;
+}
+
 .mp-chip-link {
   margin-right: 10px;
   font-size: 12.5px;

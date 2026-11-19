@@ -1336,6 +1336,13 @@ body.wbn-page .hb-toc {
   gap: 12px;
 }
 
+/* 宽屏两列大卡片 */
+@media (min-width: 901px) {
+  .wbn-home-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
 .wbn-tile {
   display: flex;
   align-items: center;

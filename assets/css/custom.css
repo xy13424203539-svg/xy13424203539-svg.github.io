@@ -1209,6 +1209,224 @@ html.dark .mp-chip-link {
   margin: 18px 0 32px;
 }
 
+/* 左右分栏：桌面端侧边分组导航 + 主内容；手机端折成顶部胶囊条 */
+.wbn-shell {
+  display: flex;
+  gap: 18px;
+  align-items: flex-start;
+}
+
+.wbn-side {
+  flex: 0 0 216px;
+  position: sticky;
+  top: 14px;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.wbn-side-home,
+.wbn-side-item {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  width: 100%;
+  padding: 9px 11px;
+  border: 1px solid transparent;
+  border-radius: 9px;
+  background: none;
+  font-size: 13.5px;
+  color: #5b6b7d;
+  cursor: pointer;
+  text-align: left;
+}
+
+.wbn-side-home {
+  font-weight: 600;
+  color: #16324f;
+}
+
+.wbn-side-item.is-on,
+.wbn-side-home.is-on {
+  background: #eef4fa;
+  border-color: #dbe7f1;
+  color: #16324f;
+}
+
+.wbn-side-ic {
+  width: 20px;
+  text-align: center;
+  font-size: 15px;
+}
+
+.wbn-side-n {
+  flex: 1;
+}
+
+.wbn-side-badge {
+  font-size: 11.5px;
+  color: #8d9aa9;
+  min-width: 26px;
+  text-align: right;
+}
+
+.wbn-side-t {
+  margin: 2px 2px 5px;
+  font-size: 11.5px;
+  letter-spacing: .05em;
+  color: #93a1b0;
+}
+
+.wbn-main {
+  flex: 1;
+  min-width: 0;
+}
+
+.wbn-top {
+  margin-bottom: 14px;
+}
+
+.wbn-back {
+  margin: 2px 0 12px;
+  border: 0;
+  background: none;
+  padding: 0;
+  font-size: 13px;
+  color: #2f6b8f;
+  cursor: pointer;
+}
+
+.wbn-back:hover {
+  text-decoration: underline;
+}
+
+/* 首页模块卡片 */
+.wbn-home {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.wbn-home-gt {
+  margin: 2px 0 10px;
+  font-size: 14px;
+  font-weight: 600;
+  color: #16324f;
+}
+
+.wbn-home-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+  gap: 12px;
+}
+
+.wbn-tile {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 14px;
+  border: 1px solid #e0e8f0;
+  border-radius: 12px;
+  background: #fff;
+  text-align: left;
+  cursor: pointer;
+  transition: border-color .15s, box-shadow .15s;
+}
+
+.wbn-tile:hover {
+  border-color: #9db8d3;
+  box-shadow: 0 2px 10px rgba(22, 50, 79, .08);
+}
+
+.wbn-tile-ic {
+  flex: 0 0 38px;
+  width: 38px;
+  height: 38px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 10px;
+  background: #eef4fa;
+  font-size: 18px;
+}
+
+.wbn-tile-main {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+
+.wbn-tile-t {
+  font-size: 14.5px;
+  font-weight: 600;
+  color: #16324f;
+}
+
+.wbn-tile-d {
+  font-size: 12px;
+  color: #6b7a8c;
+  line-height: 1.5;
+}
+
+.wbn-tile-badge {
+  font-size: 12px;
+  color: #2f6b8f;
+}
+
+.wbn-tile-arrow {
+  color: #b6c2cf;
+  font-size: 18px;
+}
+
+@media (max-width: 900px) {
+  .wbn-shell {
+    flex-direction: column;
+    gap: 0;
+  }
+
+  .wbn-side {
+    position: static;
+    flex: none;
+    flex-direction: row;
+    flex-wrap: wrap;
+    gap: 6px;
+    margin-bottom: 14px;
+  }
+
+  .wbn-side-group {
+    display: contents;
+  }
+
+  .wbn-side-t {
+    display: none;
+  }
+
+  .wbn-side-home,
+  .wbn-side-item {
+    width: auto;
+    padding: 7px 12px;
+    border: 1px solid #dbe4ee;
+    border-radius: 999px;
+    background: #f7fafd;
+  }
+
+  .wbn-side-badge {
+    display: none;
+  }
+
+  .wbn-main {
+    width: 100%;
+  }
+}
+
+@media (max-width: 640px) {
+  .wbn-home-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
 .wbn-head {
   display: flex;
   align-items: center;
@@ -1814,10 +2032,22 @@ html.dark .mp-chip-link {
 html.dark .wbn-head,
 html.dark .wbn-form,
 html.dark .wbn-item,
-html.dark .wbn-card {
+html.dark .wbn-card,
+html.dark .wbn-tile {
   background: #171d25;
   border-color: #2a3240;
   color: #cbd5e1;
+}
+
+html.dark .wbn-side-item.is-on,
+html.dark .wbn-side-home.is-on {
+  background: #1f2833;
+  border-color: #2a3240;
+  color: #9ec5f0;
+}
+
+html.dark .wbn-tile-ic {
+  background: #1f2833;
 }
 
 html.dark .wbn-h,

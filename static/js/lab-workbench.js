@@ -10,7 +10,7 @@
 
   var STORE = "chenlab_member";
   var MAX_MB = 50; /* Supabase 免费额度单文件上限 50 MB */
-  var TAB = "reports";
+  var TAB = "home";
   var PROJECTS = [];
   var CLIST = {};
   /** 把“肖扬、李伟锐”这类输入规范成、姓名、形式，并自动带上提交人自己 */
@@ -101,35 +101,100 @@
     return '<div class="wbn-head"><div class="wbn-who">当前身份：' + who + '</div>' + btn + '</div>';
   }
 
-  var TABS = [
-    { k: "reports", t: "汇报成果" },
-    { k: "contest", t: "竞赛成果" },
-    { k: "purchases", t: "耗材申请" },
-    { k: "meetings", t: "交流安排" },
-    { k: "archive", t: "学生档案" }
+  var MODULES = [
+    { k: "reports", group: "成果产出", t: "汇报成果", icon: "📝", desc: "周报、阶段汇报、论文与结题材料" },
+    { k: "contest", group: "成果产出", t: "竞赛成果", icon: "🏆", desc: "比赛奖项、证书与参赛成员" },
+    { k: "meetings", group: "协作事务", t: "交流安排", icon: "🗓", desc: "组会、进度对齐与讨论时间" },
+    { k: "purchases", group: "协作事务", t: "耗材申请", icon: "🧾", desc: "耗材采购需求，提交后老师审核" },
+    { k: "archive", group: "成员档案", t: "学生档案", icon: "👥", desc: "成员课题、进度与成果汇总", admin: true }
   ];
+  var GROUPS = ["成果产出", "协作事务", "成员档案"];
+
+  function visibleModules() {
+    return MODULES.filter(function (m) { return !(m.admin && !isAdmin()); });
+  }
+
+  function sideNav() {
+    var items = visibleModules();
+    var groups = GROUPS.map(function (g) {
+      var rows = items.filter(function (m) { return m.group === g; });
+      if (!rows.length) return "";
+      return '<div class="wbn-side-group"><div class="wbn-side-t">' + esc(g) + '</div>' +
+        rows.map(function (m) {
+          return '<button type="button" class="wbn-side-item' + (m.k === TAB ? " is-on" : "") + '" data-mod="' + m.k + '">' +
+            '<span class="wbn-side-ic">' + m.icon + '</span><span class="wbn-side-n">' + esc(m.t) + '</span>' +
+            '<span class="wbn-side-badge" data-badge="' + m.k + '"></span></button>';
+        }).join("") + '</div>';
+    }).join("");
+    return '<aside class="wbn-side"><button type="button" class="wbn-side-home' + (TAB === "home" ? " is-on" : "") + '" data-mod="home">工作台首页</button>' + groups + '</aside>';
+  }
 
   function shell(inner) {
-    var tabs = TABS.filter(function (x) { return !(x.k === "archive" && !isAdmin()); }).map(function (x) {
-      return '<button type="button" class="wbn-tab' + (x.k === TAB ? " is-on" : "") + '" data-tab="' + x.k + '">' + x.t + '</button>';
-    }).join("");
-    root.innerHTML = headBox() + '<div class="wbn-tabs">' + tabs + '</div><div class="wbn-panel" id="wbn-panel">' + inner + '</div>';
+    var back = TAB !== "home" ? '<button type="button" class="wbn-back" data-mod="home">‹ 返回工作台</button>' : "";
+    root.innerHTML = '<div class="wbn-shell">' + sideNav() +
+      '<main class="wbn-main"><div class="wbn-top">' + headBox() + '</div>' + back +
+      '<div class="wbn-panel" id="wbn-panel">' + inner + '</div></main></div>';
     var lb = root.querySelector("#wbn-login");
     if (lb) lb.addEventListener("click", function () { if (window.__chenlabOpenLogin) window.__chenlabOpenLogin(); });
-    Array.prototype.forEach.call(root.querySelectorAll(".wbn-tab"), function (b) {
-      b.addEventListener("click", function () { TAB = b.getAttribute("data-tab"); go(); });
+    Array.prototype.forEach.call(root.querySelectorAll("[data-mod]"), function (b) {
+      b.addEventListener("click", function () { TAB = b.getAttribute("data-mod"); go(); });
     });
   }
 
   function go(msg) {
     var panel;
-    if (TAB === "reports") panel = renderReports();
+    if (TAB === "home") panel = homeView();
+    else if (TAB === "reports") panel = renderReports();
     else if (TAB === "contest") panel = renderContest();
     else if (TAB === "purchases") panel = renderPurchases();
     else if (TAB === "meetings") panel = renderMeetings();
     else panel = renderArchive();
     Promise.resolve(panel).then(function (html) {
       shell((msg ? '<div class="wbn-tip">' + msg + '</div>' : "") + html);
+    });
+  }
+
+  /* ---------- 工作台首页（模块卡片） ---------- */
+
+  function homeView() {
+    var items = visibleModules();
+    var blocks = GROUPS.map(function (g) {
+      var rows = items.filter(function (m) { return m.group === g; });
+      if (!rows.length) return "";
+      return '<div class="wbn-home-group"><div class="wbn-home-gt">' + esc(g) + '</div>' +
+        '<div class="wbn-home-grid">' + rows.map(function (m) {
+          return '<button type="button" class="wbn-tile" data-mod="' + m.k + '">' +
+            '<span class="wbn-tile-ic">' + m.icon + '</span>' +
+            '<span class="wbn-tile-main"><span class="wbn-tile-t">' + esc(m.t) + '</span>' +
+            '<span class="wbn-tile-d">' + esc(m.desc) + '</span></span>' +
+            '<span class="wbn-tile-badge" data-badge="' + m.k + '"></span>' +
+            '<span class="wbn-tile-arrow">›</span></button>';
+        }).join("") + '</div></div>';
+    }).join("");
+    setTimeout(fillCounts, 0);
+    return '<div class="wbn-home">' + blocks + '</div>';
+  }
+
+  function setBadge(k, txt) {
+    Array.prototype.forEach.call(root.querySelectorAll('[data-badge="' + k + '"]'), function (el) {
+      el.textContent = txt ? String(txt) : "";
+    });
+  }
+
+  function fillCounts() {
+    Promise.all([
+      rest("reports?select=id,kind&limit=400"),
+      rest("purchases?select=status&limit=200"),
+      rest("meetings?select=id&limit=100")
+    ]).then(function (res) {
+      var reports = res[0] || [], purchases = res[1] || [], meetings = res[2] || [];
+      var rptN = reports.filter(function (r) { return r.kind !== "竞赛成果"; }).length;
+      var ctN = reports.filter(function (r) { return r.kind === "竞赛成果"; }).length;
+      var pendN = purchases.filter(function (p) { return p.status === "pending"; }).length;
+      setBadge("reports", rptN);
+      setBadge("contest", ctN);
+      setBadge("purchases", pendN ? pendN + " 待审" : purchases.length);
+      setBadge("meetings", meetings.length);
     });
   }
 

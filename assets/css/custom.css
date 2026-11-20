@@ -694,6 +694,19 @@ html.dark .eq-purpose {
   background: #fbfcfd;
 }
 
+.mp-link-row { font-size: 12.5px; color: #5b6573; }
+
+.mp-link {
+  border: 0;
+  background: none;
+  padding: 0;
+  cursor: pointer;
+  color: #1d4ed8;
+  font-size: 12.5px;
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+
 .mp-form {
   display: grid;
   grid-template-columns: 1fr 1fr;
@@ -894,6 +907,9 @@ html.dark .mp-field textarea {
   border-color: #2a3240;
   color: #e5e7eb;
 }
+
+html.dark .mp-link-row { color: #a7b0bd; }
+html.dark .mp-link { color: #9ec5f0; }
 
 html.dark .mp-profile {
   background: #171d25;

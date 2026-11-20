@@ -1166,6 +1166,35 @@ html.dark .eq-mat {
   color: #5b6b7d;
 }
 
+.adm-clickable {
+  cursor: pointer;
+  transition: border-color 0.15s, background 0.15s, box-shadow 0.15s;
+}
+
+.adm-clickable:hover {
+  border-color: #9db8d4;
+  background: #eef4fb;
+}
+
+.adm-kpi.adm-clickable:hover {
+  box-shadow: 0 2px 10px rgba(22, 50, 79, 0.1);
+}
+
+.adm-proj-link {
+  border: 0;
+  background: none;
+  padding: 0;
+  cursor: pointer;
+  color: #1d4ed8;
+  font-size: 13.5px;
+  font-weight: 600;
+  text-align: left;
+}
+
+.adm-proj-link:hover { text-decoration: underline; }
+
+.adm-proj-row:hover { background: #f1f6fc; }
+
 .adm-kpis {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
@@ -1427,6 +1456,15 @@ html.dark .adm-stat b {
 html.dark .adm-stat span {
   color: #a7b0bd;
 }
+
+html.dark .adm-clickable:hover {
+  border-color: #3a4656;
+  background: #222b36;
+}
+
+html.dark .adm-proj-link { color: #9ec5f0; }
+
+html.dark .adm-proj-row:hover { background: #202833; }
 
 html.dark .adm-kpi {
   background: #171d25;
@@ -2201,6 +2239,20 @@ body.wbn-page .hb-toc {
   border: 1px solid #e0e8f0;
   border-radius: 10px;
   background: #fff;
+  cursor: pointer;
+  transition: border-color 0.15s, background 0.15s;
+}
+
+.wbn-card:hover {
+  border-color: #9db8d4;
+  background: #f4f8fc;
+}
+
+.wbn-ct-seg {
+  margin: 8px 0 4px;
+  font-size: 12px;
+  font-weight: 600;
+  color: #16324f;
 }
 
 .wbn-card-top {
@@ -2334,6 +2386,13 @@ html.dark .wbn-tile {
   border-color: #2a3240;
   color: #cbd5e1;
 }
+
+html.dark .wbn-card:hover {
+  border-color: #3a4656;
+  background: #222b36;
+}
+
+html.dark .wbn-ct-seg { color: #9ec5f0; }
 
 html.dark .wbn-side-item.is-on,
 html.dark .wbn-side-home.is-on {

@@ -864,6 +864,14 @@
       '</div>';
   }
 
+  function archiveCtRow(c) {
+    return '<div class="wbn-ct-row">' +
+      '<div class="wbn-ct-t">' + esc(c.title) + '</div>' +
+      '<div class="wbn-ct-s">' + esc(c.summary || "") + ' · 提交人 ' + esc(c.by || "") + ' · ' + esc(c.created_at || "") + '</div>' +
+      (c.file_url ? '<a class="wbn-file" href="' + esc(c.file_url) + '" target="_blank" rel="noopener">证书</a>' : '') +
+      '</div>';
+  }
+
   function bindPurSave(scope) {
     Array.prototype.forEach.call(scope.querySelectorAll(".wbn-save-status"), function (b) {
       b.addEventListener("click", function () {
@@ -925,7 +933,7 @@
         var last = s.latest_report
           ? '<button type="button" class="wbn-card-last" data-wbn-rpt="' + esc(s.name) + '">最近：' + esc(s.latest_report) + '<br><span class="wbn-dim">' + esc(s.latest_report_at) + '</span></button>'
           : '<div class="wbn-card-last wbn-dim">还没提交材料</div>';
-        return '<div class="wbn-card">' +
+        return '<div class="wbn-card" data-wbn-card="' + esc(s.name) + '">' +
           '<div class="wbn-card-top"><b>' + esc(s.name) + '</b>' + (s.role === "admin" ? '<span class="wbn-kind">管理员</span>' : "") + '</div>' +
           '<div class="wbn-card-proj">' + (s.project ? esc(s.project) : '<span class="wbn-dim">未认领课题</span>') + '</div>' +
           '<div class="wbn-bar"><i style="width:' + pct + '%"></i></div>' +
@@ -956,15 +964,35 @@
             });
           });
         }
-        bind("data-wbn-ct", CLIST, function (c) {
-          return '<div class="wbn-ct-row">' +
-            '<div class="wbn-ct-t">' + esc(c.title) + '</div>' +
-            '<div class="wbn-ct-s">' + esc(c.summary || "") + ' · 提交人 ' + esc(c.by || "") + ' · ' + esc(c.created_at || "") + '</div>' +
-            (c.file_url ? '<a class="wbn-file" href="' + esc(c.file_url) + '" target="_blank" rel="noopener">证书</a>' : '') +
-            '</div>';
-        });
+        bind("data-wbn-ct", CLIST, archiveCtRow);
         bind("data-wbn-rpt", RLIST, archiveRptRow);
         bind("data-wbn-pur", PLIST, archivePurRow);
+        Array.prototype.forEach.call(root.querySelectorAll("[data-wbn-card]"), function (card) {
+          card.addEventListener("click", function (ev) {
+            if (ev.target.closest("button,a")) return;
+            var nm = card.getAttribute("data-wbn-card");
+            var box = card.querySelector(".wbn-ct-box");
+            if (box) { box.remove(); return; }
+            var s = list.find(function (x) { return x.name === nm; }) || {};
+            var rpts = RLIST[nm] || [], cts = CLIST[nm] || [], purs = PLIST[nm] || [];
+            function seg(title, rows, fn) {
+              if (!rows.length) return '<div class="wbn-ct-s wbn-dim">' + title + "：暂无</div>";
+              return '<div class="wbn-ct-seg">' + title + "</div>" + rows.map(fn).join("");
+            }
+            var pct2 = Math.max(0, Math.min(100, Math.round(Number(s.percent) || 0)));
+            var inner =
+              '<div class="wbn-ct-s">课题：' + (s.project ? esc(s.project) : "未认领课题") + " · " +
+              (s.stage ? esc(s.stage) : "未开始") + " · " + pct2 + "%</div>" +
+              seg("材料", rpts, archiveRptRow) +
+              seg("竞赛成果", cts, archiveCtRow) +
+              seg("采购", purs, archivePurRow);
+            var d2 = document.createElement("div");
+            d2.className = "wbn-ct-box";
+            d2.innerHTML = inner;
+            card.appendChild(d2);
+            bindPurSave(d2);
+          });
+        });
       }, 0);
       return html;
     });

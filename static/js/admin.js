@@ -90,9 +90,12 @@
     var rate = total ? Math.round(done / total * 1000) / 10 : 0;
     var bar = Math.max(0, Math.min(100, rate));
     return '<div class="adm-kpis">' +
-      '<div class="adm-kpi adm-kpi-pending"><span class="adm-kpi-label">待办事项</span><b>' + pending + '</b><span class="adm-kpi-sub">待审核采购</span></div>' +
-      '<div class="adm-kpi adm-kpi-done"><span class="adm-kpi-label">已完成</span><b>' + done + '</b><span class="adm-kpi-sub">汇报 / 竞赛 / 完成采购</span></div>' +
-      '<div class="adm-kpi adm-kpi-doing"><span class="adm-kpi-label">在办事项</span><b>' + doing + '</b><span class="adm-kpi-sub">已批准 / 已采购</span></div>' +
+      '<div class="adm-kpi adm-kpi-pending adm-clickable" data-kpi="pending" title="查看待审核采购">' +
+        '<span class="adm-kpi-label">待办事项</span><b>' + pending + '</b><span class="adm-kpi-sub">待审核采购</span></div>' +
+      '<div class="adm-kpi adm-kpi-done adm-clickable" data-kpi="done" title="查看已完成事项">' +
+        '<span class="adm-kpi-label">已完成</span><b>' + done + '</b><span class="adm-kpi-sub">汇报 / 竞赛 / 完成采购</span></div>' +
+      '<div class="adm-kpi adm-kpi-doing adm-clickable" data-kpi="doing" title="查看在办采购">' +
+        '<span class="adm-kpi-label">在办事项</span><b>' + doing + '</b><span class="adm-kpi-sub">已批准 / 已采购</span></div>' +
       '<div class="adm-kpi adm-kpi-rate"><span class="adm-kpi-label">整体完成率</span><b>' + rate + '%</b><div class="adm-kpi-bar"><i style="width:' + bar + '%"></i></div></div>' +
       '</div>';
   }
@@ -103,11 +106,11 @@
     var devH = usage.reduce(function (a, u) { return a + num(u.hours); }, 0);
     var matG = (material || []).reduce(function (a, m) { return a + num(m.amount); }, 0);
     return '<div class="adm-stats">' +
-      '<div class="adm-stat"><b>' + members.length + '</b><span>在册成员</span></div>' +
-      '<div class="adm-stat"><b>' + assigned + '</b><span>已挂课题</span></div>' +
-      '<div class="adm-stat"><b>' + devN + '</b><span>设备登记次数</span></div>' +
-      '<div class="adm-stat"><b>' + (Math.round(devH * 10) / 10) + '</b><span>设备累计机时</span></div>' +
-      '<div class="adm-stat"><b>' + (Math.round(matG * 10) / 10) + '</b><span>3D 打印耗材（克）</span></div>' +
+      '<div class="adm-stat adm-clickable" data-stat="members"><b>' + members.length + '</b><span>在册成员</span></div>' +
+      '<div class="adm-stat adm-clickable" data-stat="projects"><b>' + assigned + '</b><span>已挂课题</span></div>' +
+      '<div class="adm-stat adm-clickable" data-stat="usage"><b>' + devN + '</b><span>设备登记次数</span></div>' +
+      '<div class="adm-stat adm-clickable" data-stat="usage"><b>' + (Math.round(devH * 10) / 10) + '</b><span>设备累计机时</span></div>' +
+      '<div class="adm-stat adm-clickable" data-stat="material"><b>' + (Math.round(matG * 10) / 10) + '</b><span>3D 打印耗材（克）</span></div>' +
       '</div>';
   }
 
@@ -131,15 +134,17 @@
     });
     var rows = list.map(function (p) {
       var pct = Math.max(0, Math.min(100, Math.round(num(p.percent))));
-      return '<tr>' +
-        '<td>' + (p.name ? esc(p.name) : '<span class="adm-dim">未指定课题</span>') + '</td>' +
-        '<td>' + p.n + ' 人</td>' +
+      var key = p.name ? esc(p.name) : "__none__";
+      var label = p.name ? esc(p.name) : '<span class="adm-dim">未指定课题</span>';
+      return '<tr class="adm-proj-row" data-adm-project="' + key + '">' +
+        '<td><button type="button" class="adm-proj-link">' + label + '</button></td>' +
+        '<td><button type="button" class="adm-proj-link">' + p.n + ' 人</button></td>' +
         '<td>' + (p.stage ? esc(p.stage) : '<span class="adm-dim">—</span>') + '</td>' +
         '<td><div class="adm-prog"><i style="width:' + pct + '%"></i></div><span class="adm-pct">' + pct + '%</span></td>' +
         '<td>' + (p.note ? esc(p.note) : '<span class="adm-dim">—</span>') + '</td>' +
         '</tr>';
     }).join("");
-    return '<div class="adm-block"><h3>课题进度汇总</h3>' +
+    return '<div class="adm-block adm-project-block"><h3>课题进度汇总<span class="adm-count">点击课题查看成员</span></h3>' +
       table(["课题", "参与人数", "当前阶段", "进度", "进度说明"], rows) + '</div>';
   }
 
@@ -156,27 +161,27 @@
         '<td>' + (m.updated_at ? esc(String(m.updated_at).slice(0, 10)) : '<span class="adm-dim">—</span>') + '</td>' +
         '</tr>';
     }).join("");
-    return '<div class="adm-block"><h3>成员与课题<span class="adm-count">点击姓名查看该成员详情</span></h3>' +
+    return '<div class="adm-block adm-member-block"><h3>成员与课题<span class="adm-count">点击姓名查看该成员详情</span></h3>' +
       table(["姓名", "身份", "所属课题", "阶段", "进度", "资料", "更新"], rows) + '</div>';
   }
 
   function usageBlock(list) {
-    if (!list.length) return '<div class="adm-block"><h3>设备使用汇总</h3><p class="adm-dim">还没有登记记录。</p></div>';
+    if (!list.length) return '<div class="adm-block adm-usage-block"><h3>设备使用汇总</h3><p class="adm-dim">还没有登记记录。</p></div>';
     var rows = list.map(function (u) {
       return '<tr><td>' + esc(u.device) + '</td><td>' + esc(u.n) + ' 次</td><td>' + esc(u.hours) + ' 小时</td></tr>';
     }).join("");
-    return '<div class="adm-block"><h3>设备使用汇总</h3>' +
+    return '<div class="adm-block adm-usage-block"><h3>设备使用汇总</h3>' +
       table(["设备", "次数", "合计时长"], rows) + '</div>';
   }
 
   function materialBlock(list) {
     if (!list || !list.length) {
-      return '<div class="adm-block"><h3>3D 打印耗材</h3><p class="adm-dim">还没有人填写耗材用量。</p></div>';
+      return '<div class="adm-block adm-material-block"><h3>3D 打印耗材</h3><p class="adm-dim">还没有人填写耗材用量。</p></div>';
     }
     var rows = list.map(function (m) {
       return '<tr><td>' + esc(m.material) + '</td><td>' + esc(m.amount) + ' 克</td></tr>';
     }).join("");
-    return '<div class="adm-block"><h3>3D 打印耗材</h3>' +
+    return '<div class="adm-block adm-material-block"><h3>3D 打印耗材</h3>' +
       table(["耗材", "累计用量"], rows) + '</div>';
   }
 
@@ -243,7 +248,7 @@
     return '<tr><td colspan="' + ncol + '" class="adm-dim">没有匹配的记录。</td></tr>';
   }
 
-  var PUR_STATUS_OPTS = [["", "全部"], ["pending", "待审核"], ["approved", "已批准"], ["ordered", "已采购"], ["done", "已完成"], ["rejected", "不批准"]];
+  var PUR_STATUS_OPTS = [["", "全部"], ["pending", "待审核"], ["doing", "在办"], ["approved", "已批准"], ["ordered", "已采购"], ["done", "已完成"], ["rejected", "不批准"]];
 
   function purToolbar() {
     return '<div class="adm-toolbar">' +
@@ -328,7 +333,9 @@
   function filterPur(list) {
     var q = FILT.purQ.trim();
     return (list || []).filter(function (p) {
-      if (FILT.purStatus && p.status !== FILT.purStatus) return false;
+      if (FILT.purStatus === "doing") {
+        if (p.status !== "approved" && p.status !== "ordered") return false;
+      } else if (FILT.purStatus && p.status !== FILT.purStatus) return false;
       return matchQ([p.name, p.project, p.item, p.spec, p.reason].join(" "), q);
     });
   }
@@ -343,7 +350,13 @@
 
   function rerender() {
     if (VIEW.mode === "member" && VIEW.name) showMember(VIEW.name);
+    else if (VIEW.mode === "project" && VIEW.name) showProject(VIEW.name);
     else renderList();
+  }
+
+  function scrollTo(sel) {
+    var el = root.querySelector(sel);
+    if (el) el.scrollIntoView({ behavior: "smooth", block: "start" });
   }
 
   function renderList() {
@@ -402,6 +415,45 @@
       (rec.length ? recentBlock(rec) : '<div class="adm-block"><h3>设备登记记录</h3><p class="adm-dim">暂无设备登记记录。</p></div>');
   }
 
+  function projectMembers(key) {
+    var none = key === "__none__";
+    return (CACHE.members || []).filter(function (m) { return none ? !m.project : m.project === key; });
+  }
+
+  function projectReports(key) {
+    var none = key === "__none__";
+    var names = projectMembers(key).map(function (m) { return m.name; });
+    return (CACHE.reports || []).filter(function (r) {
+      if (none) return !r.project;
+      if (r.project === key) return true;
+      var mem = cleanMembers(r.members).split("、");
+      return names.some(function (n) { return mem.indexOf(n) >= 0; });
+    });
+  }
+
+  function projectPurchases(key) {
+    var none = key === "__none__";
+    return (CACHE.purchases || []).filter(function (p) { return none ? !p.project : p.project === key; });
+  }
+
+  function showProject(key) {
+    VIEW.mode = "project"; VIEW.name = key;
+    var none = key === "__none__";
+    var title = none ? "未指定课题" : key;
+    var mems = projectMembers(key);
+    var reps = projectReports(key);
+    var normal = reps.filter(function (r) { return r.kind !== "竞赛成果"; });
+    var contest = reps.filter(function (r) { return r.kind === "竞赛成果"; });
+    var pur = projectPurchases(key);
+    root.querySelector(".adm-body").innerHTML =
+      '<button type="button" class="adm-back" data-adm-back>← 返回汇总列表</button>' +
+      '<div class="adm-block"><h3>课题：' + esc(title) + '<span class="adm-count">' + mems.length + ' 人</span></h3></div>' +
+      membersBlock(mems) +
+      reportsAdminBlock(normal, false) +
+      contestAdminBlock(contest) +
+      purchaseAdminBlock(pur, false);
+  }
+
   function refreshPurBody() {
     var box = root.querySelector(".adm-pur-block");
     if (!box) return;
@@ -430,6 +482,25 @@
     var link = ev.target.closest("[data-adm-member]");
     if (link) { showMember(link.getAttribute("data-adm-member")); return; }
     if (ev.target.closest("[data-adm-back]")) { renderList(); return; }
+    var prj = ev.target.closest("[data-adm-project]");
+    if (prj) { showProject(prj.getAttribute("data-adm-project")); return; }
+    var kpi = ev.target.closest("[data-kpi]");
+    if (kpi) {
+      var k = kpi.getAttribute("data-kpi");
+      if (k === "pending") FILT.purStatus = "pending";
+      else if (k === "doing") FILT.purStatus = "doing";
+      else if (k === "done") FILT.purStatus = "done";
+      renderList();
+      scrollTo(k === "done" ? ".adm-rep-block" : ".adm-pur-block");
+      return;
+    }
+    var st = ev.target.closest("[data-stat]");
+    if (st) {
+      var smap = { members: ".adm-member-block", projects: ".adm-project-block", usage: ".adm-usage-block", material: ".adm-material-block" };
+      renderList();
+      scrollTo(smap[st.getAttribute("data-stat")]);
+      return;
+    }
     var seg = ev.target.closest("[data-pur-status]");
     if (seg) { FILT.purStatus = seg.getAttribute("data-pur-status"); renderList(); return; }
     var sv = ev.target.closest("[data-adm-save-pur]");

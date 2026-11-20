@@ -2264,6 +2264,27 @@ body.wbn-page .hb-toc {
   color: #16324f;
 }
 
+.wbn-member-name {
+  padding: 0;
+  border: 0;
+  background: none;
+  font: inherit;
+  font-size: 14.5px;
+  font-weight: 700;
+  color: #16324f;
+  cursor: pointer;
+  text-align: left;
+}
+
+.wbn-member-name:hover {
+  color: #1d4ed8;
+  text-decoration: underline;
+}
+
+.wbn-member-head { margin-bottom: 12px; }
+
+.wbn-arch-back { margin: 4px 0 10px; }
+
 .wbn-card-proj {
   margin-top: 4px;
   font-size: 12.5px;
@@ -2408,6 +2429,7 @@ html.dark .wbn-tile-ic {
 html.dark .wbn-h,
 html.dark .wbn-item-top b,
 html.dark .wbn-card-top b,
+html.dark .wbn-member-name,
 html.dark .wbn-who b {
   color: #9ec5f0;
 }

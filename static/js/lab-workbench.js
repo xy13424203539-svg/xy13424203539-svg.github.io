@@ -27,6 +27,7 @@
   var CLIST = {};
   var RLIST = {};
   var PLIST = {};
+  var ARCH_STU = [];
   /** 把“肖扬、李伟锐”这类输入规范成、姓名、形式，并自动带上提交人自己 */
   function memberTag(raw, owner) {
     var arr = String(raw || "").split(/[、,，;；\s]+/).filter(function (x) { return !!x; });
@@ -902,6 +903,7 @@
       var allPur = res[2] || [];
       if (!d) return '<p class="wbn-empty">读取失败，请重新登录。</p>';
       var list = d.students || [];
+      ARCH_STU = list;
       CLIST = {};
       RLIST = {};
       PLIST = {};
@@ -934,7 +936,7 @@
           ? '<button type="button" class="wbn-card-last" data-wbn-rpt="' + esc(s.name) + '">最近：' + esc(s.latest_report) + '<br><span class="wbn-dim">' + esc(s.latest_report_at) + '</span></button>'
           : '<div class="wbn-card-last wbn-dim">还没提交材料</div>';
         return '<div class="wbn-card" data-wbn-card="' + esc(s.name) + '">' +
-          '<div class="wbn-card-top"><b>' + esc(s.name) + '</b>' + (s.role === "admin" ? '<span class="wbn-kind">管理员</span>' : "") + '</div>' +
+          '<div class="wbn-card-top"><button type="button" class="wbn-member-name" data-wbn-member="' + esc(s.name) + '">' + esc(s.name) + '</button>' + (s.role === "admin" ? '<span class="wbn-kind">管理员</span>' : "") + '</div>' +
           '<div class="wbn-card-proj">' + (s.project ? esc(s.project) : '<span class="wbn-dim">未认领课题</span>') + '</div>' +
           '<div class="wbn-bar"><i style="width:' + pct + '%"></i></div>' +
           '<div class="wbn-card-meta">' + (s.stage ? esc(s.stage) : "未开始") + ' · ' + pct + '%</div>' +
@@ -969,7 +971,7 @@
         bind("data-wbn-pur", PLIST, archivePurRow);
         Array.prototype.forEach.call(root.querySelectorAll("[data-wbn-card]"), function (card) {
           card.addEventListener("click", function (ev) {
-            if (ev.target.closest("button,a")) return;
+            if (ev.target.closest("button,a,select,input,textarea,label,.wbn-ct-box")) return;
             var nm = card.getAttribute("data-wbn-card");
             var box = card.querySelector(".wbn-ct-box");
             if (box) { box.remove(); return; }
@@ -993,9 +995,38 @@
             bindPurSave(d2);
           });
         });
+        Array.prototype.forEach.call(root.querySelectorAll("[data-wbn-member]"), function (b) {
+          b.addEventListener("click", function (ev) {
+            ev.stopPropagation();
+            showArchMember(b.getAttribute("data-wbn-member"));
+          });
+        });
       }, 0);
       return html;
     });
+  }
+
+  function showArchMember(name) {
+    var s = ARCH_STU.find(function (x) { return x.name === name; }) || { name: name };
+    var rpts = RLIST[name] || [], cts = CLIST[name] || [], purs = PLIST[name] || [];
+    var pct = Math.max(0, Math.min(100, Math.round(Number(s.percent) || 0)));
+    function block(title, n, rows, fn) {
+      var body = rows.length ? rows.map(fn).join("") : '<p class="wbn-empty">暂无记录。</p>';
+      return '<h3 class="wbn-h">' + esc(title) + '<span class="wbn-count">' + n + '</span></h3><div>' + body + '</div>';
+    }
+    var head = '<div class="wbn-card wbn-member-head">' +
+      '<div class="wbn-card-top"><b>' + esc(name) + '</b>' + (s.role === "admin" ? '<span class="wbn-kind">管理员</span>' : "") + '</div>' +
+      '<div class="wbn-card-proj">' + (s.project ? esc(s.project) : '<span class="wbn-dim">未认领课题</span>') + '</div>' +
+      '<div class="wbn-bar"><i style="width:' + pct + '%"></i></div>' +
+      '<div class="wbn-card-meta">' + (s.stage ? esc(s.stage) : "未开始") + " · " + pct + '%</div></div>';
+    var html = '<button type="button" class="wbn-btn wbn-arch-back" data-wbn-arch-back>← 返回学生档案</button>' + head +
+      block("材料", rpts.length, rpts, archiveRptRow) +
+      block("竞赛成果", cts.length, cts, archiveCtRow) +
+      block("采购", purs.length, purs, archivePurRow);
+    shell(html);
+    var back = root.querySelector("[data-wbn-arch-back]");
+    if (back) back.addEventListener("click", function () { go(); });
+    bindPurSave(root.querySelector("#wbn-panel"));
   }
 
   /* ---------- 启动 ---------- */

@@ -74,6 +74,29 @@
   }
 
   /* 顶部四个数字 */
+  /* 事项完成度 KPI 屏：待办 / 已完成 / 在办 / 整体完成率，口径与下方列表同源 */
+  function subheadBlock() {
+    return '<div class="adm-subhead"><p>按提交时间倒序统计；上方计数与下方各列表同源，不重复计算。</p></div>';
+  }
+
+  function kpiBlock() {
+    var reps = CACHE.reports || [];
+    var purs = CACHE.purchases || [];
+    var pending = purs.filter(function (p) { return p.status === "pending"; }).length;
+    var doing = purs.filter(function (p) { return p.status === "approved" || p.status === "ordered"; }).length;
+    var done = reps.length + purs.filter(function (p) { return p.status === "done"; }).length;
+    var active = purs.filter(function (p) { return ["pending", "approved", "ordered", "done"].indexOf(p.status) >= 0; }).length;
+    var total = reps.length + active;
+    var rate = total ? Math.round(done / total * 1000) / 10 : 0;
+    var bar = Math.max(0, Math.min(100, rate));
+    return '<div class="adm-kpis">' +
+      '<div class="adm-kpi adm-kpi-pending"><span class="adm-kpi-label">待办事项</span><b>' + pending + '</b><span class="adm-kpi-sub">待审核采购</span></div>' +
+      '<div class="adm-kpi adm-kpi-done"><span class="adm-kpi-label">已完成</span><b>' + done + '</b><span class="adm-kpi-sub">汇报 / 竞赛 / 完成采购</span></div>' +
+      '<div class="adm-kpi adm-kpi-doing"><span class="adm-kpi-label">在办事项</span><b>' + doing + '</b><span class="adm-kpi-sub">已批准 / 已采购</span></div>' +
+      '<div class="adm-kpi adm-kpi-rate"><span class="adm-kpi-label">整体完成率</span><b>' + rate + '%</b><div class="adm-kpi-bar"><i style="width:' + bar + '%"></i></div></div>' +
+      '</div>';
+  }
+
   function statsBlock(members, usage, material) {
     var assigned = members.filter(function (m) { return m.project; }).length;
     var devN = usage.reduce(function (a, u) { return a + num(u.n); }, 0);
@@ -168,10 +191,13 @@
       table(["日期", "设备", "使用人", "时长", "用途"], rows) + '</div>';
   }
 
+  function repToolbar() {
+    return '<div class="adm-toolbar"><input class="adm-search" data-filt="repQ" maxlength="30" placeholder="搜标题 / 提交人 / 类型 / 课题" value="' + esc(FILT.repQ) + '"></div>';
+  }
+
   /* 成员提交：组会 / 阶段汇报（不含竞赛） */
-  function reportsAdminBlock(list) {
-    if (!list.length) return '<div class="adm-block"><h3>组会 / 阶段汇报</h3><p class="adm-dim">还没有提交汇报材料。</p></div>';
-    var rows = list.map(function (r) {
+  function reportsRows(list) {
+    return list.map(function (r) {
       var body = r.summary ? '<div class="adm-sub">' + esc(r.summary) + '</div>' : "";
       var kind = r.kind ? '<div class="adm-sub">' + esc(r.kind) + '</div>' : "";
       return '<tr>' +
@@ -182,14 +208,19 @@
         '<td>' + fileLink(r) + '</td>' +
         '</tr>';
     }).join("");
-    return '<div class="adm-block"><h3>组会 / 阶段汇报<span class="adm-count">' + list.length + '</span></h3>' +
-      table(["日期", "提交人", "课题", "标题 / 说明", "附件"], rows) + '</div>';
+  }
+
+  function reportsAdminBlock(list, withFilter) {
+    var heads = ["日期", "提交人", "课题", "标题 / 说明", "附件"];
+    var rows = list.length ? reportsRows(list) : emptyRow(heads.length);
+    return '<div class="adm-block adm-rep-block"><h3>组会 / 阶段汇报<span class="adm-count">' + list.length + '</span></h3>' +
+      (withFilter ? repToolbar() : "") +
+      table(heads, rows) + '</div>';
   }
 
   /* 成员提交：竞赛成果 */
-  function contestAdminBlock(list) {
-    if (!list.length) return '<div class="adm-block"><h3>竞赛成果</h3><p class="adm-dim">还没有竞赛成果记录。</p></div>';
-    var rows = list.map(function (c) {
+  function contestRows(list) {
+    return list.map(function (c) {
       var mem = cleanMembers(c.members) || c.name;
       return '<tr>' +
         '<td>' + esc(c.created_at) + '</td>' +
@@ -199,15 +230,33 @@
         '<td>' + fileLink(c) + '</td>' +
         '</tr>';
     }).join("");
-    return '<div class="adm-block"><h3>竞赛成果<span class="adm-count">' + list.length + '</span></h3>' +
-      table(["日期", "奖项 / 说明", "参赛成员", "课题", "证书"], rows) + '</div>';
+  }
+
+  function contestAdminBlock(list) {
+    var heads = ["日期", "奖项 / 说明", "参赛成员", "课题", "证书"];
+    var rows = list.length ? contestRows(list) : emptyRow(heads.length);
+    return '<div class="adm-block adm-ct-block"><h3>竞赛成果<span class="adm-count">' + list.length + '</span></h3>' +
+      table(heads, rows) + '</div>';
+  }
+
+  function emptyRow(ncol) {
+    return '<tr><td colspan="' + ncol + '" class="adm-dim">没有匹配的记录。</td></tr>';
+  }
+
+  var PUR_STATUS_OPTS = [["", "全部"], ["pending", "待审核"], ["approved", "已批准"], ["ordered", "已采购"], ["done", "已完成"], ["rejected", "不批准"]];
+
+  function purToolbar() {
+    return '<div class="adm-toolbar">' +
+      '<input class="adm-search" data-filt="purQ" maxlength="30" placeholder="搜物品 / 申请人 / 课题 / 用途" value="' + esc(FILT.purQ) + '">' +
+      '<div class="adm-seg">' + PUR_STATUS_OPTS.map(function (s) {
+        return '<button type="button" class="adm-seg-btn' + (FILT.purStatus === s[0] ? " on" : "") + '" data-pur-status="' + s[0] + '">' + s[1] + '</button>';
+      }).join("") + '</div></div>';
   }
 
   /* 成员提交：耗材申请全量（管理员可直接改状态、写备注） */
-  function purchaseAdminBlock(list) {
-    if (!list.length) return '<div class="adm-block"><h3>耗材申请</h3><p class="adm-dim">还没有采购申请。</p></div>';
+  function purchaseRows(list) {
     var STATUS_KEYS = ["pending", "approved", "ordered", "done", "rejected"];
-    var rows = list.map(function (p) {
+    return list.map(function (p) {
       var qty = num(p.qty) + " " + (p.unit || "件");
       var budget = num(p.budget) ? "约 " + num(p.budget) + " 元" : "—";
       var sel = p.id
@@ -231,8 +280,14 @@
         '<td class="adm-note-cell">' + note + '</td>' +
         '</tr>';
     }).join("");
-    return '<div class="adm-block"><h3>耗材申请<span class="adm-count">选状态、写备注后点保存</span></h3>' +
-      table(["日期", "申请人", "课题", "物品 / 规格", "数量", "预算", "状态", "备注 / 操作"], rows) + '</div>';
+  }
+
+  function purchaseAdminBlock(list, withFilter) {
+    var heads = ["日期", "申请人", "课题", "物品 / 规格", "数量", "预算", "状态", "备注 / 操作"];
+    var rows = list.length ? purchaseRows(list) : emptyRow(heads.length);
+    return '<div class="adm-block adm-pur-block"><h3>耗材申请<span class="adm-count">' + list.length + '</span></h3>' +
+      (withFilter ? purToolbar() : "") +
+      table(heads, rows) + '</div>';
   }
 
   function savePurchase(id, btn) {
@@ -264,6 +319,27 @@
   var CACHE = null;
   var ME = null;
   var VIEW = { mode: "list", name: "" };
+  var FILT = { purQ: "", purStatus: "", repQ: "" };
+
+  function matchQ(hay, q) {
+    return !q || String(hay || "").toLowerCase().indexOf(q.trim().toLowerCase()) >= 0;
+  }
+
+  function filterPur(list) {
+    var q = FILT.purQ.trim();
+    return (list || []).filter(function (p) {
+      if (FILT.purStatus && p.status !== FILT.purStatus) return false;
+      return matchQ([p.name, p.project, p.item, p.spec, p.reason].join(" "), q);
+    });
+  }
+
+  function filterRep(list) {
+    var q = FILT.repQ.trim();
+    if (!q) return list || [];
+    return (list || []).filter(function (r) {
+      return matchQ([r.name, r.title, r.summary, r.kind, r.project].join(" "), q);
+    });
+  }
 
   function rerender() {
     if (VIEW.mode === "member" && VIEW.name) showMember(VIEW.name);
@@ -279,12 +355,13 @@
     var purchases = d.purchases || [];
     var normal = allReports.filter(function (r) { return r.kind !== "竞赛成果"; });
     var contest = allReports.filter(function (r) { return r.kind === "竞赛成果"; });
-    root.querySelector(".adm-body").innerHTML = statsBlock(members, usage, d.material || []) +
+    root.querySelector(".adm-body").innerHTML = subheadBlock() + kpiBlock() +
+      statsBlock(members, usage, d.material || []) +
       projectBlock(members) +
       membersBlock(members) +
-      reportsAdminBlock(normal) +
-      contestAdminBlock(contest) +
-      purchaseAdminBlock(purchases) +
+      reportsAdminBlock(filterRep(normal), true) +
+      contestAdminBlock(filterRep(contest)) +
+      purchaseAdminBlock(filterPur(purchases), true) +
       usageBlock(usage) +
       materialBlock(d.material || []) +
       recentBlock(d.recent || []);
@@ -319,18 +396,53 @@
       '<button type="button" class="adm-back" data-adm-back>← 返回成员列表</button>' +
       '<div class="adm-block"><h3>成员详情：' + esc(name) + '</h3></div>' +
       memberDetailBlock(m) +
-      reportsAdminBlock(normal) +
+      reportsAdminBlock(normal, false) +
       contestAdminBlock(contest) +
-      purchaseAdminBlock(pur) +
+      purchaseAdminBlock(pur, false) +
       (rec.length ? recentBlock(rec) : '<div class="adm-block"><h3>设备登记记录</h3><p class="adm-dim">暂无设备登记记录。</p></div>');
+  }
+
+  function refreshPurBody() {
+    var box = root.querySelector(".adm-pur-block");
+    if (!box) return;
+    var list = filterPur(CACHE.purchases || []);
+    var tbody = box.querySelector("tbody");
+    if (tbody) tbody.innerHTML = list.length ? purchaseRows(list) : emptyRow(8);
+    var cnt = box.querySelector(".adm-count");
+    if (cnt) cnt.textContent = list.length;
+  }
+
+  function refreshRepBody() {
+    var all = CACHE.reports || [];
+    var normal = filterRep(all.filter(function (r) { return r.kind !== "竞赛成果"; }));
+    var contest = filterRep(all.filter(function (r) { return r.kind === "竞赛成果"; }));
+    var nb = root.querySelector(".adm-rep-block tbody");
+    if (nb) nb.innerHTML = normal.length ? reportsRows(normal) : emptyRow(5);
+    var cb = root.querySelector(".adm-ct-block tbody");
+    if (cb) cb.innerHTML = contest.length ? contestRows(contest) : emptyRow(5);
+    var nc = root.querySelector(".adm-rep-block .adm-count");
+    if (nc) nc.textContent = normal.length;
+    var cc = root.querySelector(".adm-ct-block .adm-count");
+    if (cc) cc.textContent = contest.length;
   }
 
   root.addEventListener("click", function (ev) {
     var link = ev.target.closest("[data-adm-member]");
     if (link) { showMember(link.getAttribute("data-adm-member")); return; }
     if (ev.target.closest("[data-adm-back]")) { renderList(); return; }
+    var seg = ev.target.closest("[data-pur-status]");
+    if (seg) { FILT.purStatus = seg.getAttribute("data-pur-status"); renderList(); return; }
     var sv = ev.target.closest("[data-adm-save-pur]");
     if (sv) { savePurchase(sv.getAttribute("data-adm-save-pur"), sv); }
+  });
+
+  root.addEventListener("input", function (ev) {
+    var s = ev.target.closest(".adm-search");
+    if (!s) return;
+    var key = s.getAttribute("data-filt");
+    FILT[key] = s.value;
+    if (key === "purQ") refreshPurBody();
+    else if (key === "repQ") refreshRepBody();
   });
 
   function render(s) {

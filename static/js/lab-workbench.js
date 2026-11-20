@@ -169,6 +169,25 @@
     });
   }
 
+  /* 档案页交互统一在根节点委托，面板重渲染后监听不丢 */
+  root.addEventListener("click", function (ev) {
+    var back = ev.target.closest("[data-wbn-arch-back]");
+    if (back) { go(); return; }
+    var mem = ev.target.closest("[data-wbn-member]");
+    if (mem) { ev.stopPropagation(); showArchMember(mem.getAttribute("data-wbn-member")); return; }
+    var ct = ev.target.closest("[data-wbn-ct]");
+    if (ct) { toggleArchiveSingle(ct, "data-wbn-ct", archiveCtRow); return; }
+    var rpt = ev.target.closest("[data-wbn-rpt]");
+    if (rpt) { toggleArchiveSingle(rpt, "data-wbn-rpt", archiveRptRow); return; }
+    var pur = ev.target.closest("[data-wbn-pur]");
+    if (pur) { toggleArchiveSingle(pur, "data-wbn-pur", archivePurRow); return; }
+    var card = ev.target.closest("[data-wbn-card]");
+    if (card) {
+      if (ev.target.closest("button,a,select,input,textarea,label,.wbn-ct-box")) return;
+      toggleCardSummary(card);
+    }
+  });
+
   /* ---------- 工作台首页（模块卡片） ---------- */
 
   function homeView() {
@@ -947,63 +966,53 @@
       }).join("");
       var html = '<h3 class="wbn-h">学生档案<span class="wbn-count">' + list.length + ' 人</span></h3>' +
         '<div class="wbn-cards">' + cards + '</div>';
-      setTimeout(function () {
-        function bind(attr, rows, rowHtml) {
-          Array.prototype.forEach.call(root.querySelectorAll("[" + attr + "]"), function (b) {
-            b.addEventListener("click", function () {
-              var nm = b.getAttribute(attr);
-              var card = b.closest(".wbn-card");
-              var box = card.querySelector(".wbn-ct-box");
-              if (box) { box.remove(); b.textContent = b.getAttribute("data-label") || b.textContent; return; }
-              var list = rows[nm] || [];
-              var inner = list.map(rowHtml).join("");
-              var d2 = document.createElement("div");
-              d2.className = "wbn-ct-box";
-              d2.innerHTML = inner || '<p class="wbn-empty">没有记录。</p>';
-              card.appendChild(d2);
-              bindPurSave(d2);
-              b.textContent = "收起 ▴";
-            });
-          });
-        }
-        bind("data-wbn-ct", CLIST, archiveCtRow);
-        bind("data-wbn-rpt", RLIST, archiveRptRow);
-        bind("data-wbn-pur", PLIST, archivePurRow);
-        Array.prototype.forEach.call(root.querySelectorAll("[data-wbn-card]"), function (card) {
-          card.addEventListener("click", function (ev) {
-            if (ev.target.closest("button,a,select,input,textarea,label,.wbn-ct-box")) return;
-            var nm = card.getAttribute("data-wbn-card");
-            var box = card.querySelector(".wbn-ct-box");
-            if (box) { box.remove(); return; }
-            var s = list.find(function (x) { return x.name === nm; }) || {};
-            var rpts = RLIST[nm] || [], cts = CLIST[nm] || [], purs = PLIST[nm] || [];
-            function seg(title, rows, fn) {
-              if (!rows.length) return '<div class="wbn-ct-s wbn-dim">' + title + "：暂无</div>";
-              return '<div class="wbn-ct-seg">' + title + "</div>" + rows.map(fn).join("");
-            }
-            var pct2 = Math.max(0, Math.min(100, Math.round(Number(s.percent) || 0)));
-            var inner =
-              '<div class="wbn-ct-s">课题：' + (s.project ? esc(s.project) : "未认领课题") + " · " +
-              (s.stage ? esc(s.stage) : "未开始") + " · " + pct2 + "%</div>" +
-              seg("材料", rpts, archiveRptRow) +
-              seg("竞赛成果", cts, archiveCtRow) +
-              seg("采购", purs, archivePurRow);
-            var d2 = document.createElement("div");
-            d2.className = "wbn-ct-box";
-            d2.innerHTML = inner;
-            card.appendChild(d2);
-            bindPurSave(d2);
-          });
-        });
-        Array.prototype.forEach.call(root.querySelectorAll("[data-wbn-member]"), function (b) {
-          b.addEventListener("click", function (ev) {
-            ev.stopPropagation();
-            showArchMember(b.getAttribute("data-wbn-member"));
-          });
-        });
-      }, 0);
       return html;
     });
+  }
+
+  function archiveRowsOf(attr) {
+    if (attr === "data-wbn-ct") return CLIST;
+    if (attr === "data-wbn-pur") return PLIST;
+    return RLIST;
+  }
+
+  function toggleArchiveSingle(btn, attr, fn) {
+    var card = btn.closest(".wbn-card");
+    var box = card.querySelector(".wbn-ct-box");
+    if (box) { box.remove(); btn.textContent = btn.getAttribute("data-label") || btn.textContent; return; }
+    var nm = btn.getAttribute(attr);
+    var rows = (archiveRowsOf(attr))[nm] || [];
+    var inner = rows.map(fn).join("");
+    var d2 = document.createElement("div");
+    d2.className = "wbn-ct-box";
+    d2.innerHTML = inner || '<p class="wbn-empty">没有记录。</p>';
+    card.appendChild(d2);
+    bindPurSave(d2);
+    btn.textContent = "收起 ▴";
+  }
+
+  function toggleCardSummary(card) {
+    var nm = card.getAttribute("data-wbn-card");
+    var box = card.querySelector(".wbn-ct-box");
+    if (box) { box.remove(); return; }
+    var s = ARCH_STU.find(function (x) { return x.name === nm; }) || {};
+    var rpts = RLIST[nm] || [], cts = CLIST[nm] || [], purs = PLIST[nm] || [];
+    function seg(title, rows, fn) {
+      if (!rows.length) return '<div class="wbn-ct-s wbn-dim">' + title + "：暂无</div>";
+      return '<div class="wbn-ct-seg">' + title + "</div>" + rows.map(fn).join("");
+    }
+    var pct2 = Math.max(0, Math.min(100, Math.round(Number(s.percent) || 0)));
+    var inner =
+      '<div class="wbn-ct-s">课题：' + (s.project ? esc(s.project) : "未认领课题") + " · " +
+      (s.stage ? esc(s.stage) : "未开始") + " · " + pct2 + "%</div>" +
+      seg("材料", rpts, archiveRptRow) +
+      seg("竞赛成果", cts, archiveCtRow) +
+      seg("采购", purs, archivePurRow);
+    var d2 = document.createElement("div");
+    d2.className = "wbn-ct-box";
+    d2.innerHTML = inner;
+    card.appendChild(d2);
+    bindPurSave(d2);
   }
 
   function showArchMember(name) {
@@ -1024,8 +1033,6 @@
       block("竞赛成果", cts.length, cts, archiveCtRow) +
       block("采购", purs.length, purs, archivePurRow);
     shell(html);
-    var back = root.querySelector("[data-wbn-arch-back]");
-    if (back) back.addEventListener("click", function () { go(); });
     bindPurSave(root.querySelector("#wbn-panel"));
   }
 

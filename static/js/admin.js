@@ -68,9 +68,10 @@
   }
 
   function table(heads, rows) {
-    return '<table class="adm-table"><thead><tr>' +
+    var wide = heads.length >= 4 ? " adm-table-wide" : "";
+    return '<div class="adm-scroll"><table class="adm-table' + wide + '"><thead><tr>' +
       heads.map(function (h) { return "<th>" + h + "</th>"; }).join("") +
-      '</tr></thead><tbody>' + rows + '</tbody></table>';
+      '</tr></thead><tbody>' + rows + '</tbody></table></div>';
   }
 
   /* 顶部四个数字 */
@@ -190,7 +191,7 @@
     var rows = list.map(function (r) {
       var mat = r.material ? '（' + esc(r.material) + (r.material_amount ? ' ' + esc(r.material_amount) + ' 克' : '') + '）' : '';
       return '<tr><td>' + esc(r.used_on) + '</td><td>' + esc(r.device) + '</td><td>' + esc(r.user_name) + '</td>' +
-        '<td>' + esc(r.hours) + ' 小时</td><td>' + esc(r.purpose || "") + mat + '</td></tr>';
+        '<td>' + esc(r.hours) + ' 小时</td><td class="adm-wrap">' + esc(r.purpose || "") + mat + '</td></tr>';
     }).join("");
     return '<div class="adm-block"><h3>最近登记</h3>' +
       table(["日期", "设备", "使用人", "时长", "用途"], rows) + '</div>';
@@ -209,7 +210,7 @@
         '<td>' + esc(r.created_at) + '</td>' +
         '<td>' + esc(r.name) + '</td>' +
         '<td>' + (r.project ? esc(r.project) : '<span class="adm-dim">—</span>') + '</td>' +
-        '<td><b>' + esc(r.title) + '</b>' + kind + body + '</td>' +
+        '<td class="adm-wrap"><b>' + esc(r.title) + '</b>' + kind + body + '</td>' +
         '<td>' + fileLink(r) + '</td>' +
         '</tr>';
     }).join("");
@@ -229,7 +230,7 @@
       var mem = cleanMembers(c.members) || c.name;
       return '<tr>' +
         '<td>' + esc(c.created_at) + '</td>' +
-        '<td><b>' + esc(c.title) + '</b>' + (c.summary ? '<div class="adm-sub">' + esc(c.summary) + '</div>' : '') + '</td>' +
+        '<td class="adm-wrap"><b>' + esc(c.title) + '</b>' + (c.summary ? '<div class="adm-sub">' + esc(c.summary) + '</div>' : '') + '</td>' +
         '<td>' + esc(mem) + '</td>' +
         '<td>' + (c.project ? esc(c.project) : '<span class="adm-dim">—</span>') + '</td>' +
         '<td>' + fileLink(c) + '</td>' +
@@ -278,7 +279,7 @@
         '<td>' + esc(p.created_at) + '</td>' +
         '<td>' + esc(p.name) + '</td>' +
         '<td>' + (p.project ? esc(p.project) : '<span class="adm-dim">—</span>') + '</td>' +
-        '<td><b>' + esc(p.item) + '</b>' + (p.spec ? '<div class="adm-sub">' + esc(p.spec) + '</div>' : '') + '</td>' +
+        '<td class="adm-wrap"><b>' + esc(p.item) + '</b>' + (p.spec ? '<div class="adm-sub">' + esc(p.spec) + '</div>' : '') + '</td>' +
         '<td>' + esc(qty) + '</td>' +
         '<td>' + budget + '</td>' +
         '<td>' + sel + '</td>' +
@@ -564,5 +565,5 @@
   }
 
   check();
-  setInterval(check, 900);
+  setInterval(check, 5000);
 })();

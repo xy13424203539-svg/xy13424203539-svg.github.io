@@ -248,14 +248,14 @@ article h1 {
   margin: 40px 0 0;
   padding-top: 14px;
   border-top: 1px solid #e8ebef;
-  font-size: 12.5px;
+  font-size: 14px;
   line-height: 1.6;
-  color: #9aa1ac;
+  color: #6b7480;
 }
 
 html.dark .page-updated {
   border-top-color: #2a3240;
-  color: #7f8a98;
+  color: #93a0af;
 }
 
 /* ===== 卡片内的静态成员格（无个人页） ===== */
@@ -1319,10 +1319,23 @@ html.dark .eq-mat {
 
 .adm-scroll {
   display: block;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
 }
 
 .adm-table {
   table-layout: auto;
+  white-space: nowrap;
+}
+
+.adm-table-wide {
+  min-width: 560px;
+}
+
+/* 长文本单元格允许换行，其余短词/表头不拆字 */
+.adm-table .adm-sub,
+.adm-table td.adm-wrap {
+  white-space: normal;
 }
 
 .adm-ok {
@@ -1433,7 +1446,7 @@ html.dark .adm-back {
 
 .adm-mini-btn:hover { background: #1f4368; }
 .adm-mini-btn:disabled { opacity: .6; cursor: default; }
-.adm-note-cell { min-width: 210px; }
+.adm-note-cell { min-width: 210px; white-space: normal; }
 .adm-save-msg { margin-top: 4px; font-size: 12px; color: #b0413e; }
 
 html.dark .adm-sel,
@@ -2516,7 +2529,7 @@ html.dark .wbn-tip {
   body.sn-on:not(.wbn-page) .prose.max-w-prose,
   body.sn-on:not(.wbn-page) .max-w-prose,
   body.sn-on:not(.wbn-page) .max-w-3xl {
-    max-width: 1040px !important;
+    max-width: 880px !important;
   }
 
   /* B 类列表页（团队成员 / 科研项目）：解除 flex 居中收缩，正文与卡片网格横向铺开 */
@@ -2632,7 +2645,7 @@ html.dark .sn-item.active {
   body.sn-on:not(.wbn-page) .max-w-prose,
   body.sn-on:not(.wbn-page) .max-w-3xl,
   body.sn-on:not(.wbn-page) .max-w-\[65ch\] {
-    max-width: 1100px !important;
+    max-width: 880px !important;
   }
 
   body.sn-on:not(.wbn-page) .page-body > .max-w-prose.mx-auto.flex.justify-center > article,

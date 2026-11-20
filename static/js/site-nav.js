@@ -104,7 +104,7 @@
     var now = localStorage.getItem(STORE) || "";
     if (now !== last) { last = now; mount(); }
   }
-  setInterval(watch, 1200);
+  setInterval(watch, 5000);
   window.addEventListener("storage", watch);
 
   if (document.readyState === "loading") {

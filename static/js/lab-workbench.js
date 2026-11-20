@@ -1057,7 +1057,7 @@
     var now = state();
     var same = (now && me && now.name === me.name && now.sid === me.sid) || (!now && !me);
     if (!same) { me = now; go(); }
-  }, 1200);
+  }, 5000);
 
   window.__chenlabWorkbench = { reload: go };
 })();
